@@ -1,0 +1,23 @@
+// .sidenav {
+//   transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
+// }
+.hold-transition .content-wrapper,
+.hold-transition .control-sidebar,
+.hold-transition .control-sidebar *,
+.hold-transition .main-footer,
+.hold-transition .main-header,
+.hold-transition .main-sidebar,
+.hold-transition .main-sidebar * {
+  transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
+}
+
+.content-side {
+  margin-left: 4.5rem !important;
+}
+
+
+// @media (min-width: 992px) {
+//   .content-side {
+//     margin-left: 7.5vw;
+//   }
+// }

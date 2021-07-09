@@ -1,0 +1,290 @@
+import React, { useState } from "react";
+import { Image } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import "./style.scss";
+
+export default function Header() {
+  const [sidebar, setSidebar] = useState(false);
+
+  const openCloseSidebar = () => {
+    if (sidebar) {
+      setSidebar(!sidebar);
+      document
+        .querySelector(".sidebar-mini")
+        .classList.remove("sidebar-collapse");
+      document
+        .querySelector(".content-wrapper")
+        .classList.remove("content-side");
+      document.querySelector(".main-footer").classList.remove("content-side");
+    } else {
+      setSidebar(!sidebar);
+      document.querySelector(".sidebar-mini").classList.add("sidebar-collapse");
+      document.querySelector(".content-wrapper").classList.add("content-side");
+      document.querySelector(".main-footer").classList.add("content-side");
+    }
+  };
+
+  return (
+    <div className="wraper">
+      <body className="hold-transition sidebar-mini">
+        <nav className="main-header navbar navbar-expand navbar-white navbar-light">
+          {/* Left navbar links */}
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <div
+                className="nav-link"
+                data-widget="pushmenu"
+                onClick={() => openCloseSidebar()}
+                style={{ cursor: "pointer" }}
+              >
+                <i className="fas fa-bars" />
+              </div>
+            </li>
+            {/* <li className="nav-item d-none d-sm-inline-block">
+              <Link to="/" className="nav-link">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item d-none d-sm-inline-block">
+              <Link to="/contact" className="nav-link">
+                Contact
+              </Link>
+            </li>
+          */}
+          </ul>
+          {/* SEARCH FORM */}
+        </nav>
+        {/* /.navbar */}
+        {/* transition: margin-left .3s ease-in-out,width .3s ease-in-out; */}
+        <aside className="main-sidebar sidebar-dark-primary elevation-4">
+          {/* Brand Logo */}
+          <NavLink to="/" className="brand-link">
+            <Image
+              src="https://af.surin.rmuti.ac.th/Quota/Registration/img/RMUTI-logo-color.png"
+              alt="AdminLTE Logo"
+              className="brand-image "
+              style={{
+                opacity: ".8",
+                marginLeft: "1.2rem",
+                marginRight: "2rem",
+              }}
+            />
+            <span className="brand-text font-weight-light">RMUTI</span>
+          </NavLink>
+          {/* Sidebar */}
+          <div className="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-transition os-host-scrollbar-horizontal-hidden">
+            <div className="os-resize-observer-host observed">
+              <div
+                className="os-resize-observer"
+                style={{ left: 0, right: "auto" }}
+              />
+            </div>
+            <div
+              className="os-size-auto-observer observed"
+              style={{ height: "calc(100% + 1px)", float: "left" }}
+            >
+              <div className="os-resize-observer" />
+            </div>
+            <div
+              className="os-content-glue"
+              style={{ margin: "0px -8px", width: 249, height: 911 }}
+            />
+            <div className="os-padding">
+              <div
+                className="os-viewport os-viewport-native-scrollbars-invisible"
+                style={{ overflowY: "scroll" }}
+              >
+                <div
+                  className="os-content"
+                  style={{
+                    padding: "0px 8px",
+                    height: "100%",
+                    width: "100%",
+                  }}
+                >
+                  {/* Sidebar user panel (optional) */}
+                  <div className="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div className="image">
+                      <Image
+                        className="img-circle elevation-2"
+                        src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png"
+                        alt="User Image"
+                      />
+                    </div>
+                    <div className="info">
+                      <a href="/" className="d-block">
+                        Alexander Pierce
+                      </a>
+                    </div>
+                  </div>
+                  <nav className="mt-2">
+                    <ul
+                      className="nav nav-pills nav-sidebar flex-column"
+                      data-widget="treeview"
+                      role="menu"
+                      data-accordion="false"
+                    >
+                      {/* <li className="nav-item">
+                        <a href="/contact" className="nav-link active">
+                          <i className="nav-icon fas fa-tachometer-alt" />
+                          <p>
+                            Dashboard
+                            <i className="right fas fa-angle-left" />
+                          </p>
+                        </a>
+                        <ul
+                          className="nav nav-treeview"
+                          style={{ display: "none" }}
+                        >
+                          <li className="nav-item">
+                            <a href="./index.html" className="nav-link active">
+                              <i className="far fa-circle nav-icon" />
+                              <p>Dashboard v1</p>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a href="./index2.html" className="nav-link">
+                              <i className="far fa-circle nav-icon" />
+                              <p>Dashboard v2</p>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a href="./index3.html" className="nav-link">
+                              <i className="far fa-circle nav-icon" />
+                              <p>Dashboard v3</p>
+                            </a>
+                          </li>
+                        </ul>
+                      </li>
+                      */}
+                      <li className="nav-item">
+                        <a href="/" className="nav-link">
+                          <i className="nav-icon fas fa-home" />
+                          <p>
+                            หน้าแรก
+                            {/* <span className="right badge badge-danger">
+                              New
+                            </span> */}
+                          </p>
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a href="/contact" className="nav-link">
+                          <i className="nav-icon fas fa-user" />
+                          <p>
+                            ข้อมูลส่วนตัว
+                            <i className="right fas fa-angle-left" />
+                          </p>
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a href="/" className="nav-link">
+                          <i className="nav-icon fas fa-sign-out-alt" />
+                          <p>
+                            ออกจากระบบ
+                            <i className="fas fa-angle-left right" />
+                          </p>
+                        </a>
+                        {/* <ul
+                          className="nav nav-treeview"
+                          style={{ display: "none" }}
+                        >
+                          <li className="nav-item">
+                            <a
+                              href="pages/UI/general.html"
+                              className="nav-link"
+                            >
+                              <i className="far fa-circle nav-icon" />
+                              <p>General</p>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a href="pages/UI/icons.html" className="nav-link">
+                              <i className="far fa-circle nav-icon" />
+                              <p>Icons</p>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              href="pages/UI/buttons.html"
+                              className="nav-link"
+                            >
+                              <i className="far fa-circle nav-icon" />
+                              <p>Buttons</p>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              href="pages/UI/sliders.html"
+                              className="nav-link"
+                            >
+                              <i className="far fa-circle nav-icon" />
+                              <p>Sliders</p>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a href="pages/UI/modals.html" className="nav-link">
+                              <i className="far fa-circle nav-icon" />
+                              <p>Modals &amp; Alerts</p>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a href="pages/UI/navbar.html" className="nav-link">
+                              <i className="far fa-circle nav-icon" />
+                              <p>Navbar &amp; Tabs</p>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              href="pages/UI/timeline.html"
+                              className="nav-link"
+                            >
+                              <i className="far fa-circle nav-icon" />
+                              <p>Timeline</p>
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              href="pages/UI/ribbons.html"
+                              className="nav-link"
+                            >
+                              <i className="far fa-circle nav-icon" />
+                              <p>Ribbons</p>
+                            </a>
+                          </li>
+                        </ul>
+                      */}
+                      </li>
+                    </ul>
+                  </nav>
+                  {/* /.sidebar-menu */}
+                </div>
+              </div>
+            </div>
+            <div className="os-scrollbar os-scrollbar-horizontal os-scrollbar-unusable os-scrollbar-auto-hidden">
+              <div className="os-scrollbar-track">
+                <div
+                  className="os-scrollbar-handle"
+                  style={{ width: "100%", transform: "translate(0px, 0px)" }}
+                />
+              </div>
+            </div>
+            <div className="os-scrollbar os-scrollbar-vertical os-scrollbar-auto-hidden">
+              <div className="os-scrollbar-track">
+                <div
+                  className="os-scrollbar-handle"
+                  style={{
+                    height: "77.027%",
+                    transform: "translate(0px, 0px)",
+                  }}
+                />
+              </div>
+            </div>
+            <div className="os-scrollbar-corner" />
+          </div>
+          {/* /.sidebar */}
+        </aside>
+      </body>
+    </div>
+  );
+}

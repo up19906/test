@@ -1,0 +1,33 @@
+.card-header {
+  border: none !important;
+}
+.btn-addfunding {
+  font-weight: 500 !important;
+  color: black !important;
+  background-color: white !important;
+  border-color: white !important;
+}
+.projcard-bar {
+  left: -2px;
+  height: 1px;
+  margin: 10px 3.5rem;
+  border-radius: 5px;
+  background-color: #b9bdc1;
+  transition: width 0.2s ease;
+}
+
+@media (min-width: 1442px) {
+  .container {
+    max-width: 1240px !important;
+  }
+}
+@media (min-width: 1700px) {
+  .container {
+    max-width: 1540px !important;
+  }
+}
+@media (min-width: 2160px) {
+  .container {
+    max-width: 2060px !important;
+  }
+}
