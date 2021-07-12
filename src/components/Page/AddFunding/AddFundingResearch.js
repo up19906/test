@@ -136,7 +136,7 @@ export default function AddFundingResearch() {
             ข้อมูลทั่วไปเกี่ยวกับทุน
           </button>
         </NavLink>
-        <NavLink to="/addfunding/aboutfunding">
+        <NavLink to="/addfunding/research">
           <button
             className="btn btn-primary btn-research"
             style={{ marginLeft: "1rem" }}
@@ -162,7 +162,7 @@ export default function AddFundingResearch() {
         ></div>
       </div>
 
-      <form>
+      <form >
         <h4 style={{ textAlign: "center" }}>เพิ่มข้อมูลแหล่งทุน งานวิจัย</h4>
 
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createRef } from "react";
 import { NavLink } from "react-router-dom";
-import { Row, Col, Button, Modal } from "react-bootstrap";
+import { Row, Col, Button, Modal, Form } from "react-bootstrap";
 import Axios from "axios";
 
 export default function AddResearch() {
@@ -18,75 +18,68 @@ export default function AddResearch() {
     { value: [date.getFullYear() + 540] },
     { value: [date.getFullYear() + 539] },
   ];
-
+  const form = createRef();
   const [about_finding, setabout_finding] = useState([]);
-  const [fundingagency_project_type, setfundingagency_project_type] =
-    useState(""); //ประเภท
-  const [fundingagency_project_name, setfundingagency_project_name] =
-    useState(""); //ชื่อโครงการ
-  const [fundingagency_project_funding, setfundingagency_project_funding] =
-    useState(""); //แหล่งทุน
-  const [fundingagency_project_budget, setfundingagency_project_budget] =
-    useState(""); //งบประมาณที่ได้รับ
-  const [fundingagency_project_star, setfundingagency_project_star] =
-    useState(""); //ปี
-  const [fundingagency_project_agency, setfundingagency_project_agency] =
-    useState(0); //หน่วยงานเจ้าของโครงการ
-  const [fundingagency_project_latitude, setfundingagency_project_latitude] =
-    useState(""); //พื้นที่ศึกษา lat
-  const [fundingagency_project_Longitude, setfundingagency_project_Longitude] =
-    useState(""); //พื้นที่ศึกษา long
+  const [selectProjectType, setselectProjectType] = useState(""); //ประเภท
+  const [project_name, setproject_name] = useState(""); //ชื่อโครงการ
+  const [selectSourceFunds, setselectSourceFunds] = useState(""); //แหล่งทุน
+  const [project_budget, setproject_budget] = useState(""); //งบประมาณที่ได้รับ
+  const [project_star, setproject_star] = useState(""); //ปี
+  const [project_agency, setproject_agency] = useState(""); //หน่วยงานเจ้าของโครงการ
+  const [project_latitude, setproject_latitude] = useState(""); //พื้นที่ศึกษา lat
+  const [project_Longitude, setproject_Longitude] = useState(""); //พื้นที่ศึกษา long
   // const [create_date, setCreate_date] = useState("");
-  const [fundingagency_project_status, setfundingagency_project_status] =
-    useState(""); //สถานะโครงการ
-  const [fundingagency_project_upload, setfundingagency_project_upload] =
-    useState(""); //อัพโหลดเอกสาร
+  const [project_status, setproject_status] = useState(""); //สถานะโครงการ
+  const [file, setfile] = React.useState(); //อัพโหลดเอกสาร
 
-  const [modalShow, setModalShow] = React.useState(false);
-  const [source_funds_name, setSource_funds_name] = useState("");
+  //   const [modalShow, setModalShow] = React.useState(false);
+  //   const [source_funds_name, setsource_funds_name] = useState("");
 
   const [source_funds, setSource_fund] = useState([]);
+  const [project_type, setproject_type] = useState([]);
 
   useEffect(() => {
     Axios.get("http://localhost:3002/api/get/source_funds").then((source) => {
       setSource_fund(source.data);
     });
+    Axios.get("http://localhost:4000/project-type")
+      .then((resp) => {
+        // console.log(resp.data);
+        setproject_type(resp.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  const handleSubmit = () => {
-    Axios.post(
-      "http://localhost:3002/api/create/coordinator_fundingagency_academic",
-      {
-        fundingagency_project_type: fundingagency_project_type,
-        fundingagency_project_name: fundingagency_project_name,
-        fundingagency_project_funding: fundingagency_project_funding,
-        fundingagency_project_budget: fundingagency_project_budget,
-        fundingagency_project_star: fundingagency_project_star,
-        fundingagency_project_agency: fundingagency_project_agency,
-        fundingagency_project_latitude: fundingagency_project_latitude,
-        fundingagency_project_Longitude: fundingagency_project_Longitude,
-        fundingagency_project_status: fundingagency_project_status,
-        fundingagency_project_upload: fundingagency_project_upload,
-        created_date: today,
-      }
-    ).then(() => {
-      setabout_finding([
-        ...about_finding,
-        {
-          fundingagency_project_type: fundingagency_project_type,
-          fundingagency_project_name: fundingagency_project_name,
-          fundingagency_project_funding: fundingagency_project_funding,
-          fundingagency_project_budget: fundingagency_project_budget,
-          fundingagency_project_star: fundingagency_project_star,
-          fundingagency_project_agency: fundingagency_project_agency,
-          fundingagency_project_latitude: fundingagency_project_latitude,
-          fundingagency_project_Longitude: fundingagency_project_Longitude,
-          fundingagency_project_status: fundingagency_project_status,
-          fundingagency_project_upload: fundingagency_project_upload,
-          created_date: today,
-        },
-      ]);
-    });
+  const handleSubmit = (event) => {
+    // event.preventDefault();
+    const dataArray = new FormData(form.current);
+    console.log("data:", dataArray);
+    Axios.post("http://localhost:4000/project", dataArray)
+      .then((res) => {
+        console.log(res.data.massage);
+        alert(res.data.massage);
+      })
+      .catch((error) => {
+        console.log(error);
+        setabout_finding([
+          ...about_finding,
+          {
+            selectProjectType: selectProjectType,
+            project_name: project_name,
+            selectSourceFunds: selectSourceFunds,
+            project_budget: project_budget,
+            project_star: project_star,
+            project_agency: project_agency,
+            project_latitude: project_latitude,
+            project_Longitude: project_Longitude,
+            project_status: project_status,
+            file: file,
+            // created_date: today,
+          },
+        ]);
+      });
   };
   return (
     <>
@@ -178,8 +171,8 @@ export default function AddResearch() {
         ></div>
       </div>
 
-      <form>
-        <h4 style={{ textAlign: "center" }}>ข้อมูลทั่วไปเกี่ยวกับทุน</h4>
+      <form ref={form}>
+        <h4 style={{ textAlign: "center" }}>งานวิจัย</h4>
 
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
         <div className="card-body" style={{ padding: "1rem 7rem 1rem 5rem" }}>
@@ -187,13 +180,22 @@ export default function AddResearch() {
             <Col lg={12}>
               <div className="form-group">
                 <label htmlFor="type_source">ประเภท</label>
-                <input
-                  type="text"
+                <select
                   className="form-control"
+                  name="project_type"
                   onChange={(event) => {
-                    setfundingagency_project_type(event.target.value);
+                    setselectProjectType(event.target.value);
                   }}
-                />
+                >
+                  <option value="">เลือกประเภท</option>
+                  {project_type.map((value, i) => {
+                    return (
+                      <option key={i} value={value.project_type_name}>
+                        {value.project_type_name}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
             </Col>
             <Col lg={12}>
@@ -201,9 +203,10 @@ export default function AddResearch() {
                 <label>ชื่อโครงการ</label>
                 <input
                   type="text"
+                  name="project_name"
                   className="form-control"
                   onChange={(event) => {
-                    setfundingagency_project_name(event.target.value);
+                    setproject_name(event.target.value);
                   }}
                 />
               </div>
@@ -211,13 +214,22 @@ export default function AddResearch() {
             <Col lg={12}>
               <div className="form-group">
                 <label>แหล่งทุน</label>
-                <input
-                  type="text"
+                <select
                   className="form-control"
+                  name="project_funding"
                   onChange={(event) => {
-                    setfundingagency_project_funding(event.target.value);
+                    setselectSourceFunds(event.target.value);
                   }}
-                />
+                >
+                  <option value="">เลือกแหล่งทุน</option>
+                  {source_funds.map((value, i) => {
+                    return (
+                      <option key={i} value={value.source_funds_name}>
+                        {value.source_funds_name}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
             </Col>
             <Col lg={6}>
@@ -225,23 +237,33 @@ export default function AddResearch() {
                 <label>งบประมาณที่ได้รับ</label>
                 <input
                   type="number"
+                  name="project_budget"
                   className="form-control"
                   onChange={(event) => {
-                    setfundingagency_project_budget(event.target.value);
+                    setproject_budget(event.target.value);
                   }}
                 />
               </div>
             </Col>
             <Col lg={6}>
               <div className="form-group">
-                <label>ปี</label>
-                <input
-                  type="text"
+                <label htmlFor="exampleInputEmail1">ปีงบประมาณ</label>
+                <select
                   className="form-control"
+                  name="project_star"
                   onChange={(event) => {
-                    setfundingagency_project_star(event.target.value);
+                    setproject_star(event.target.value);
                   }}
-                />
+                >
+                  <option value="">เลือกปี</option>
+                  {year.map((value, i) => {
+                    return (
+                      <option key={i} value={value.value}>
+                        {value.value}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
             </Col>
             {/* <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div> */}
@@ -250,9 +272,10 @@ export default function AddResearch() {
                 <label>หน่วยงานเจ้าของโครงการ</label>
                 <input
                   type="text"
+                  name="project_agency"
                   className="form-control"
                   onChange={(event) => {
-                    setfundingagency_project_agency(event.target.value);
+                    setproject_agency(event.target.value);
                   }}
                 />
               </div>
@@ -262,9 +285,10 @@ export default function AddResearch() {
                 <label>พื้นที่ศึกษา ( Latitude )</label>
                 <input
                   type="text"
+                  name="project_latitude"
                   className="form-control"
                   onChange={(event) => {
-                    setfundingagency_project_latitude(event.target.value);
+                    setproject_latitude(event.target.value);
                   }}
                 />
               </div>
@@ -274,36 +298,64 @@ export default function AddResearch() {
                 <label>พื้นที่ศึกษา ( Longitude )</label>
                 <input
                   type="text"
+                  name="project_Longitude"
                   className="form-control"
                   onChange={(event) => {
-                    setfundingagency_project_Longitude(event.target.value);
+                    setproject_Longitude(event.target.value);
                   }}
                 />
               </div>
             </Col>
             <Col lg={12}>
               <div className="form-group">
-                <label>ผลสัมถฤทธิ์ที่สำคัญ (หลัก)</label>
+                <label>สถานะโครงการ :</label>
+                <div className="form-control" style={{ border: "none" }}>
+                  <Form.Check
+                    style={{ marginLeft: "2rem" }}
+                    inline
+                    label="อยู่ระหว่างดำเนินการ"
+                    name="project_status"
+                    value="อยู่ระหว่างดำเนินการ"
+                    type="radio"
+                    onChange={(event) => {
+                      setproject_status(event.target.value);
+                    }}
+                  />
+                  <Form.Check
+                    style={{ marginLeft: "3rem" }}
+                    inline
+                    label="โครงการวิจัยเสร็จสิ้น"
+                    name="project_status"
+                    value="โครงการวิจัยเสร็จสิ้น"
+                    type="radio"
+                    onChange={(event) => {
+                      setproject_status(event.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+            </Col>
+            <Col lg={8}>
+              <div className="form-group">
+                <label>อัพโหลดเอกสาร</label>
                 <input
-                  type="text"
+                  id="file"
+                  type="file"
+                  name="project_upload"
+                  style={{ paddingTop: "0.7rem", paddingBottom: "2.5rem" }}
                   className="form-control"
                   onChange={(event) => {
-                    setfundingagency_project_status(event.target.value);
+                    setfile(event.target.files[0]);
                   }}
                 />
               </div>
             </Col>
-            <Col lg={12}>
-              <div className="form-group">
-                <label>ผลสัมถฤทธิ์ที่สำคัญ (รอง)</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  onChange={(event) => {
-                    setfundingagency_project_upload(event.target.value);
-                  }}
-                />
-              </div>
+            <Col lg={4}>
+              <br />
+              <br />
+              <h6 style={{ color: "red" }}>
+                รองรับไฟล์ขนาดสูงสุดไม่เกิน 20 MB
+              </h6>
             </Col>
           </Row>
         </div>

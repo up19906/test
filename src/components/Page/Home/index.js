@@ -40,11 +40,16 @@ export default function Home() {
     Axios.get(
       `http://localhost:3002/api/get/sum_coordinater_funding_budget/${date}`
     ).then((sumbudget) => {
-      if (sumbudget.data[0].sum == null) {
-        setBudget(0);
+      if (!sumbudget.data) {
+        return <div />;
       } else {
-        setBudget(sumbudget.data[0].sum);
+        if (sumbudget.data[0].sum == null) {
+          setBudget(0);
+        } else {
+          setBudget(sumbudget.data[0].sum);
+        }
       }
+
       console.log("test_budget", sumbudget);
     });
   }, [date]);

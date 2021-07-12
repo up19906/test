@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Row, Col, Button, Modal } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import Axios from "axios";
 
 export default function AddAboutResearch() {
@@ -11,13 +11,13 @@ export default function AddAboutResearch() {
     " " +
     [date.getHours(), date.getMinutes(), date.getSeconds()].join(":");
   console.log("testdate:string", today);
-  const year = [
-    { value: [date.getFullYear() + 543] },
-    { value: [date.getFullYear() + 542] },
-    { value: [date.getFullYear() + 541] },
-    { value: [date.getFullYear() + 540] },
-    { value: [date.getFullYear() + 539] },
-  ];
+  //   const year = [
+  //     { value: [date.getFullYear() + 543] },
+  //     { value: [date.getFullYear() + 542] },
+  //     { value: [date.getFullYear() + 541] },
+  //     { value: [date.getFullYear() + 540] },
+  //     { value: [date.getFullYear() + 539] },
+  //   ];
 
   const [about_finding, setabout_finding] = useState([]);
   const [about_fundingagency_name, setabout_fundingagency_name] = useState(""); //ชื่อทุน
@@ -44,35 +44,35 @@ export default function AddAboutResearch() {
     setabout_fundingagency_achievement_small,
   ] = useState(""); //ผลสัมถฤทธิ์ที่สำคัญ รอง
 
-  const [modalShow, setModalShow] = React.useState(false);
-  const [source_funds_name, setSource_funds_name] = useState("");
+  //   const [modalShow, setModalShow] = React.useState(false);
+  //   const [source_funds_name, setSource_funds_name] = useState("");
 
-  const [source_funds, setSource_fund] = useState([]);
+  //   const [source_funds, setSource_fund] = useState([]);
 
-  useEffect(() => {
-    Axios.get("http://localhost:3002/api/get/source_funds").then((source) => {
-      setSource_fund(source.data);
-    });
-  }, []);
+  //   useEffect(() => {
+  //     Axios.get("http://localhost:3002/api/get/source_funds").then((source) => {
+  //       setSource_fund(source.data);
+  //     });
+  //   }, []);
 
   const handleSubmit = () => {
+    const fundingagencyObj = {
+      about_fundingagency_name: about_fundingagency_name,
+      about_fundingagency_institution: about_fundingagency_institution,
+      about_fundingagency_paln_master: about_fundingagency_paln_master,
+      about_fundingagency_paln_sub: about_fundingagency_paln_sub,
+      about_fundingagency_platform: about_fundingagency_platform,
+      about_fundingagency_program: about_fundingagency_program,
+      about_fundingagency_point: about_fundingagency_point,
+      about_fundingagency_goal: about_fundingagency_goal,
+      about_fundingagency_achievement_main:
+        about_fundingagency_achievement_main,
+      about_fundingagency_achievement_small:
+        about_fundingagency_achievement_small,
+    };
     Axios.post(
-      "http://localhost:3002/api/create/coordinator_fundingagency_academic",
-      {
-        about_fundingagency_name: about_fundingagency_name,
-        about_fundingagency_institution: about_fundingagency_institution,
-        about_fundingagency_paln_master: about_fundingagency_paln_master,
-        about_fundingagency_paln_sub: about_fundingagency_paln_sub,
-        about_fundingagency_platform: about_fundingagency_platform,
-        about_fundingagency_program: about_fundingagency_program,
-        about_fundingagency_point: about_fundingagency_point,
-        about_fundingagency_goal: about_fundingagency_goal,
-        about_fundingagency_achievement_main:
-          about_fundingagency_achievement_main,
-        about_fundingagency_achievement_small:
-          about_fundingagency_achievement_small,
-        created_date: today,
-      }
+      "http://localhost:4000/about-fundingagency",
+      fundingagencyObj
     ).then(() => {
       setabout_finding([
         ...about_finding,
