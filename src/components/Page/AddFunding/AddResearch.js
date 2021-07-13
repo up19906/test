@@ -32,17 +32,18 @@ export default function AddResearch() {
   const [project_status, setproject_status] = useState(""); //สถานะโครงการ
   const [file, setfile] = React.useState(); //อัพโหลดเอกสาร
 
-  //   const [modalShow, setModalShow] = React.useState(false);
+  const [modalShowResearcher, setmodalShowResearcher] = React.useState(false);
+  const [showtableResearcher, setshowtableResearcher] = React.useState(false);
   //   const [source_funds_name, setsource_funds_name] = useState("");
 
   const [source_funds, setSource_fund] = useState([]);
   const [project_type, setproject_type] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:3002/api/get/source_funds").then((source) => {
+    Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
       setSource_fund(source.data);
     });
-    Axios.get("http://localhost:4000/project-type")
+    Axios.get("http://localhost:4000/api/get/project-type")
       .then((resp) => {
         // console.log(resp.data);
         setproject_type(resp.data);
@@ -354,9 +355,207 @@ export default function AddResearch() {
               <br />
               <br />
               <h6 style={{ color: "red" }}>
-                รองรับไฟล์ขนาดสูงสุดไม่เกิน 20 MB
+                ** รองรับไฟล์ขนาดสูงสุดไม่เกิน 20 MB
               </h6>
             </Col>
+          </Row>
+          <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
+          <Row>
+            <Col lg={12}>
+              <h5 style={{ margin: "1rem 0" }}>รายละเอียดของคณะผู้วิจัย</h5>
+            </Col>
+            <Col lg={12}>
+              {" "}
+              <div>
+                <i
+                  style={{
+                    margin: "0.5rem",
+                    cursor: "pointer",
+                    float: "right",
+                  }}
+                  onClick={() => setmodalShowResearcher(true)}
+                  className="fas fa-plus-circle"
+                >
+                  {" "}
+                  เพิ่มทีมนักวิจัย
+                </i>
+              </div>
+              <Modal
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                show={modalShowResearcher}
+                onHide={() => setmodalShowResearcher(false)}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title id="contained-modal-title-vcenter">
+                    เพิ่มทีมนักวิจัย
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <div className="form-group">
+                    <Row>
+                      <Col lg={6}>
+                        <div className="form-group">
+                          <label>ชื่อ</label>
+                          <input
+                            type="text"
+                            name="project_Longitude"
+                            className="form-control"
+                            onChange={(event) => {
+                              setproject_Longitude(event.target.value);
+                            }}
+                          />
+                        </div>
+                      </Col>
+                      <Col lg={5}>
+                        <div className="form-group">
+                          <label>นามสกุล</label>
+                          <input
+                            type="text"
+                            name="project_Longitude"
+                            className="form-control"
+                            onChange={(event) => {
+                              setproject_Longitude(event.target.value);
+                            }}
+                          />
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row style={{ marginTop: "1rem" }}>
+                      {/* <Col lg={1} /> */}
+                      <Col lg={11}>
+                        <label htmlFor="type_source">ตำแหน่งในโครงการ</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          // onChange={(event) => {
+                          //   setSource_funds_name(event.target.value);
+                          // }}
+                        />
+                      </Col>
+                    </Row>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="secondary"
+                    // href="/"
+                    type="button"
+                    onClick={() => setmodalShowResearcher(false)}
+                  >
+                    ยกเลิก
+                  </Button>
+                  <Button
+                    href="/addfunding"
+                    // onClick={() => {
+                    //   Axios.post(
+                    //     "http://localhost:4000/api/create/source_funds",
+                    //     {
+                    //       source_funds_name: source_funds_name,
+                    //       created_date: today,
+                    //     }
+                    //   );
+                    //   setmodalShowResearcher(false);
+                    // }}
+                  >
+                    บันทึก
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </Col>
+            <Col lg={6}>
+              <div className="form-group">
+                <label>ชื่อ</label>
+                <input
+                  type="text"
+                  name="project_Longitude"
+                  className="form-control"
+                  onChange={(event) => {
+                    setproject_Longitude(event.target.value);
+                  }}
+                />
+              </div>
+            </Col>
+            <Col lg={6}>
+              <div className="form-group">
+                <label>นามสกุล</label>
+                <input
+                  type="text"
+                  name="project_Longitude"
+                  className="form-control"
+                  onChange={(event) => {
+                    setproject_Longitude(event.target.value);
+                  }}
+                />
+              </div>
+            </Col>
+
+            <Col lg={12}>
+              <div className="form-group">
+                <label>หมายเลขบัตรประชาชน</label>
+                <input
+                  type="text"
+                  name="project_Longitude"
+                  className="form-control"
+                  onChange={(event) => {
+                    setproject_Longitude(event.target.value);
+                  }}
+                />
+              </div>
+            </Col>
+            <Col lg={2}>
+              <Button
+                style={{ float: "right" }}
+                onClick={() => {
+                  setshowtableResearcher(true);
+                }}
+              >
+                {" "}
+                ค้นหา
+              </Button>
+            </Col>
+            <Col lg={8}>
+              <h6 style={{ marginTop: "0.5rem" }}>
+                ** สามารถค้นหาได้เฉพาะนักวิจัยที่มีสิทธิ์เข้าระบบแล้วเท่านั้น
+              </h6>
+            </Col>
+            {showtableResearcher === true ? (
+              <Col lg={12}>
+                <div className="card-body table-responsive p-0">
+                  <table className="table table-hover text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>รหัส</th>
+                        <th>ชื่อ - สกุล</th>
+                        <th>หน่วยงาน</th>
+                        <th>เลือก</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>
+                          <Form.Check
+                            style={{ marginLeft: "0.5rem" }}
+                            inline
+                            // label="โครงการวิจัยเสร็จสิ้น"
+                            name="researcher"
+                            value="โครงการวิจัยเสร็จสิ้น"
+                            type="checkbox"
+                            // onChange={(event) => {
+                            //   setproject_status(event.target.value);
+                            // }}
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Col>
+            ) : null}
           </Row>
         </div>
         <div

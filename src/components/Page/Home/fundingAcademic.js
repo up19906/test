@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Modal } from "react-bootstrap";
 // import { NavLink } from "react-router-dom";
 import Axios from "axios";
-// import { NavLink } from "react-router-dom";
-// import EditFunding from "./EditFunding";
 
 export default function FindingAcademic() {
   var date = new Date();
@@ -43,21 +41,21 @@ export default function FindingAcademic() {
 
   useEffect(() => {
     Axios.get(
-      "http://localhost:3002/api/get/coordinator_fundingagency_academic"
+      "http://localhost:4000/api/get/coordinator_fundingagency_academic"
     ).then((fundingagency) => {
       setfundingagency(fundingagency.data);
       console.log("test_fundingagency", fundingagency);
     });
   }, []);
   useEffect(() => {
-    Axios.get("http://localhost:3002/api/get/source_funds").then((source) => {
+    Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
       setSource_fund(source.data);
     });
   }, []);
 
   const handleSubmitUpdate = (id) => {
     Axios.put(
-      `http://localhost:3002/api/update/coordinator_fundingagency_academic/${id}`,
+      `http://localhost:4000/api/update/coordinator_fundingagency_academic/${id}`,
       {
         funding_ac_name: funding_ac_name,
         funding_ac_project: funding_ac_project,
@@ -92,7 +90,7 @@ export default function FindingAcademic() {
 
   const handleGetUpdate = (id) => {
     Axios.get(
-      `http://localhost:3002/api/get/coordinator_fundingagency_academic/${id}`
+      `http://localhost:4000/api/get/coordinator_fundingagency_academic/${id}`
     ).then((data) => {
       setGetupdate(data.data[0]);
       setModalShow(true);
@@ -115,7 +113,7 @@ export default function FindingAcademic() {
   const handleGetDelet = (id) => {
     console.log("test ID : ", id);
     Axios.get(
-      `http://localhost:3002/api/get/coordinator_fundingagency_academic/${id}`
+      `http://localhost:4000/api/get/coordinator_fundingagency_academic/${id}`
     ).then((data) => {
       setGetupdate(data.data[0]);
       setModalShowDelete(true);
@@ -125,7 +123,7 @@ export default function FindingAcademic() {
   const handleSubmitDelet = (id) => {
     console.log("test ID : ", id);
     Axios.delete(
-      `http://localhost:3002/api/delete/coordinator_fundingagency_academic/${id}`
+      `http://localhost:4000/api/delete/coordinator_fundingagency_academic/${id}`
     ).then((data) => {
       alert("ลบโครงงาน สำเร็จ");
     });
@@ -452,7 +450,7 @@ export default function FindingAcademic() {
                         <Button
                           onClick={() => {
                             Axios.post(
-                              "http://localhost:3002/api/create/source_funds",
+                              "http://localhost:4000/api/create/source_funds",
                               {
                                 source_funds_name: source_funds_name,
                                 created_date: today,

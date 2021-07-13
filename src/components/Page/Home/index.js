@@ -18,17 +18,17 @@ export default function Home() {
   const [coordinator_academic, setcoordinator_academic] = useState([]);
 
   var d = new Date();
-  const date = d.getFullYear() + 543;
+  const date = d.getFullYear();
 
   useEffect(() => {
-    Axios.get("http://localhost:3002/api/get/user_group").then((usergroup) => {
+    Axios.get("http://localhost:4000/api/get/user_group").then((usergroup) => {
       setusergroup(usergroup.data);
       console.log("test_user_group", usergroup);
     });
   }, []);
 
   useEffect(() => {
-    Axios.get("http://localhost:3002/api/get/concept_proposal").then(
+    Axios.get("http://localhost:4000/api/get/concept_proposal").then(
       (proposal) => {
         setProposal(proposal.data);
         console.log("test_proposal", proposal);
@@ -38,16 +38,14 @@ export default function Home() {
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:3002/api/get/sum_coordinater_funding_budget/${date}`
+      `http://localhost:4000/api/get/sum_coordinater_funding_budget/${date}`
     ).then((sumbudget) => {
-      if (!sumbudget.data) {
-        return <div />;
+      if (!sumbudget.data[0]) {
+        setBudget(0);
       } else {
-        if (sumbudget.data[0].sum == null) {
-          setBudget(0);
-        } else {
+        
           setBudget(sumbudget.data[0].sum);
-        }
+        
       }
 
       console.log("test_budget", sumbudget);
@@ -56,20 +54,23 @@ export default function Home() {
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:3002/api/get/sum_coordinater_funding_budget_academic/${date}`
+      `http://localhost:4000/api/get/sum_coordinater_funding_budget_academic/${date}`
     ).then((sumbudget) => {
-      if (sumbudget.data[0].sum == null) {
+      if(!sumbudget.data[0]){
         setbudget_academic(0);
-      } else {
-        setbudget_academic(sumbudget.data[0].sum);
+      }else{
+       
+          setbudget_academic(sumbudget.data[0].sum);
+     
       }
+      
       console.log("test_setbudget_academic", sumbudget);
     });
   }, [date]);
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:3002/api/get/count_coordinator_fundingagency/${date}`
+      `http://localhost:4000/api/get/count_coordinator_fundingagency/${date}`
     ).then((count_fundingagency) => {
       setcoordinator_fundingagency(count_fundingagency.data);
       console.log("test_count_fundingagency", count_fundingagency);
@@ -78,7 +79,7 @@ export default function Home() {
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:3002/api/get/count_coordinator_fundingagency_academic/${date}`
+      `http://localhost:4000/api/get/count_coordinator_fundingagency_academic/${date}`
     ).then((count_fundingagency) => {
       setcoordinator_academic(count_fundingagency.data);
       console.log("test_count_fundingagency", count_fundingagency);

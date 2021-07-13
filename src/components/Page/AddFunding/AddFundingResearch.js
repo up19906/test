@@ -28,22 +28,23 @@ export default function AddFundingResearch() {
   const [funding_year, setFunding_year] = useState(0); //ปีงบประมาณ
   const [funding_budget, setFunding_budget] = useState(0); //งบประมาณ
   const [funding_name, setFunding_name] = useState(""); //ชื่อแหล่งทุน
-  // const [create_date, setCreate_date] = useState("");
+  const [funding_type, setfunding_type] = useState(""); // ประเภทงบประมาณ
   const [coordinator_univercity_budget, setcoordinator_univercity_budget] =
     useState(""); //รายได้เข้ามหาลัย
   const [modalShow, setModalShow] = React.useState(false);
+  const [modalShowResearcher, setmodalShowResearcher] = React.useState(false);
   const [source_funds_name, setSource_funds_name] = useState("");
 
   const [source_funds, setSource_fund] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:3002/api/get/source_funds").then((source) => {
+    Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
       setSource_fund(source.data);
     });
   }, []);
 
   const handleSubmit = () => {
-    Axios.post("http://localhost:3002/api/create/coordinator_fundingagency", {
+    Axios.post("http://localhost:4000/api/create/coordinator_fundingagency", {
       funding_project_name: funding_project_name,
       coordinator_project: coordinator_project,
       funding_agency: funding_agency,
@@ -222,7 +223,7 @@ export default function AddFundingResearch() {
                 />
               </div>
             </Col>
-
+          
             <Col lg={4}>
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">เบอร์ติดต่อ</label>
@@ -233,6 +234,100 @@ export default function AddFundingResearch() {
                     setFunding_phone(event.target.value);
                   }}
                 />
+              </div>
+            </Col>
+            <Col lg={12}>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">ทีมนักวิจัย</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={(event) => {
+                    setFunding_project_leader(event.target.value);
+                  }}
+                />
+                <div>
+                  <i
+                    style={{ margin: "0.5rem", cursor: "pointer" }}
+                    onClick={() => setmodalShowResearcher(true)}
+                    className="fas fa-plus-circle"
+                  >
+                    {" "}
+                    เพิ่มทีมนักวิจัย
+                  </i>
+                </div>
+                <Modal
+                  size="lg"
+                  aria-labelledby="contained-modal-title-vcenter"
+                  centered
+                  show={modalShowResearcher}
+                  onHide={() => setmodalShowResearcher(false)}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                    เพิ่มทีมนักวิจัย
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="form-group">
+                      <Row>
+                        <Col lg={3}>
+                          {" "}
+                          <label htmlFor="type_source">ชื่อจริง - นามสกุล</label>
+                        </Col>
+                        <Col lg={8}>
+                          <input
+                            type="text"
+                            className="form-control"
+                            // onChange={(event) => {
+                            //   setSource_funds_name(event.target.value);
+                            // }}
+                          />
+                        </Col>
+                      </Row>
+                      <Row style={{marginTop:"1rem"}}>
+                        <Col lg={3}>
+                          {" "}
+                          <label htmlFor="type_source">ตำแหน่งในโครงการ</label>
+                        </Col>
+                        <Col lg={8}>
+                          <input
+                            type="text"
+                            className="form-control"
+                            // onChange={(event) => {
+                            //   setSource_funds_name(event.target.value);
+                            // }}
+                          />
+                        </Col>
+                      </Row>
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      // href="/"
+                      type="button"
+                      onClick={() => setmodalShowResearcher(false)}
+                    >
+                      ยกเลิก
+                    </Button>
+                    <Button
+                      href="/addfunding"
+                      // onClick={() => {
+                      //   Axios.post(
+                      //     "http://localhost:4000/api/create/source_funds",
+                      //     {
+                      //       source_funds_name: source_funds_name,
+                      //       created_date: today,
+                      //     }
+                      //   );
+                      //   setmodalShowResearcher(false);
+                      // }}
+                    >
+                      บันทึก
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </div>
             </Col>
           </Row>
@@ -347,7 +442,7 @@ export default function AddFundingResearch() {
                       href="/addfunding"
                       onClick={() => {
                         Axios.post(
-                          "http://localhost:3002/api/create/source_funds",
+                          "http://localhost:4000/api/create/source_funds",
                           {
                             source_funds_name: source_funds_name,
                             created_date: today,
@@ -362,8 +457,28 @@ export default function AddFundingResearch() {
                 </Modal>
               </div>
             </Col>
-
+           
             <Col lg={5}>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">ประเภทงบประมาณ</label>
+                <select
+                  className="form-control"
+                  onChange={(event) => {
+                    setfunding_type(event.target.value);
+                  }}
+                >
+                  <option value="">เลือกประเภทงบประมาณ</option>
+                  {source_funds.map((value, i) => {
+                    return (
+                      <option key={i} value={value.source_funds_name}>
+                        {value.source_funds_name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </Col>
+            <Col lg={12}>
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">รายได้เข้ามหาลัย</label>
                 <input

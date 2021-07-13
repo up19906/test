@@ -29,6 +29,7 @@ export default function AddFundingAcademic() {
   const [funding_ac_budget, setfunding_ac_budget] = useState(0); //งบประมาณ
   const [funding_name, setFunding_name] = useState(""); //ชื่อแหล่งทุน
   // const [create_date, setCreate_date] = useState("");
+  const [funding_type, setfunding_type] = useState("");//ประเภทงบประมาณ
   const [
     coordinator_univercity_ac_budget,
     setcoordinator_univercity_ac_budget,
@@ -39,14 +40,14 @@ export default function AddFundingAcademic() {
   const [source_funds, setSource_fund] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:3002/api/get/source_funds").then((source) => {
+    Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
       setSource_fund(source.data);
     });
   }, []);
 
   const handleSubmit = () => {
     Axios.post(
-      "http://localhost:3002/api/create/coordinator_fundingagency_academic",
+      "http://localhost:4000/api/create/coordinator_fundingagency_academic",
       {
         funding_ac_name: funding_ac_name,
         funding_ac_project: funding_ac_project,
@@ -242,6 +243,18 @@ export default function AddFundingAcademic() {
                 />
               </div>
             </Col>
+            <Col lg={12}>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">ทีมนักวิจัย</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  // onChange={(event) => {
+                  //   setfunding_ac_leader(event.target.value);
+                  // }}
+                />
+              </div>
+            </Col>
           </Row>
 
           <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
@@ -354,7 +367,7 @@ export default function AddFundingAcademic() {
                       href="/addfunding/academic"
                       onClick={() => {
                         Axios.post(
-                          "http://localhost:3002/api/create/source_funds",
+                          "http://localhost:4000/api/create/source_funds",
                           {
                             source_funds_name: source_funds_name,
                             created_date: today,
@@ -369,8 +382,27 @@ export default function AddFundingAcademic() {
                 </Modal>
               </div>
             </Col>
-
             <Col lg={5}>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">ประเภทงบประมาณ</label>
+                <select
+                  className="form-control"
+                  onChange={(event) => {
+                    setfunding_type(event.target.value);
+                  }}
+                >
+                  <option value="">เลือกประเภทงบประมาณ</option>
+                  {source_funds.map((value, i) => {
+                    return (
+                      <option key={i} value={value.source_funds_name}>
+                        {value.source_funds_name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </Col>
+            <Col lg={12}>
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">รายได้เข้ามหาลัย</label>
                 <input
