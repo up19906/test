@@ -1,14 +1,12 @@
+// import React from "react";
 import React from "react";
-// import Axios from "axios";
 import { Switch, Route } from "react-router-dom";
-// import { NavLink } from "react-router-dom";
-import AddFundingResearch from "./AddFundingResearch";
-import AddFundingAcademic from "./AddFundingAcademic";
+import Researcher from "./Researcher";
+import Research from "./Research";
+import Budget from "./Budget";
 import Welcome from "../Home/welcome";
-import AddAboutResearch from "./AddAboutResearch";
-import AddResearch from "./AddResearch";
 
-export default function AddFunding() {
+function AllReport() {
   return (
     <div>
       <div className="wrapper">
@@ -19,38 +17,28 @@ export default function AddFunding() {
                 className="text-dark"
                 style={{ padding: "0.25rem", marginLeft: "3.5rem" }}
               >
-                กองนโยบายและแผน
+                สรุปรายงาน
               </h1>
               <div className="projcard-bar"></div>
             </div>
           </div>
-          
+
           <div className="content">
             <div className="container-fluid">
               <div className="container">
                 <Welcome />
                 <div className="card card-primary card-outline">
                   <Switch>
+                    <Route exact path="/allreport" component={Researcher} />
                     <Route
                       exact
-                      path="/addfunding"
-                      component={AddFundingResearch}
-                    />
-
-                    <Route
-                      exact
-                      path="/addfunding/academic"
-                      component={AddFundingAcademic}
+                      path="/allreport/reportbudget"
+                      component={Budget}
                     />
                     <Route
                       exact
-                      path="/addfunding/aboutfunding"
-                      component={AddAboutResearch}
-                    />
-                    <Route
-                      exact
-                      path="/addfunding/research"
-                      component={AddResearch}
+                      path="/allreport/reportresearch"
+                      component={Research}
                     />
                   </Switch>
                 </div>
@@ -62,3 +50,5 @@ export default function AddFunding() {
     </div>
   );
 }
+
+export default AllReport;

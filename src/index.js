@@ -14,6 +14,7 @@ import "../src/style/plugins/jqvmap/jqvmap.min.css";
 import "../src/style/plugins/daterangepicker/daterangepicker.css";
 // import "../../../style/plugins/summernote/summernote-bs4.min.css";
 import "../src/components/Header/style.scss";
+// import "semantic-ui-css/semantic.min.css";
 
 ReactDOM.render(
   // <React.StrictMode>

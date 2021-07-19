@@ -1,17 +1,16 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Row, Col, Button, Modal } from "react-bootstrap";
+import { Row, Col, Button, Modal, Form } from "react-bootstrap";
 import Axios from "axios";
+
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 export default function AddFundingAcademic() {
   var date = new Date();
-  var today =
-    [date.getFullYear(), date.getMonth() + 1, date.getDate()].join("-") +
-    " " +
-    [date.getHours(), date.getMinutes(), date.getSeconds()].join(":");
-  console.log("testdate:string", today);
   const year = [
+    { value: [date.getFullYear() + 544] },
     { value: [date.getFullYear() + 543] },
     { value: [date.getFullYear() + 542] },
     { value: [date.getFullYear() + 541] },
@@ -25,27 +24,65 @@ export default function AddFundingAcademic() {
   const [funding_ac_agency, setfunding_ac_agency] = useState(""); //หน่วยงานที่รับผิดชอบ
   const [funding_ac_leader, setfunding_ac_leader] = useState(""); //นักวิจัยผู้รับผิดชอบ
   const [funding_ac_phone, setfunding_ac_phone] = useState(0); //เบอร์ติดต่อ
+  var select_research = []; //เลือกทีมนักวิจัย
+  const [project_status, setproject_status] = useState(""); //สถานะโครงการ
   const [funding_ac_year, setfunding_ac_year] = useState(0); //ปีงบประมาณ
   const [funding_ac_budget, setfunding_ac_budget] = useState(0); //งบประมาณ
   const [funding_name, setFunding_name] = useState(""); //ชื่อแหล่งทุน
-  // const [create_date, setCreate_date] = useState("");
-  const [funding_type, setfunding_type] = useState("");//ประเภทงบประมาณ
-  const [
-    coordinator_univercity_ac_budget,
-    setcoordinator_univercity_ac_budget,
-  ] = useState(""); //รายได้เข้ามหาลัย
+  const [funding_type, setfunding_type] = useState(""); //ประเภทงบประมาณ
+  const [univercity_ac_budget, setunivercity_ac_budget] = useState(""); //รายได้เข้ามหาลัย
   const [modalShow, setModalShow] = React.useState(false);
   const [source_funds_name, setSource_funds_name] = useState("");
+  const [select_researchname, setselect_researchname] = useState("");
 
   const [source_funds, setSource_fund] = useState([]);
+  const [status_type, setstatus_type] = useState([]);
+  const [research, setresearch] = useState([]);
+  const [budget_type, setbudget_type] = useState([]);
 
   useEffect(() => {
     Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
       setSource_fund(source.data);
     });
+    Axios.get(
+      "http://localhost:4000/api/get/concept_proposal_research_faculty"
+    ).then((res) => {
+      setresearch(res.data);
+      console.log("research : ", research);
+    });
+    Axios.get("http://localhost:4000/api/get/coordinator_budget_type").then(
+      (res) => {
+        setbudget_type(res.data);
+        console.log("budget_type : ", budget_type);
+      }
+    );
+    Axios.get(
+      "http://localhost:4000/api/get/coordinator_fundingagency_status"
+    ).then((res) => {
+      setstatus_type(res.data);
+      console.log("setstatus_type : ", status_type);
+    });
   }, []);
 
+  const animatedComponents = makeAnimated();
+  var test = [];
+  for (let i = 0; i < research.length; i = i + 1) {
+    test.push({
+      value:
+        research[i].research_faculty_username +
+        " " +
+        research[i].research_faculty_lastname,
+      label:
+        research[i].research_faculty_username +
+        " " +
+        research[i].research_faculty_lastname,
+    });
+  }
+
   const handleSubmit = () => {
+    for (let i = 0; i < select_researchname.length; i = i + 1) {
+      select_research.push(select_researchname[i].label);
+    }
     Axios.post(
       "http://localhost:4000/api/create/coordinator_fundingagency_academic",
       {
@@ -54,11 +91,13 @@ export default function AddFundingAcademic() {
         funding_ac_agency: funding_ac_agency,
         funding_ac_leader: funding_ac_leader,
         funding_ac_phone: funding_ac_phone,
+        research: select_research,
+        project_status: project_status,
         funding_ac_year: funding_ac_year,
         funding_ac_budget: funding_ac_budget,
         funding_name: funding_name,
-        coordinator_univercity_ac_budget: coordinator_univercity_ac_budget,
-        created_date: today,
+        funding_type: funding_type,
+        univercity_ac_budget: univercity_ac_budget,
       }
     ).then(() => {
       setfunding_academic([
@@ -69,11 +108,13 @@ export default function AddFundingAcademic() {
           funding_ac_agency: funding_ac_agency,
           funding_ac_leader: funding_ac_leader,
           funding_ac_phone: funding_ac_phone,
+          research: select_research,
+          project_status: project_status,
           funding_ac_year: funding_ac_year,
           funding_ac_budget: funding_ac_budget,
           funding_name: funding_name,
-          coordinator_univercity_ac_budget: coordinator_univercity_ac_budget,
-          created_date: today,
+          funding_type: funding_type,
+          univercity_ac_budget: univercity_ac_budget,
         },
       ]);
     });
@@ -246,13 +287,39 @@ export default function AddFundingAcademic() {
             <Col lg={12}>
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">ทีมนักวิจัย</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  // onChange={(event) => {
-                  //   setfunding_ac_leader(event.target.value);
-                  // }}
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  onChange={(selectedOptions) => {
+                    setselect_researchname(selectedOptions);
+                  }}
+                  // defaultValue={[colourOptions[4], colourOptions[5]]}
+                  isMulti
+                  options={test}
                 />
+              </div>
+            </Col>
+            <Col lg={12}>
+              <div className="form-group">
+                <label>สถานะโครงการ :</label>
+                <div className="form-control" style={{ border: "none" }}>
+                  {status_type.map(function (data, i) {
+                    return (
+                      <Form.Check
+                        key={i}
+                        style={{ marginLeft: "2rem" }}
+                        inline
+                        label={data.coordinator_fundingagency_status_name}
+                        name="project_status"
+                        value={data.coordinator_fundingagency_status_id}
+                        type="radio"
+                        onChange={(event) => {
+                          setproject_status(event.target.value);
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
             </Col>
           </Row>
@@ -370,7 +437,6 @@ export default function AddFundingAcademic() {
                           "http://localhost:4000/api/create/source_funds",
                           {
                             source_funds_name: source_funds_name,
-                            created_date: today,
                           }
                         );
                         setModalShow(false);
@@ -392,10 +458,10 @@ export default function AddFundingAcademic() {
                   }}
                 >
                   <option value="">เลือกประเภทงบประมาณ</option>
-                  {source_funds.map((value, i) => {
+                  {budget_type.map((value, i) => {
                     return (
-                      <option key={i} value={value.source_funds_name}>
-                        {value.source_funds_name}
+                      <option key={i} value={value.coordinator_Budget_type_id}>
+                        {value.coordinator_Budget_type_name}
                       </option>
                     );
                   })}
@@ -409,7 +475,7 @@ export default function AddFundingAcademic() {
                   type="number"
                   className="form-control"
                   onChange={(event) => {
-                    setcoordinator_univercity_ac_budget(event.target.value);
+                    setunivercity_ac_budget(event.target.value);
                   }}
                 />
               </div>
@@ -421,18 +487,18 @@ export default function AddFundingAcademic() {
           style={{ paddingTop: "1.5rem", paddingBottom: "1.5rem" }}
         >
           <Row>
-            <Col lg={5}></Col>
-            <Col lg={2}>
-              <a
-                onClick={handleSubmit}
-                href="/"
-                type="button"
-                className="btn btn-block bg-gradient-primary btn-md"
-              >
-                บันทึก
-              </a>
+            <Col>
+              <div className="center">
+                <a
+                  onClick={handleSubmit}
+                  href="/"
+                  type="button"
+                  className="btn  bg-gradient-primary btn-md"
+                >
+                  บันทึก
+                </a>
+              </div>
             </Col>
-            <Col lg={5}></Col>
           </Row>
         </div>
       </form>

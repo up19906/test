@@ -10,85 +10,71 @@ import Welcome from "./welcome";
 export default function Home() {
   const [usergroup, setusergroup] = useState([]);
   const [proposal, setProposal] = useState([]);
-  const [budget, setBudget] = useState([]);
-  const [budget_academic, setbudget_academic] = useState([]);
-  const [coordinator_fundingagency, setcoordinator_fundingagency] = useState(
-    []
-  );
-  const [coordinator_academic, setcoordinator_academic] = useState([]);
+  const [budget, setBudget] = useState(0);
+  const [budget_academic, setbudget_academic] = useState(0);
+  const [coordinator_fundingagency, setcoordinator_fundingagency] = useState(0);
+  const [coordinator_academic, setcoordinator_academic] = useState(0);
 
   var d = new Date();
-  const date = d.getFullYear();
+  const date = d.getFullYear() + 543;
 
   useEffect(() => {
     Axios.get("http://localhost:4000/api/get/user_group").then((usergroup) => {
       setusergroup(usergroup.data);
-      console.log("test_user_group", usergroup);
+      // console.log("test_user_group", usergroup);
     });
-  }, []);
-
-  useEffect(() => {
     Axios.get("http://localhost:4000/api/get/concept_proposal").then(
       (proposal) => {
         setProposal(proposal.data);
-        console.log("test_proposal", proposal);
+        // console.log("test_proposal", proposal);
       }
     );
-  }, []);
-
-  useEffect(() => {
     Axios.get(
       `http://localhost:4000/api/get/sum_coordinater_funding_budget/${date}`
     ).then((sumbudget) => {
-      if (!sumbudget.data[0]) {
+      if (!sumbudget.data) {
         setBudget(0);
+        // console.log("test_budget1", sumbudget);
       } else {
-        
-          setBudget(sumbudget.data[0].sum);
-        
+        setBudget(sumbudget.data.sum);
+        // console.log("test_budget2", sumbudget);
       }
-
-      console.log("test_budget", sumbudget);
+      // console.log("test_budget3", sumbudget);
     });
-  }, [date]);
-
-  useEffect(() => {
     Axios.get(
       `http://localhost:4000/api/get/sum_coordinater_funding_budget_academic/${date}`
     ).then((sumbudget) => {
-      if(!sumbudget.data[0]){
+      if (!sumbudget.data) {
         setbudget_academic(0);
-      }else{
-       
-          setbudget_academic(sumbudget.data[0].sum);
-     
+      } else {
+        setbudget_academic(sumbudget.data.sum);
       }
-      
-      console.log("test_setbudget_academic", sumbudget);
+      // console.log("test_setbudget_academic", sumbudget);
     });
-  }, [date]);
-
-  useEffect(() => {
     Axios.get(
       `http://localhost:4000/api/get/count_coordinator_fundingagency/${date}`
     ).then((count_fundingagency) => {
-      setcoordinator_fundingagency(count_fundingagency.data);
-      console.log("test_count_fundingagency", count_fundingagency);
+      if (!count_fundingagency.data) {
+        setcoordinator_fundingagency(0);
+        console.log("test_count_funding : null");
+      } else {
+        setcoordinator_fundingagency(count_fundingagency.data.count);
+        console.log("test_count_funding", count_fundingagency);
+      }
     });
-  }, [date]);
-
-  useEffect(() => {
     Axios.get(
       `http://localhost:4000/api/get/count_coordinator_fundingagency_academic/${date}`
-    ).then((count_fundingagency) => {
-      setcoordinator_academic(count_fundingagency.data);
-      console.log("test_count_fundingagency", count_fundingagency);
+    ).then((count_funding_ac) => {
+      if (!count_funding_ac) {
+        setcoordinator_academic(0);
+        console.log("test_count_funding_ac : null");
+      } else {
+        setcoordinator_academic(count_funding_ac.data.count);
+        console.log("test_count_funding_ac", count_funding_ac);
+      }
     });
-  }, [date]);
-  // if (!usergroup || !proposal || !budget || !coordinator_fundingagency) {
-  //   return <div />;
-  // }
-
+  }, []);
+  
   return (
     <div className="content-wrapper">
       <div className="content-header">
@@ -166,9 +152,7 @@ export default function Home() {
                       </div>
                       <div className="card-body">
                         <h5 className="card-text">
-                          {coordinator_fundingagency.length +
-                            coordinator_academic.length}{" "}
-                          ทุน
+                          {coordinator_fundingagency + coordinator_academic} ทุน
                         </h5>
                       </div>
                     </Col>

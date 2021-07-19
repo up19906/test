@@ -324,18 +324,18 @@ export default function AddAboutResearch() {
           style={{ paddingTop: "1.5rem", paddingBottom: "1.5rem" }}
         >
           <Row>
-            <Col lg={5}></Col>
-            <Col lg={2}>
-              <a
-                onClick={handleSubmit}
-                href="/"
-                type="button"
-                className="btn btn-block bg-gradient-primary btn-md"
-              >
-                บันทึก
-              </a>
+            <Col>
+              <div className="center">
+                <a
+                  onClick={handleSubmit}
+                  href="/"
+                  type="button"
+                  className="btn  bg-gradient-primary btn-md"
+                >
+                  บันทึก
+                </a>
+              </div>
             </Col>
-            <Col lg={5}></Col>
           </Row>
         </div>
       </form>

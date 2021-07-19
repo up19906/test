@@ -41,7 +41,7 @@ export default function Finding() {
     Axios.get("http://localhost:4000/api/get/coordinator_fundingagency").then(
       (fundingagency) => {
         setfundingagency(fundingagency.data);
-        console.log("test_fundingagency", fundingagency);
+        console.log("test_fundingagency", fundingagency.data);
       }
     );
   }, []);
@@ -64,7 +64,7 @@ export default function Finding() {
         funding_budget: funding_budget,
         funding_name: funding_name,
         coordinator_univercity_budget: coordinator_univercity_budget,
-        update_date: today,
+        funding_updated_by: "test",
       }
     ).then(() => {
       setFunding_research([
@@ -79,7 +79,7 @@ export default function Finding() {
           funding_budget: funding_budget,
           funding_name: funding_name,
           coordinator_univercity_budget: coordinator_univercity_budget,
-          update_date: today,
+          // update_date: today,
         },
       ]);
     });
@@ -91,33 +91,34 @@ export default function Finding() {
     Axios.get(
       `http://localhost:4000/api/get/coordinator_fundingagency/${id}`
     ).then((data) => {
-      setGetupdate(data.data[0]);
+      setGetupdate(data.data);
       setModalShow(true);
-      setFunding_project_name(data.data[0].coordinater_funding_project_name);
-      setCoordinator_project(data.data[0].coordinator_project);
-      setFunding_agency(data.data[0].coordinater_funding_agency);
-      setFunding_project_leader(data.data[0].project_leader);
-      setFunding_phone(data.data[0].coordinater_funding_phone);
-      setFunding_year(data.data[0].coordinater_funding_year);
-      setFunding_budget(data.data[0].coordinater_funding_budget);
-      setFunding_name(data.data[0].coordinater_funding_name);
-      setcoordinator_univercity_budget(
-        data.data[0].coordinator_univercity_budget
-      );
-      console.log("testGetupdate : ", data);
+      setFunding_project_name(data.data.coordinater_funding_project_name);
+      setCoordinator_project(data.data.coordinator_project);
+      setFunding_agency(data.data.coordinater_funding_agency);
+      setFunding_project_leader(data.data.project_leader);
+      setFunding_phone(data.data.coordinater_funding_phone);
+      setFunding_year(data.data.coordinater_funding_year);
+      setFunding_budget(data.data.coordinater_funding_budget);
+      setFunding_name(data.data.coordinater_funding_name);
+      setcoordinator_univercity_budget(data.data.coordinator_univercity_budget);
+      console.log("testGetupdate : ", data.data);
       console.log(
         "testGetupdate : Project ",
-        data.data[0].coordinater_funding_project_name
+        data.data.coordinater_funding_project_name
       );
     });
   };
-
+  console.log(
+    "testGetupdate : Project ",
+    getupdate.coordinater_funding_project_name
+  );
   const handleGetDelet = (id) => {
     console.log("test ID : ", id);
     Axios.get(
       `http://localhost:4000/api/get/coordinator_fundingagency/${id}`
     ).then((data) => {
-      setGetupdate(data.data[0]);
+      setGetupdate(data.data);
       setModalShowDelete(true);
     });
   };
@@ -131,9 +132,9 @@ export default function Finding() {
     });
   };
 
-  if (!fundingagency) {
-    return <div />;
-  }
+  // if (!fundingagency) {
+  //   return <div />;
+  // }
   return (
     <>
       <Row>
@@ -220,17 +221,17 @@ export default function Finding() {
                     </div>
                   </div>
                   <Row>
-                    <Col lg={5}></Col>
-                    <Col lg={2}>
-                      <a
-                        href="/addfunding"
-                        type="button"
-                        className="btn btn-block bg-gradient-primary btn-md"
-                      >
-                        เพิ่มข้อมูลแหล่งทุนงานวิจัย
-                      </a>
+                    <Col>
+                      <div className="center">
+                        <a
+                          href="/addfunding"
+                          type="button"
+                          className="btn bg-gradient-primary btn-md"
+                        >
+                          เพิ่มข้อมูลแหล่งทุนงานวิจัย
+                        </a>
+                      </div>
                     </Col>
-                    <Col lg={5}></Col>
                   </Row>
                 </Col>
               </Row>

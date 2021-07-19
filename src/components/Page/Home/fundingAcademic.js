@@ -28,10 +28,7 @@ export default function FindingAcademic() {
   const [funding_ac_year, setfunding_ac_year] = useState(0); //ปีงบประมาณ
   const [funding_ac_budget, setfunding_ac_budget] = useState(0); //งบประมาณ
   const [funding_name, setFunding_name] = useState(""); //ชื่อแหล่งทุน
-  const [
-    coordinator_univercity_ac_budget,
-    setcoordinator_univercity_ac_budget,
-  ] = useState(""); //รายได้เข้ามหาลัย
+  const [univercity_ac_budget, setunivercity_ac_budget] = useState(0); //รายได้เข้ามหาลัย
   const [modalShow, setModalShow] = useState(false);
   const [modalFundingShow, setmodalFundingShow] = useState(false);
   const [modalShowDelete, setModalShowDelete] = useState(false);
@@ -65,8 +62,8 @@ export default function FindingAcademic() {
         funding_ac_year: funding_ac_year,
         funding_ac_budget: funding_ac_budget,
         funding_name: funding_name,
-        coordinator_univercity_ac_budget: coordinator_univercity_ac_budget,
-        update_date: today,
+        univercity_ac_budget: univercity_ac_budget,
+        // update_date: today,
       }
     ).then(() => {
       setfunding_academic([
@@ -80,7 +77,7 @@ export default function FindingAcademic() {
           funding_ac_year: funding_ac_year,
           funding_ac_budget: funding_ac_budget,
           funding_name: funding_name,
-          coordinator_univercity_ac_budget: coordinator_univercity_ac_budget,
+          univercity_ac_budget: univercity_ac_budget,
           update_date: today,
         },
       ]);
@@ -92,21 +89,19 @@ export default function FindingAcademic() {
     Axios.get(
       `http://localhost:4000/api/get/coordinator_fundingagency_academic/${id}`
     ).then((data) => {
-      setGetupdate(data.data[0]);
+      setGetupdate(data.data);
       setModalShow(true);
-      setfunding_ac_name(data.data[0].coordinator_fundingagency_ac_name);
-      setfunding_ac_project(data.data[0].coordinator_ac_project);
-      setfunding_ac_agency(data.data[0].coordinater_funding_ac_agency);
-      setfunding_ac_leader(data.data[0].project_ac_leader);
-      setfunding_ac_phone(data.data[0].coordinater_funding_ac_phone);
-      setfunding_ac_year(data.data[0].coordinater_funding_ac_year);
-      setfunding_ac_budget(data.data[0].coordinater_funding_ac_budget);
-      setFunding_name(data.data[0].coordinater_funding_ac_name);
-      setcoordinator_univercity_ac_budget(
-        data.data[0].coordinator_univercity_ac_budget
-      );
+      setfunding_ac_name(data.data.fundingagency_ac_name);
+      setfunding_ac_project(data.data.coordinator_ac_project);
+      setfunding_ac_agency(data.data.coordinater_funding_ac_agency);
+      setfunding_ac_leader(data.data.project_ac_leader);
+      setfunding_ac_phone(data.data.funding_ac_phone);
+      setfunding_ac_year(data.data.funding_ac_year);
+      setfunding_ac_budget(data.data.funding_ac_budget);
+      setFunding_name(data.data.funding_ac_name);
+      setunivercity_ac_budget(data.data.univercity_ac_budget);
       console.log("testGetupdate : ", data);
-      console.log("testGetupdate : Project ", data.data[0]);
+      console.log("testGetupdate : Project ", data.data);
     });
   };
 
@@ -115,7 +110,7 @@ export default function FindingAcademic() {
     Axios.get(
       `http://localhost:4000/api/get/coordinator_fundingagency_academic/${id}`
     ).then((data) => {
-      setGetupdate(data.data[0]);
+      setGetupdate(data.data);
       setModalShowDelete(true);
     });
   };
@@ -129,9 +124,9 @@ export default function FindingAcademic() {
     });
   };
 
-  if (!fundingagency) {
-    return <div />;
-  }
+  // if (!fundingagency) {
+  //   return <div />;
+  // }
   return (
     <>
       <Row>
@@ -172,19 +167,15 @@ export default function FindingAcademic() {
                           {fundingagency.map(function (data, i) {
                             return (
                               <tr key={i}>
-                                <td>
-                                  {data.coordinator_fundingagency_ac_name}
-                                </td>
-                                <td>{data.coordinater_funding_ac_name}</td>
-                                <td>{data.coordinater_funding_ac_year}</td>
-                                <td>{data.coordinater_funding_ac_budget}</td>
+                                <td>{data.fundingagency_ac_name}</td>
+                                <td>{data.funding_ac_name}</td>
+                                <td>{data.funding_ac_year}</td>
+                                <td>{data.funding_ac_budget}</td>
                                 <td>{data.project_ac_leader}</td>
                                 <td>
                                   <button
                                     onClick={() => {
-                                      handleGetUpdate(
-                                        data.coordinator_fundingagency_ac_id
-                                      );
+                                      handleGetUpdate(data.fundingagency_ac_id);
                                     }}
                                     className="btn btn-primary"
                                     style={{ padding: ".02rem .5rem" }}
@@ -197,9 +188,7 @@ export default function FindingAcademic() {
                                   {"   "}|{"   "}
                                   <button
                                     onClick={() => {
-                                      handleGetDelet(
-                                        data.coordinator_fundingagency_ac_id
-                                      );
+                                      handleGetDelet(data.fundingagency_ac_id);
                                     }}
                                     className="btn btn-danger"
                                     style={{
@@ -220,17 +209,17 @@ export default function FindingAcademic() {
                     </div>
                   </div>
                   <Row>
-                    <Col lg={5}></Col>
-                    <Col lg={2}>
-                      <a
-                        href="/addfunding/academic"
-                        type="button"
-                        className="btn btn-block bg-gradient-primary btn-md"
-                      >
-                        เพิ่มข้อมูลแหล่งทุนงานบริการวิชาการ
-                      </a>
+                    <Col lg={12}>
+                      <div className="center">
+                        <a
+                          href="/addfunding/academic"
+                          type="button"
+                          className="btn bg-gradient-primary btn-md"
+                        >
+                          เพิ่มข้อมูลแหล่งทุนงานบริการวิชาการ
+                        </a>
+                      </div>
                     </Col>
-                    <Col lg={5}></Col>
                   </Row>
                 </Col>
               </Row>
@@ -264,7 +253,7 @@ export default function FindingAcademic() {
                     <input
                       type="text"
                       className="form-control"
-                      defaultValue={getupdate.coordinator_fundingagency_ac_name}
+                      defaultValue={getupdate.fundingagency_ac_name}
                       onChange={(event) => {
                         setfunding_ac_name(event.target.value);
                       }}
@@ -323,7 +312,7 @@ export default function FindingAcademic() {
                     <input
                       type="phone"
                       className="form-control"
-                      defaultValue={getupdate.coordinater_funding_ac_phone}
+                      defaultValue={getupdate.funding_ac_phone}
                       onChange={(event) => {
                         setfunding_ac_phone(event.target.value);
                       }}
@@ -346,10 +335,8 @@ export default function FindingAcademic() {
                         setfunding_ac_year(event.target.value);
                       }}
                     >
-                      <option
-                        defaultValue={getupdate.coordinater_funding_ac_year}
-                      >
-                        {getupdate.coordinater_funding_ac_year}
+                      <option defaultValue={getupdate.funding_ac_year}>
+                        {getupdate.funding_ac_year}
                       </option>
                       {year.map((value, i) => {
                         return (
@@ -370,7 +357,7 @@ export default function FindingAcademic() {
                     <input
                       type="number"
                       className="form-control"
-                      defaultValue={getupdate.coordinater_funding_ac_budget}
+                      defaultValue={getupdate.funding_ac_budget}
                       onChange={(event) => {
                         setfunding_ac_budget(event.target.value);
                       }}
@@ -472,9 +459,9 @@ export default function FindingAcademic() {
                     <input
                       type="number"
                       className="form-control"
-                      defaultValue={coordinator_univercity_ac_budget}
+                      defaultValue={univercity_ac_budget}
                       onChange={(event) => {
-                        setcoordinator_univercity_ac_budget(event.target.value);
+                        setunivercity_ac_budget(event.target.value);
                       }}
                     />
                   </div>
@@ -496,7 +483,7 @@ export default function FindingAcademic() {
           <Button
             variant="primary"
             onClick={() => {
-              handleSubmitUpdate(getupdate.coordinator_fundingagency_ac_id);
+              handleSubmitUpdate(getupdate.fundingagency_ac_id);
             }}
             href="/"
             type="button"
@@ -521,7 +508,7 @@ export default function FindingAcademic() {
           <Row style={{ marginLeft: "2rem" }}>
             <h5>ชื่อโครงการ</h5>
             &nbsp;&nbsp;{":"}&nbsp;&nbsp;
-            <h5>{getupdate.coordinator_fundingagency_ac_name}</h5>
+            <h5>{getupdate.fundingagency_ac_name}</h5>
           </Row>
         </Modal.Body>
         <Modal.Footer>
@@ -532,7 +519,7 @@ export default function FindingAcademic() {
             variant="primary"
             // onClick={() => setModalShowDelete(false)}
             onClick={() => {
-              handleSubmitDelet(getupdate.coordinator_fundingagency_ac_id);
+              handleSubmitDelet(getupdate.fundingagency_ac_id);
             }}
             href="/"
             type="button"
