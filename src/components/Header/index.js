@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useState, useEffect } from "react";
 import { Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+// import $ from "jquery";
+
 import "./style.scss";
 
 export default function Header() {
   const [sidebar, setSidebar] = useState(false);
+  const [submenu, setsubmenu] = useState(true);
   const [menu, setmenu] = useState(false);
 
   const openCloseSidebar = () => {
@@ -32,6 +36,29 @@ export default function Header() {
         .classList.add("main-sidebar-open");
     }
   };
+
+  const openMenu = () => {
+    if (submenu) {
+      setsubmenu(!submenu);
+      document.querySelector(".nav_link_add").classList.add("menu-open");
+      document.querySelector(".nav_link_add").classList.add("menu-is-opening");
+
+      document
+        .querySelector(".nav_treeview_add")
+        .classList.add("navteameview_open");
+    } else {
+      setsubmenu(!submenu);
+      document.querySelector(".nav_link_add").classList.remove("menu-open");
+      document
+        .querySelector(".nav_link_add")
+        .classList.remove("menu-is-opening");
+      document
+        .querySelector(".nav_treeview_add")
+        .classList.remove("navteameview_open");
+    }
+  };
+
+  useEffect(() => {}, []);
 
   return (
     <div className="wraper">
@@ -182,13 +209,59 @@ export default function Header() {
                         </a>
                       </li>
                       <li className="nav-item">
-                        <a href="/contact" className="nav-link">
-                          <i className="nav-icon fas fa-user" />
+                        <a
+                          href="#"
+                          className="nav-link nav_link_add "
+                          onClick={() => openMenu()}
+                        >
+                          <i className="nav-icon fas fa-plus-circle" />
                           <p>
-                            ข้อมูลส่วนตัว
-                            <i className="right fas fa-angle-left" />
+                            เพิ่มข้อมูลแหล่งทุน
+                            {submenu === true ? (
+                              <i className="right fas fa-angle-left" />
+                            ) : (
+                              <i className="right fas fa-angle-down" />
+                            )}
                           </p>
                         </a>
+                        <ul
+                          className="nav nav-treeview nav_treeview_add "
+                          // style={{ display: "block" }}
+                        >
+                          <li className="nav-item">
+                            <NavLink to="/addfunding" className="nav-link">
+                              <i className="far fa-circle nav-icon" />
+                              <p>แหล่งทุนงานวิจัย</p>
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to="/addfunding/academic"
+                              className="nav-link"
+                            >
+                              <i className="far fa-circle nav-icon" />
+                              <p>แหล่งทุนงานบริการวิชาการ</p>
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to="/addfunding/aboutfunding"
+                              className="nav-link"
+                            >
+                              <i className="far fa-circle nav-icon" />
+                              <p>ข้อมูลทั่วไปเกี่ยวกับทุน</p>
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to="/addfunding/research"
+                              className="nav-link"
+                            >
+                              <i className="far fa-circle nav-icon" />
+                              <p>งานวิจัย</p>
+                            </NavLink>
+                          </li>
+                        </ul>
                       </li>{" "}
                       <li className="nav-item">
                         <a href="/allreport" className="nav-link">

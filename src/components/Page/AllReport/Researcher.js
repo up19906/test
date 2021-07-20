@@ -17,16 +17,19 @@ function Researcher() {
     { value: [date.getFullYear() + 540] },
     { value: [date.getFullYear() + 539] },
   ];
-  const [fundingagency, setfundingagency] = useState([]);
+  const [researcher_data, setresearcher_data] = useState([]);
+  const [researcher_year, setresearcher_year] = useState("");
+  const [researcher, setresearcher] = useState([]);
 
   useEffect(() => {
     Axios.get(
       "http://localhost:4000/api/get/coordinator_fundingagency_academic"
     ).then((fundingagency) => {
-      setfundingagency(fundingagency.data);
+      setresearcher_data(fundingagency.data);
       console.log("test_fundingagency", fundingagency);
     });
   }, []);
+
   return (
     <div>
       <div className="card-header">
@@ -104,9 +107,9 @@ function Researcher() {
                 <label htmlFor="type_source">ปีงบประมาณ</label>
                 <select
                   className="form-control"
-                  //   onChange={(event) => {
-                  //     setFunding_year(event.target.value);
-                  //   }}
+                  onChange={(event) => {
+                    setresearcher_year(event.target.value);
+                  }}
                 >
                   <option value="">เลือกปี</option>
                   {year.map((value, i) => {
@@ -122,7 +125,7 @@ function Researcher() {
             <Col lg={4}>
               <div className="form-group">
                 <label htmlFor="type_source">จำนวนนักวิจัยที่ได้รับทุน</label>
-                <h6>100 คน</h6>
+                <h6>{researcher.length}</h6>
               </div>
             </Col>
           </Row>
@@ -135,19 +138,29 @@ function Researcher() {
             <Col>
               <div className="center">
                 <ExcelFile
+                  filename="ReportResearcher"
                   element={
                     <Button className="btn btn-block bg-gradient-primary btn-md">
                       ดาวน์โหลดรายงานนักวิจัย
                     </Button>
                   }
                 >
-                  <ExcelSheet data={fundingagency} name="Employees">
-                    <ExcelColumn label="Name" value="fundingagency_ac_name" />
+                  <ExcelSheet data={researcher_data} name="ReportResearcher">
+                    <ExcelColumn label="ที่" value="fundingagency_ac_name" />
                     <ExcelColumn
-                      label="Wallet Money"
-                      value="funding_ac_budget"
+                      label="รหัสนักวิจัย"
+                      value="fundingagency_ac_name"
                     />
-                    <ExcelColumn label="Gender" value="funding_ac_name" />
+                    <ExcelColumn
+                      label="ชื่อนักวิจัย"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn label="สังกัด" value="fundingagency_ac_name" />
+                    <ExcelColumn
+                      label="ประเภททุน"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn label="แหล่งทุน" value="funding_ac_budget" />
                   </ExcelSheet>
                 </ExcelFile>
               </div>

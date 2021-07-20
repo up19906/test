@@ -62,7 +62,7 @@ export default function AddFundingAcademic() {
       setstatus_type(res.data);
       console.log("setstatus_type : ", status_type);
     });
-  }, [budget_type, research, status_type]);
+  }, []);
 
   const animatedComponents = makeAnimated();
   var test = [];

@@ -19,10 +19,18 @@ function Budget() {
   ];
   const [fundingagency, setfundingagency] = useState([]);
   const [source_funds, setSource_fund] = useState([]);
+  const [budget_year_start, setbudget_year_start] = useState("");
+  const [budget_year_end, setbudget_year_end] = useState("");
 
   useEffect(() => {
     Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
-      setSource_fund(source.data);
+      if (!source.data) {
+        setSource_fund([]);
+        console.log("soure_funds: true", source);
+      } else {
+        setSource_fund(source.data);
+        console.log("soure_funds: false", source);
+      }
     });
     Axios.get(
       "http://localhost:4000/api/get/coordinator_fundingagency_academic"
@@ -203,19 +211,32 @@ function Budget() {
             <Col>
               <div className="center">
                 <ExcelFile
+                  filename="ReportBudget"
                   element={
                     <Button className="btn btn-block bg-gradient-primary btn-md">
                       ดาวน์โหลดรายงานงบประมาณ
                     </Button>
                   }
                 >
-                  <ExcelSheet data={fundingagency} name="Employees">
-                    <ExcelColumn label="Name" value="fundingagency_ac_name" />
+                  <ExcelSheet data={fundingagency} name="ReportBudget">
                     <ExcelColumn
-                      label="Wallet Money"
-                      value="funding_ac_budget"
+                      label="ลำดับที่"
+                      value="fundingagency_ac_name"
                     />
-                    <ExcelColumn label="Gender" value="funding_ac_name" />
+                    <ExcelColumn
+                      label="ปีงบประมาณ"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn
+                      label="ประเภททุน"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn label="แหล่งทุน" value="funding_ac_budget" />
+                    <ExcelColumn
+                      label="จำนวนเงิน"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn label="สังกัด" value="fundingagency_ac_name" />
                   </ExcelSheet>
                 </ExcelFile>
               </div>

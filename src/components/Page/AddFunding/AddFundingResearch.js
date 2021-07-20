@@ -67,7 +67,7 @@ export default function AddFundingResearch() {
       setstatus_type(res.data);
       console.log("setstatus_type : ", status_type);
     });
-  }, [budget_type, research, source_funds, status_type]);
+  }, []);
 
   const animatedComponents = makeAnimated();
   var test = [];

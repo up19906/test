@@ -11,13 +11,6 @@ export default function AddAboutResearch() {
     " " +
     [date.getHours(), date.getMinutes(), date.getSeconds()].join(":");
   console.log("testdate:string", today);
-  //   const year = [
-  //     { value: [date.getFullYear() + 543] },
-  //     { value: [date.getFullYear() + 542] },
-  //     { value: [date.getFullYear() + 541] },
-  //     { value: [date.getFullYear() + 540] },
-  //     { value: [date.getFullYear() + 539] },
-  //   ];
 
   const [about_finding, setabout_finding] = useState([]);
   const [about_fundingagency_name, setabout_fundingagency_name] = useState(""); //ชื่อทุน

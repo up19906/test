@@ -32,12 +32,12 @@ export default function Home() {
     Axios.get(
       `http://localhost:4000/api/get/sum_coordinater_funding_budget/${date}`
     ).then((sumbudget) => {
-      if (!sumbudget.data) {
+      if (sumbudget.data.sum == null) {
         setBudget(0);
-        // console.log("test_budget1", sumbudget);
+        console.log("test_budget1", sumbudget);
       } else {
         setBudget(sumbudget.data.sum);
-        // console.log("test_budget2", sumbudget);
+        console.log("test_budget2", sumbudget);
       }
       // console.log("test_budget3", sumbudget);
     });

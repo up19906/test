@@ -47,6 +47,7 @@ function Research() {
       console.log("test_fundingagency", fundingagency);
     });
   }, []);
+
   return (
     <div>
       <div className="card-header">
@@ -209,19 +210,71 @@ function Research() {
             <Col>
               <div className="center">
                 <ExcelFile
+                  filename="ReportReserch"
                   element={
                     <Button className="btn btn-block bg-gradient-primary btn-md">
                       ดาวน์โหลดรายงานงานวิจัย
                     </Button>
                   }
                 >
-                  <ExcelSheet data={fundingagency} name="Employees">
-                    <ExcelColumn label="Name" value="fundingagency_ac_name" />
+                  <ExcelSheet data={fundingagency} name="ReportReserch">
                     <ExcelColumn
-                      label="Wallet Money"
-                      value="funding_ac_budget"
+                      label="ลำดับที่"
+                      value="fundingagency_ac_name"
                     />
-                    <ExcelColumn label="Gender" value="funding_ac_name" />
+                    <ExcelColumn
+                      label="รหัสนักวิจัย"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn
+                      label="ชื่อนักวิจัย"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn
+                      label="โครงการวิจัย"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn
+                      label="วัตถุประสงค์"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn
+                      label="งบประมาณ"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn
+                      label="ปีงบประมาณ"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn
+                      label="ประเภททุน"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn label="แหล่งทุน" value="funding_ac_budget" />
+                    <ExcelColumn label="output" value="fundingagency_ac_name" />
+                    <ExcelColumn
+                      label="outcome"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn label="impact" value="fundingagency_ac_name" />
+                    <ExcelColumn
+                      label="พื้นที่ดำเนินงาน"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn
+                      label="ผู้ร่วมวิจัย"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn label="SDG" value="fundingagency_ac_name" />
+                    <ExcelColumn label="BCG" value="fundingagency_ac_name" />
+                    <ExcelColumn
+                      label="10S-Curve"
+                      value="fundingagency_ac_name"
+                    />
+                    <ExcelColumn
+                      label="RMUTICLITUR"
+                      value="fundingagency_ac_name"
+                    />
                   </ExcelSheet>
                 </ExcelFile>
               </div>
