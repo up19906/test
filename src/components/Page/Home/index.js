@@ -74,7 +74,7 @@ export default function Home() {
       }
     });
   }, []);
-  
+
   return (
     <div className="content-wrapper">
       <div className="content-header">
@@ -94,7 +94,7 @@ export default function Home() {
           <div className="container">
             <Welcome />
 
-            <Row style={{ paddingLeft: "5rem", paddingRight: "5rem" }}>
+            <Row className="row_padding">
               <Col md={3} lg={3}>
                 <div className="card card-primary card-outline">
                   <Row>

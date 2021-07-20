@@ -32,7 +32,7 @@ function Researcher() {
       <div className="card-header">
         <NavLink to="/allreport">
           <button
-            className="btn  btn-reportresercher"
+            className="btn  btn-reportresercher card-header-menu"
             onClick={() => {
               document
                 .querySelector(".btn-reportresercher")
@@ -50,7 +50,7 @@ function Researcher() {
         </NavLink>
         <NavLink to="/allreport/reportbudget">
           <button
-            className="btn btn-primary btn-reportbudget"
+            className="btn btn-primary btn-reportbudget card-header-menu"
             style={{ marginLeft: "1rem" }}
             onClick={() => {
               document
@@ -69,7 +69,7 @@ function Researcher() {
         </NavLink>
         <NavLink to="/allreport/reportresearch">
           <button
-            className="btn btn-primary btn-reportresearch"
+            className="btn btn-primary btn-reportresearch card-header-menu"
             style={{ marginLeft: "1rem" }}
             onClick={() => {
               document
@@ -97,7 +97,7 @@ function Researcher() {
         <h4 style={{ textAlign: "center" }}>สรุปรายงานนักวิจัย</h4>
 
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
-        <div className="card-body" style={{ padding: "1rem 7rem 1rem 5rem" }}>
+        <div className="card-body card-body-pading">
           <Row>
             <Col lg={4}>
               <div className="form-group">

@@ -5,10 +5,12 @@ import "./style.scss";
 
 export default function Header() {
   const [sidebar, setSidebar] = useState(false);
+  const [menu, setmenu] = useState(false);
 
   const openCloseSidebar = () => {
     if (sidebar) {
       setSidebar(!sidebar);
+      setmenu(false);
       document
         .querySelector(".sidebar-mini")
         .classList.remove("sidebar-collapse");
@@ -16,16 +18,27 @@ export default function Header() {
         .querySelector(".content-wrapper")
         .classList.remove("content-side");
       document.querySelector(".main-footer").classList.remove("content-side");
+      document
+        .querySelector(".main-sidebar")
+        .classList.remove("main-sidebar-open");
     } else {
       setSidebar(!sidebar);
+      setmenu(true);
       document.querySelector(".sidebar-mini").classList.add("sidebar-collapse");
       document.querySelector(".content-wrapper").classList.add("content-side");
       document.querySelector(".main-footer").classList.add("content-side");
+      document
+        .querySelector(".main-sidebar")
+        .classList.add("main-sidebar-open");
     }
   };
 
   return (
     <div className="wraper">
+      <div
+        className={`offcanvas-menu-overlay ${menu && "active"}`}
+        onClick={() => openCloseSidebar()}
+      />
       <body className="hold-transition sidebar-mini">
         <nav className="main-header navbar navbar-expand navbar-white navbar-light">
           {/* Left navbar links */}

@@ -15,9 +15,34 @@
   margin-left: 4.5rem !important;
 }
 
-
-// @media (min-width: 992px) {
-//   .content-side {
-//     margin-left: 7.5vw;
-//   }
-// }
+@media screen and (max-width: 992px) {
+  .main-sidebar,
+  .main-sidebar::before {
+    transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+    width: 250px;
+    margin-left: -500px;
+  }
+  .main-sidebar-open {
+    margin-left: 0 !important;
+  }
+  .offcanvas-menu-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1035;
+    content: "";
+    visibility: hidden;
+    -webkit-transition: all, 0.5s;
+    -o-transition: all, 0.5s;
+    transition: all, 0.5s;
+  }
+  .offcanvas-menu-overlay.active {
+    visibility: visible;
+  }
+  .content-side {
+    margin-left: 0rem !important;
+  }
+}

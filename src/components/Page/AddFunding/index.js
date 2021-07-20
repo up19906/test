@@ -24,7 +24,7 @@ export default function AddFunding() {
               <div className="projcard-bar"></div>
             </div>
           </div>
-          
+
           <div className="content">
             <div className="container-fluid">
               <div className="container">

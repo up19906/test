@@ -87,7 +87,7 @@ export default function AddResearch() {
       <div className="card-header">
         <NavLink to="/addfunding">
           <button
-            className="btn btn-primary btn-fundingresearch"
+            className="btn btn-primary btn-fundingresearch card-header-menu"
             onClick={() => {
               document
                 .querySelector(".btn-fundingresearch")
@@ -106,7 +106,7 @@ export default function AddResearch() {
         </NavLink>
         <NavLink to="/addfunding/academic">
           <button
-            className="btn btn-primary btn-acdemic"
+            className="btn btn-primary btn-acdemic card-header-menu"
             style={{ marginLeft: "1rem" }}
             onClick={() => {
               document
@@ -126,7 +126,7 @@ export default function AddResearch() {
         </NavLink>
         <NavLink to="/addfunding/aboutfunding">
           <button
-            className="btn  btn-primary btn-about"
+            className="btn  btn-primary btn-about card-header-menu"
             style={{ marginLeft: "1rem" }}
             onClick={() => {
               document
@@ -148,7 +148,7 @@ export default function AddResearch() {
         </NavLink>
         <NavLink to="/addfunding/research">
           <button
-            className="btn btn-research"
+            className="btn btn-research card-header-menu"
             style={{ marginLeft: "1rem" }}
             onClick={() => {
               document
@@ -176,7 +176,7 @@ export default function AddResearch() {
         <h4 style={{ textAlign: "center" }}>งานวิจัย</h4>
 
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
-        <div className="card-body" style={{ padding: "1rem 7rem 1rem 5rem" }}>
+        <div className="card-body card-body-pading">
           <Row>
             <Col lg={12}>
               <div className="form-group">
