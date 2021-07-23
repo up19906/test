@@ -730,7 +730,7 @@ export default function Finding() {
             onClick={() => {
               handleSubmitUpdate(getupdate.coordinater_funding_id);
             }}
-            href="/"
+            href="/up_test"
             type="button"
           >
             บันทึก
@@ -766,7 +766,7 @@ export default function Finding() {
             onClick={() => {
               handleSubmitDelet(getupdate.coordinater_funding_id);
             }}
-            href="/"
+            href="/up_test"
             type="button"
           >
             ยืนยัน

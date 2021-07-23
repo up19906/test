@@ -224,7 +224,7 @@ export default function Header() {
                         {/* // end  */}
                       </li>{" "}
                       <li className="nav-item">
-                        <a href="/allreport" className="nav-link">
+                        <a href="/uptest/allreport" className="nav-link">
                           <i className="nav-icon 	fas fa-file-alt" />
                           <p>
                             AllReport

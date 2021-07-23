@@ -487,7 +487,7 @@ export default function FindingAcademic() {
             onClick={() => {
               handleSubmitUpdate(getupdate.fundingagency_ac_id);
             }}
-            href="/"
+            href="/up_test"
             type="button"
           >
             บันทึก
@@ -523,7 +523,7 @@ export default function FindingAcademic() {
             onClick={() => {
               handleSubmitDelet(getupdate.fundingagency_ac_id);
             }}
-            href="/"
+            href="/up_test"
             type="button"
           >
             ยืนยัน
