@@ -45,7 +45,7 @@ export default function AddFundingAcademic() {
       setSource_fund(source.data);
     });
     Axios.get(
-      "http://localhost:4000/api/get/concept_proposal_research_faculty"
+      "http://localhost:4000/api/get/concept_proposal_research_facultys"
     ).then((res) => {
       setresearch(res.data);
       console.log("research : ", research);
@@ -68,10 +68,7 @@ export default function AddFundingAcademic() {
   var test = [];
   for (let i = 0; i < research.length; i = i + 1) {
     test.push({
-      value:
-        research[i].research_faculty_username +
-        " " +
-        research[i].research_faculty_lastname,
+      value: research[i].research_faculty_idcrad,
       label:
         research[i].research_faculty_username +
         " " +
@@ -81,8 +78,9 @@ export default function AddFundingAcademic() {
 
   const handleSubmit = () => {
     for (let i = 0; i < select_researchname.length; i = i + 1) {
-      select_research.push(select_researchname[i].label);
+      select_research.push(select_researchname[i].value);
     }
+
     Axios.post(
       "http://localhost:4000/api/create/coordinator_fundingagency_academic",
       {
@@ -91,7 +89,7 @@ export default function AddFundingAcademic() {
         funding_ac_agency: funding_ac_agency,
         funding_ac_leader: funding_ac_leader,
         funding_ac_phone: funding_ac_phone,
-        research: select_research,
+        select_research: select_research,
         project_status: project_status,
         funding_ac_year: funding_ac_year,
         funding_ac_budget: funding_ac_budget,
@@ -108,7 +106,7 @@ export default function AddFundingAcademic() {
           funding_ac_agency: funding_ac_agency,
           funding_ac_leader: funding_ac_leader,
           funding_ac_phone: funding_ac_phone,
-          research: select_research,
+          select_research: select_research,
           project_status: project_status,
           funding_ac_year: funding_ac_year,
           funding_ac_budget: funding_ac_budget,
@@ -118,11 +116,12 @@ export default function AddFundingAcademic() {
         },
       ]);
     });
+    alert("บันทึกข้อมูลสำเร็จ!!");
   };
   return (
     <>
       <div className="card-header">
-        <NavLink to="/addfunding">
+        <NavLink to="/addfunding/fundingresearch">
           <button
             className="btn btn-primary btn-fundingresearch card-header-menu"
             onClick={() => {
@@ -489,14 +488,14 @@ export default function AddFundingAcademic() {
           <Row>
             <Col>
               <div className="center">
-                <a
+                <Button
                   onClick={handleSubmit}
-                  href="/"
-                  type="button"
+                  // href="/"
+                  type="submit"
                   className="btn  bg-gradient-primary btn-md"
                 >
                   บันทึก
-                </a>
+                </Button>
               </div>
             </Col>
           </Row>

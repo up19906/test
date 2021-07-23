@@ -18,7 +18,7 @@ import "../src/components/Header/style.scss";
 
 ReactDOM.render(
   // <React.StrictMode>
-  <BrowserRouter>
+  <BrowserRouter basename={"/up_test"}>
     <App />
   </BrowserRouter>,
   // </React.StrictMode>,

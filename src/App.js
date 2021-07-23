@@ -13,7 +13,9 @@ function App() {
     <div>
       <Header />
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact>
+          <Home />
+        </Route>
         <Route path="/contact" component={Contact} />
         <Route path="/addfunding" component={AddFunding} />
         <Route path="/allreport" component={AllReport} />

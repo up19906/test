@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Modal } from "react-bootstrap";
 // import { NavLink } from "react-router-dom";
 import Axios from "axios";
+import { NavLink } from "react-router-dom";
 
 export default function FindingAcademic() {
   var date = new Date();
@@ -82,7 +83,8 @@ export default function FindingAcademic() {
         },
       ]);
     });
-    setModalShow(false);
+    alert("บันทึกข้อมูลสำเร็จ!!");
+    // setModalShow(false);
   };
 
   const handleGetUpdate = (id) => {
@@ -211,13 +213,13 @@ export default function FindingAcademic() {
                   <Row>
                     <Col lg={12}>
                       <div className="center">
-                        <a
-                          href="/addfunding/academic"
+                        <NavLink
+                          to="/addfunding/academic"
                           type="button"
                           className="btn bg-gradient-primary btn-md"
                         >
                           เพิ่มข้อมูลแหล่งทุนงานบริการวิชาการ
-                        </a>
+                        </NavLink>
                       </div>
                     </Col>
                   </Row>

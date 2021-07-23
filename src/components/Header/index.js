@@ -42,7 +42,6 @@ export default function Header() {
       setsubmenu(!submenu);
       document.querySelector(".nav_link_add").classList.add("menu-open");
       document.querySelector(".nav_link_add").classList.add("menu-is-opening");
-
       document
         .querySelector(".nav_treeview_add")
         .classList.add("navteameview_open");
@@ -80,17 +79,6 @@ export default function Header() {
                 <i className="fas fa-bars" />
               </div>
             </li>
-            {/* <li className="nav-item d-none d-sm-inline-block">
-              <Link to="/" className="nav-link">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item d-none d-sm-inline-block">
-              <Link to="/contact" className="nav-link">
-                Contact
-              </Link>
-            </li>
-          */}
           </ul>
           {/* SEARCH FORM */}
         </nav>
@@ -164,39 +152,6 @@ export default function Header() {
                       role="menu"
                       data-accordion="false"
                     >
-                      {/* <li className="nav-item">
-                        <a href="/contact" className="nav-link active">
-                          <i className="nav-icon fas fa-tachometer-alt" />
-                          <p>
-                            Dashboard
-                            <i className="right fas fa-angle-left" />
-                          </p>
-                        </a>
-                        <ul
-                          className="nav nav-treeview"
-                          style={{ display: "none" }}
-                        >
-                          <li className="nav-item">
-                            <a href="./index.html" className="nav-link active">
-                              <i className="far fa-circle nav-icon" />
-                              <p>Dashboard v1</p>
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a href="./index2.html" className="nav-link">
-                              <i className="far fa-circle nav-icon" />
-                              <p>Dashboard v2</p>
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a href="./index3.html" className="nav-link">
-                              <i className="far fa-circle nav-icon" />
-                              <p>Dashboard v3</p>
-                            </a>
-                          </li>
-                        </ul>
-                      </li>
-                      */}
                       <li className="nav-item">
                         <a href="/" className="nav-link">
                           <i className="nav-icon fas fa-home" />
@@ -224,6 +179,59 @@ export default function Header() {
                             )}
                           </p>
                         </a>
+                        {/* start */}
+                        <ul
+                          className="nav nav-treeview nav_treeview_add "
+                          // style={{ display: "block" }}
+                        >
+                          <li className="nav-item">
+                            <NavLink
+                              to="/addfunding/fundingresearch"
+                              className="nav-link"
+                            >
+                              <i className="far fas fa-angle-right nav-icon" />
+                              <p>แหล่งทุนงานวิจัย</p>
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to="/addfunding/academic"
+                              className="nav-link"
+                            >
+                              <i className="far fas fa-angle-right nav-icon" />
+                              <p>แหล่งทุนงานบริการวิชาการ</p>
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to="/addfunding/aboutfunding"
+                              className="nav-link"
+                            >
+                              <i className="far fas fa-angle-right nav-icon" />
+                              <p>ข้อมูลทั่วไปเกี่ยวกับทุน</p>
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to="/addfunding/research"
+                              className="nav-link"
+                            >
+                              <i className="far fas fa-angle-right nav-icon" />
+                              <p>งานวิจัย</p>
+                            </NavLink>
+                          </li>
+                        </ul>
+                        {/* // end  */}
+                      </li>{" "}
+                      <li className="nav-item">
+                        <a href="/allreport" className="nav-link">
+                          <i className="nav-icon 	fas fa-file-alt" />
+                          <p>
+                            AllReport
+                            <i className="right fas fa-angle-left" />
+                          </p>
+                        </a>
+                        {/* ติดไว้ก่อน ค่อยทำ */}
                         <ul
                           className="nav nav-treeview nav_treeview_add "
                           // style={{ display: "block" }}
@@ -262,15 +270,7 @@ export default function Header() {
                             </NavLink>
                           </li>
                         </ul>
-                      </li>{" "}
-                      <li className="nav-item">
-                        <a href="/allreport" className="nav-link">
-                          <i className="nav-icon 	fas fa-file-alt" />
-                          <p>
-                            AllReport
-                            <i className="right fas fa-angle-left" />
-                          </p>
-                        </a>
+                        {/* ติดไว้ก่อน ค่อยทำ */}
                       </li>
                       <li className="nav-item">
                         <a href="/" className="nav-link">

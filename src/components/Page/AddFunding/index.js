@@ -33,7 +33,7 @@ export default function AddFunding() {
                   <Switch>
                     <Route
                       exact
-                      path="/addfunding"
+                      path="/addfunding/fundingresearch"
                       component={AddFundingResearch}
                     />
 

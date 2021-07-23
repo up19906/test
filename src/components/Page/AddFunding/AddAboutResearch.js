@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import Axios from "axios";
 
 export default function AddAboutResearch() {
@@ -64,7 +64,7 @@ export default function AddAboutResearch() {
         about_fundingagency_achievement_small,
     };
     Axios.post(
-      "http://localhost:4000/about-fundingagency",
+      "http://localhost:4000/api/post/coordinator_about_fundingagency",
       fundingagencyObj
     ).then(() => {
       setabout_finding([
@@ -86,11 +86,12 @@ export default function AddAboutResearch() {
         },
       ]);
     });
+    alert("บันทึกข้อมูลสำเร็จ!!");
   };
   return (
     <>
       <div className="card-header">
-        <NavLink to="/addfunding">
+        <NavLink to="/addfunding/fundingresearch">
           <button
             className="btn btn-primary btn-fundingresearch card-header-menu"
             onClick={() => {
@@ -319,14 +320,14 @@ export default function AddAboutResearch() {
           <Row>
             <Col>
               <div className="center">
-                <a
+                <Button
                   onClick={handleSubmit}
-                  href="/"
-                  type="button"
+                  // href="/"
+                  type="submit"
                   className="btn  bg-gradient-primary btn-md"
                 >
                   บันทึก
-                </a>
+                </Button>
               </div>
             </Col>
           </Row>

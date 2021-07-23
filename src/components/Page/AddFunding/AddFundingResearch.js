@@ -35,6 +35,7 @@ export default function AddFundingResearch() {
     useState(""); //รายได้เข้ามหาลัย
 
   const [modalShow, setModalShow] = React.useState(false);
+  const [modalShowResearcher, setmodalShowResearcher] = React.useState(false);
   const [source_funds_name, setSource_funds_name] = useState("");
   const [select_researchname, setselect_researchname] = useState("");
 
@@ -50,7 +51,7 @@ export default function AddFundingResearch() {
       console.log("source_funds_name : ", source_funds);
     });
     Axios.get(
-      "http://localhost:4000/api/get/concept_proposal_research_faculty"
+      "http://localhost:4000/api/get/concept_proposal_research_facultys"
     ).then((res) => {
       setresearch(res.data);
       console.log("research : ", research);
@@ -58,7 +59,7 @@ export default function AddFundingResearch() {
     Axios.get("http://localhost:4000/api/get/coordinator_budget_type").then(
       (res) => {
         setbudget_type(res.data);
-        console.log("budget_type : ", budget_type);
+        console.log("budget_type : ", res.data[2].coordinator_Budget_type_name);
       }
     );
     Axios.get(
@@ -73,10 +74,7 @@ export default function AddFundingResearch() {
   var test = [];
   for (let i = 0; i < research.length; i = i + 1) {
     test.push({
-      value:
-        research[i].research_faculty_username +
-        " " +
-        research[i].research_faculty_lastname,
+      value: research[i].research_faculty_idcrad,
       label:
         research[i].research_faculty_username +
         " " +
@@ -95,7 +93,7 @@ export default function AddFundingResearch() {
       console.log("checkValidity");
     } else {
       for (let i = 0; i < select_researchname.length; i = i + 1) {
-        select_research.push(select_researchname[i].label);
+        select_research.push(select_researchname[i].value);
       }
       // let text = select_research.toString();
       console.log("testSelect : ", select_research);
@@ -105,7 +103,7 @@ export default function AddFundingResearch() {
         funding_agency: funding_agency,
         funding_project_leader: funding_project_leader,
         funding_phone: funding_phone,
-        research: select_research,
+        select_research: select_research,
         project_status: project_status,
         funding_year: funding_year,
         funding_budget: funding_budget,
@@ -122,7 +120,7 @@ export default function AddFundingResearch() {
             funding_agency: funding_agency,
             funding_project_leader: funding_project_leader,
             funding_phone: funding_phone,
-            research: select_research,
+            select_research: select_research,
             project_status: project_status,
             funding_year: funding_year,
             funding_budget: funding_budget,
@@ -133,13 +131,14 @@ export default function AddFundingResearch() {
           },
         ]);
       });
+      alert("บันทึกข้อมูลสำเร็จ!!");
     }
   };
   return (
     <>
       <div className="card-header">
         <Row>
-          <NavLink to="/addfunding">
+          <NavLink to="/addfunding/fundingresearch">
             <button
               className="btn  btn-fundingresearch card-header-menu "
               onClick={() => {
@@ -301,8 +300,8 @@ export default function AddFundingResearch() {
           <Row>
             <Col lg={8}>
               <div className="form-group">
-                <label htmlFor="exampleInputEmail1">นักวิจัยผู้รับผิดชอบ</label>
-                <input
+                <Form.Label>นักวิจัยผู้รับผิดชอบ</Form.Label>
+                <Form.Control
                   type="text"
                   className="form-control"
                   onChange={(event) => {
@@ -314,8 +313,8 @@ export default function AddFundingResearch() {
 
             <Col lg={4}>
               <div className="form-group">
-                <label htmlFor="exampleInputEmail1">เบอร์ติดต่อ</label>
-                <input
+                <Form.Label>เบอร์ติดต่อ</Form.Label>
+                <Form.Control
                   type="phone"
                   className="form-control"
                   onChange={(event) => {
@@ -326,9 +325,10 @@ export default function AddFundingResearch() {
             </Col>
             <Col lg={12}>
               <div className="form-group">
-                <label htmlFor="exampleInputEmail1">ทีมนักวิจัย</label>
+                <Form.Label>ทีมนักวิจัย</Form.Label>
                 <Select
                   closeMenuOnSelect={false}
+                  name="select_research"
                   components={animatedComponents}
                   onChange={(selectedOptions) => {
                     setselect_researchname(selectedOptions);
@@ -337,12 +337,106 @@ export default function AddFundingResearch() {
                   isMulti
                   options={test}
                 />
+                <div>
+                  <i
+                    style={{ margin: "0.5rem", cursor: "pointer" }}
+                    onClick={() => setmodalShowResearcher(true)}
+                    className="fas fa-plus-circle"
+                  >
+                    {" "}
+                    เพิ่มนักวิจัย
+                  </i>
+                </div>
+
+                <Modal
+                  size="lg"
+                  aria-labelledby="contained-modal-title-vcenter"
+                  centered
+                  show={modalShowResearcher}
+                  onHide={() => setmodalShowResearcher(false)}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                      เพิ่มทีมนักวิจัย
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="form-group">
+                      <Row>
+                        <Col lg={6}>
+                          <div className="form-group">
+                            <label>ชื่อ</label>
+                            <input
+                              type="text"
+                              name="project_Longitude"
+                              className="form-control"
+                              // onChange={(event) => {
+                              //   setproject_Longitude(event.target.value);
+                              // }}
+                            />
+                          </div>
+                        </Col>
+                        <Col lg={5}>
+                          <div className="form-group">
+                            <label>นามสกุล</label>
+                            <input
+                              type="text"
+                              name="project_Longitude"
+                              className="form-control"
+                              // onChange={(event) => {
+                              //   setproject_Longitude(event.target.value);
+                              // }}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row style={{ marginTop: "1rem" }}>
+                        {/* <Col lg={1} /> */}
+                        <Col lg={11}>
+                          <label htmlFor="type_source">ตำแหน่งในโครงการ</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            // onChange={(event) => {
+                            //   setSource_funds_name(event.target.value);
+                            // }}
+                          />
+                        </Col>
+                      </Row>
+                    </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      // href="/"
+                      type="button"
+                      onClick={() => setmodalShowResearcher(false)}
+                    >
+                      ยกเลิก
+                    </Button>
+                    <Button
+                    // href="/addfunding"
+                    // onClick={() => {
+                    //   Axios.post(
+                    //     "http://localhost:4000/api/create/source_funds",
+                    //     {
+                    //       source_funds_name: source_funds_name,
+                    //       created_date: today,
+                    //     }
+                    //   );
+                    //   setmodalShowResearcher(false);
+                    // }}
+                    >
+                      บันทึก
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </div>
             </Col>
 
             <Col lg={12}>
               <div className="form-group">
-                <label>สถานะโครงการ :</label>
+                <Form.Label>สถานะโครงการ :</Form.Label>
                 <div className="form-control" style={{ border: "none" }}>
                   {status_type.map(function (data, i) {
                     return (
@@ -375,7 +469,7 @@ export default function AddFundingResearch() {
           <Row>
             <Col lg={5}>
               <div className="form-group">
-                <label htmlFor="exampleInputEmail1">ปีงบประมาณ</label>
+                <Form.Label>ปีงบประมาณ</Form.Label>
                 <select
                   className="form-control"
                   onChange={(event) => {
@@ -396,8 +490,8 @@ export default function AddFundingResearch() {
 
             <Col lg={7}>
               <div className="form-group">
-                <label htmlFor="exampleInputEmail1">งบประมาณที่ได้รับ</label>
-                <input
+                <Form.Label>งบประมาณที่ได้รับ</Form.Label>
+                <Form.Control
                   type="number"
                   className="form-control"
                   onChange={(event) => {
@@ -410,7 +504,7 @@ export default function AddFundingResearch() {
           <Row>
             <Col lg={7}>
               <div className="form-group">
-                <label htmlFor="exampleInputEmail1">ชื่อแหล่งทุน</label>
+                <Form.Label>ชื่อแหล่งทุน</Form.Label>
                 <select
                   className="form-control"
                   onChange={(event) => {
@@ -454,10 +548,10 @@ export default function AddFundingResearch() {
                       <Row>
                         <Col lg={2}>
                           {" "}
-                          <label htmlFor="type_source">ชื่อแหล่งทุน</label>
+                          <Form.Label>ชื่อแหล่งทุน</Form.Label>
                         </Col>
                         <Col lg={9}>
-                          <input
+                          <Form.Control
                             type="text"
                             className="form-control"
                             onChange={(event) => {
@@ -498,9 +592,7 @@ export default function AddFundingResearch() {
 
             <Col lg={5}>
               <div className="form-group">
-                <Form.Label htmlFor="exampleInputEmail1">
-                  ประเภทงบประมาณ
-                </Form.Label>
+                <Form.Label>ประเภทงบประมาณ</Form.Label>
                 <select
                   required
                   className="form-control"
@@ -526,9 +618,7 @@ export default function AddFundingResearch() {
             </Col>
             <Col lg={12}>
               <div className="form-group">
-                <Form.Label htmlFor="exampleInputEmail1">
-                  รายได้เข้ามหาลัย
-                </Form.Label>
+                <Form.Label>รายได้เข้ามหาลัย</Form.Label>
                 <Form.Control
                   type="number"
                   className="form-control"
