@@ -153,7 +153,7 @@ export default function Header() {
                       data-accordion="false"
                     >
                       <li className="nav-item">
-                        <a href="/" className="nav-link">
+                        <a href="/up_test" className="nav-link">
                           <i className="nav-icon fas fa-home" />
                           <p>
                             หน้าแรก
