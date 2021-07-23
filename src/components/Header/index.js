@@ -224,13 +224,13 @@ export default function Header() {
                         {/* // end  */}
                       </li>{" "}
                       <li className="nav-item">
-                        <a href="/uptest/allreport" className="nav-link">
+                        <NavLink to="/allreport" className="nav-link">
                           <i className="nav-icon 	fas fa-file-alt" />
                           <p>
                             AllReport
                             <i className="right fas fa-angle-left" />
                           </p>
-                        </a>
+                        </NavLink>
                         {/* ติดไว้ก่อน ค่อยทำ */}
                         <ul
                           className="nav nav-treeview nav_treeview_add "
