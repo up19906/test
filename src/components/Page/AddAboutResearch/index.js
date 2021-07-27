@@ -1,14 +1,14 @@
 import React from "react";
 // import Axios from "axios";
-import { Switch, Route } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import AddFundingResearch from "./AddFundingResearch";
+// import { Switch, Route } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
+// import AddFundingResearch from "./AddFundingResearch";
 // import AddFundingAcademic from "./AddFundingAcademic";
 import Welcome from "../Home/welcome";
-import AddAboutResearch from "../AddAboutResearch";
-// import AddResearch from "../Reseacrch/AddResearch";
+import AddAboutResearch from "./AddAboutResearch";
+// import AddResearch from "./AddResearch";
 
-export default function AddFunding() {
+export default function AboutResearch() {
   return (
     <div>
       <div className="wrapper">
@@ -24,29 +24,12 @@ export default function AddFunding() {
               <div className="projcard-bar"></div>
             </div>
           </div>
-
           <div className="content">
             <div className="container-fluid">
               <div className="container">
                 <Welcome />
                 <div className="card card-primary card-outline">
-                  <AddFundingResearch />
-                  {/* <Switch>
-                    <Route exact path="/addfunding/fundingresearch">
-                      <AddFundingResearch />
-                    </Route>
-                    {/* <Route
-                      exact
-                      path="/addfunding/fundingresearch"
-                      component={AddFundingResearch}
-                    /> */}
-
-                  {/* <Route
-                      exact
-                      path="/addfunding/aboutfunding"
-                      component={AddAboutResearch}
-                    />
-                  </Switch> */}
+                  <AddAboutResearch />
                 </div>
               </div>
             </div>

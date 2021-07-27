@@ -98,6 +98,7 @@ export default function AddFundingAcademic() {
         univercity_ac_budget: univercity_ac_budget,
       }
     ).then(() => {
+      alert("บันทึกข้อมูลสำเร็จ!!");
       setfunding_academic([
         ...funding_academic,
         {
@@ -116,7 +117,6 @@ export default function AddFundingAcademic() {
         },
       ]);
     });
-    alert("บันทึกข้อมูลสำเร็จ!!");
   };
   return (
     <>
@@ -131,10 +131,10 @@ export default function AddFundingAcademic() {
               document
                 .querySelector(".btn-acdemic")
                 .classList.add("btn-primary");
-              document.querySelector(".btn-about").classList.add("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.add("btn-primary");
+              // document.querySelector(".btn-about").classList.add("btn-primary");
+              // document
+              //   .querySelector(".btn-research")
+              //   .classList.add("btn-primary");
             }}
           >
             แหล่งทุนงานวิจัย
@@ -151,16 +151,16 @@ export default function AddFundingAcademic() {
               document
                 .querySelector(".btn-acdemic")
                 .classList.remove("btn-primary");
-              document.querySelector(".btn-about").classList.add("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.add("btn-primary");
+              // document.querySelector(".btn-about").classList.add("btn-primary");
+              // document
+              //   .querySelector(".btn-research")
+              //   .classList.add("btn-primary");
             }}
           >
             แหล่งทุนงานบริการวิชาการ
           </button>
         </NavLink>
-        <NavLink to="/addfunding/aboutfunding">
+        {/* <NavLink to="/addfunding/aboutfunding">
           <button
             className="btn btn-primary btn-about card-header-menu"
             style={{ marginLeft: "1rem" }}
@@ -201,7 +201,7 @@ export default function AddFundingAcademic() {
           >
             งานวิจัย
           </button>
-        </NavLink>
+        </NavLink> */}
         <div
           className="projcard-bar"
           style={{ marginLeft: "0", marginRight: "0" }}
@@ -380,16 +380,21 @@ export default function AddFundingAcademic() {
                 </select>
 
                 <div>
-                  <i
-                    style={{ margin: "0.5rem", cursor: "pointer" }}
-                    className="fas fa-plus-circle"
-                    onClick={() => setModalShow(true)}
+                  <NavLink
+                    to="/addfunding/aboutfunding"
+                    style={{ color: "#000", fontSize: "14px" }}
                   >
-                    {" "}
-                    เพิ่มแหล่งทุน
-                  </i>
+                    <i
+                      style={{ margin: "0.5rem", cursor: "pointer" }}
+                      className="fas fa-plus-circle"
+                      // onClick={() => setModalShow(true)}
+                    >
+                      {" "}
+                      เพิ่มแหล่งทุน
+                    </i>
+                  </NavLink>
                 </div>
-                <Modal
+                {/* <Modal
                   size="lg"
                   aria-labelledby="contained-modal-title-vcenter"
                   centered
@@ -444,7 +449,7 @@ export default function AddFundingAcademic() {
                       บันทึก
                     </Button>
                   </Modal.Footer>
-                </Modal>
+                </Modal> */}
               </div>
             </Col>
             <Col lg={5}>

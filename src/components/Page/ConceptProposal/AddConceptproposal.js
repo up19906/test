@@ -6,7 +6,7 @@ import Axios from "axios";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-export default function AddResearch() {
+export default function AddConceptproposal() {
   var date = new Date();
   var today =
     [date.getFullYear(), date.getMonth() + 1, date.getDate()].join("-") +
@@ -93,130 +93,49 @@ export default function AddResearch() {
 
   const handleSubmit = (event) => {
     // event.preventDefault();
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
+    const forms = event.currentTarget;
+    if (forms.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
       setValidated(true);
       console.log("checkValidity : true :", validated);
     } else {
-      console.log("checkValidity : false :", validated);
+      // console.log("checkValidity : false :", validated);
       const dataArray = new FormData(form.current);
-      console.log("data:", dataArray);
+      // console.log("data:", dataArray);
       Axios.post(
         "http://localhost:4000/api/post/coordinator_fundingagency_project",
         dataArray
       )
-        .then((res) => {
-          console.log(res.data.massage);
+        .then(() => {
+          alert("บันทึกข้อมูลสำเร็จ!!");
+          // console.log(res.data.massage);
           // alert(res.data.massage);
         })
         .catch((error) => {
           console.log(error);
-          setabout_finding([
-            ...about_finding,
-            {
-              selectProjectType: selectProjectType,
-              project_name: project_name,
-              selectSourceFunds: selectSourceFunds,
-              project_budget: project_budget,
-              project_star: project_star,
-              project_agency: project_agency,
-              project_latitude: project_latitude,
-              project_Longitude: project_Longitude,
-              project_status: project_status,
-              file: file,
-              // created_date: today,
-            },
-          ]);
         });
-      alert("บันทึกข้อมูลสำเร็จ!!");
+      setabout_finding([
+        ...about_finding,
+        {
+          selectProjectType: selectProjectType,
+          project_name: project_name,
+          selectSourceFunds: selectSourceFunds,
+          project_budget: project_budget,
+          project_star: project_star,
+          project_agency: project_agency,
+          project_latitude: project_latitude,
+          project_Longitude: project_Longitude,
+          project_status: project_status,
+          file: file,
+          // created_date: today,
+        },
+      ]);
     }
   };
   return (
     <>
       <div className="card-header">
-        <NavLink to="/addfunding/fundingresearch">
-          <button
-            className="btn btn-primary btn-fundingresearch card-header-menu"
-            onClick={() => {
-              document
-                .querySelector(".btn-fundingresearch")
-                .classList.remove("btn-primary");
-              document
-                .querySelector(".btn-acdemic")
-                .classList.add("btn-primary");
-              document.querySelector(".btn-about").classList.add("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.add("btn-primary");
-            }}
-          >
-            แหล่งทุนงานวิจัย
-          </button>
-        </NavLink>
-        <NavLink to="/addfunding/academic">
-          <button
-            className="btn btn-primary btn-acdemic card-header-menu"
-            style={{ marginLeft: "1rem" }}
-            onClick={() => {
-              document
-                .querySelector(".btn-fundingresearch")
-                .classList.add("btn-primary");
-              document
-                .querySelector(".btn-acdemic")
-                .classList.remove("btn-primary");
-              document.querySelector(".btn-about").classList.add("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.add("btn-primary");
-            }}
-          >
-            แหล่งทุนงานบริการวิชาการ
-          </button>
-        </NavLink>
-        <NavLink to="/addfunding/aboutfunding">
-          <button
-            className="btn  btn-primary btn-about card-header-menu"
-            style={{ marginLeft: "1rem" }}
-            onClick={() => {
-              document
-                .querySelector(".btn-fundingresearch")
-                .classList.add("btn-primary");
-              document
-                .querySelector(".btn-acdemic")
-                .classList.add("btn-primary");
-              document
-                .querySelector(".btn-about")
-                .classList.remove("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.add("btn-primary");
-            }}
-          >
-            ข้อมูลทั่วไปเกี่ยวกับทุน
-          </button>
-        </NavLink>
-        <NavLink to="/addfunding/research">
-          <button
-            className="btn btn-research card-header-menu"
-            style={{ marginLeft: "1rem" }}
-            onClick={() => {
-              document
-                .querySelector(".btn-fundingresearch")
-                .classList.add("btn-primary");
-              document
-                .querySelector(".btn-acdemic")
-                .classList.add("btn-primary");
-              document.querySelector(".btn-about").classList.add("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.remove("btn-primary");
-            }}
-          >
-            งานวิจัย
-          </button>
-        </NavLink>
         <div
           className="projcard-bar"
           style={{ marginLeft: "0", marginRight: "0" }}
@@ -224,7 +143,9 @@ export default function AddResearch() {
       </div>
 
       <Form ref={form} noValidate validated={validated} onSubmit={handleSubmit}>
-        <h4 style={{ textAlign: "center" }}>งานวิจัย</h4>
+        <h4 style={{ textAlign: "center" }}>
+          ข้อเสนองานวิจัย / งานบริการวิชาการ
+        </h4>
 
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
         <div className="card-body card-body-pading">

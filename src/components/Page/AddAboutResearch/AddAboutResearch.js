@@ -67,6 +67,7 @@ export default function AddAboutResearch() {
       "http://localhost:4000/api/post/coordinator_about_fundingagency",
       fundingagencyObj
     ).then(() => {
+      alert("บันทึกข้อมูลสำเร็จ!!");
       setabout_finding([
         ...about_finding,
         {
@@ -86,12 +87,11 @@ export default function AddAboutResearch() {
         },
       ]);
     });
-    alert("บันทึกข้อมูลสำเร็จ!!");
   };
   return (
     <>
       <div className="card-header">
-        <NavLink to="/addfunding/fundingresearch">
+        {/* <NavLink to="/addfunding/fundingresearch">
           <button
             className="btn btn-primary btn-fundingresearch card-header-menu"
             onClick={() => {
@@ -171,7 +171,7 @@ export default function AddAboutResearch() {
           >
             งานวิจัย
           </button>
-        </NavLink>
+        </NavLink> */}
         <div
           className="projcard-bar"
           style={{ marginLeft: "0", marginRight: "0" }}

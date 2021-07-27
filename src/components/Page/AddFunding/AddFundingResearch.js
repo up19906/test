@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-use-before-define */
 /* eslint-disable react/jsx-no-duplicate-props */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createRef } from "react";
 import { NavLink } from "react-router-dom";
 import { Row, Col, Button, Modal, Form } from "react-bootstrap";
 import Axios from "axios";
@@ -10,6 +10,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 export default function AddFundingResearch() {
+  const form = createRef();
   var date = new Date();
   const year = [
     { value: [date.getFullYear() + 544] },
@@ -85,8 +86,8 @@ export default function AddFundingResearch() {
   // console.log("test :1", project_status);
 
   const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
+    const forms = event.currentTarget;
+    if (forms.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
       setValidated(true);
@@ -96,7 +97,8 @@ export default function AddFundingResearch() {
         select_research.push(select_researchname[i].value);
       }
       // let text = select_research.toString();
-      console.log("testSelect : ", select_research);
+      // console.log("testSelect : ", select_research);
+      const dataArray = new FormData(form.current);
       Axios.post("http://localhost:4000/api/create/coordinator_fundingagency", {
         funding_project_name: funding_project_name,
         coordinator_project: coordinator_project,
@@ -111,34 +113,40 @@ export default function AddFundingResearch() {
         funding_type: funding_type,
         coordinator_univercity_budget: coordinator_univercity_budget,
         // created_date: today,
-      }).then(() => {
-        setFunding_research([
-          ...funding_research,
-          {
-            funding_project_name: funding_project_name,
-            coordinator_project: coordinator_project,
-            funding_agency: funding_agency,
-            funding_project_leader: funding_project_leader,
-            funding_phone: funding_phone,
-            select_research: select_research,
-            project_status: project_status,
-            funding_year: funding_year,
-            funding_budget: funding_budget,
-            funding_name: funding_name,
-            funding_type: funding_type,
-            coordinator_univercity_budget: coordinator_univercity_budget,
-            // created_date: today,
-          },
-        ]);
-      });
-      alert("บันทึกข้อมูลสำเร็จ!!");
+      })
+        .then(() => {
+          alert("บันทึกข้อมูลสำเร็จ!!");
+          // console.log(res.data.massage);
+          // alert(res.data.massage);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      setFunding_research([
+        ...funding_research,
+        {
+          funding_project_name: funding_project_name,
+          coordinator_project: coordinator_project,
+          funding_agency: funding_agency,
+          funding_project_leader: funding_project_leader,
+          funding_phone: funding_phone,
+          select_research: select_research,
+          project_status: project_status,
+          funding_year: funding_year,
+          funding_budget: funding_budget,
+          funding_name: funding_name,
+          funding_type: funding_type,
+          coordinator_univercity_budget: coordinator_univercity_budget,
+          // created_date: today,
+        },
+      ]);
     }
   };
   return (
     <>
       <div className="card-header">
         <Row>
-          <NavLink to="/addfunding/fundingresearch">
+          {/* <NavLink to="/addfunding/fundingresearch">
             <button
               className="btn  btn-fundingresearch card-header-menu "
               onClick={() => {
@@ -148,12 +156,12 @@ export default function AddFundingResearch() {
                 document
                   .querySelector(".btn-acdemic")
                   .classList.add("btn-primary");
-                document
-                  .querySelector(".btn-about")
-                  .classList.add("btn-primary");
-                document
-                  .querySelector(".btn-research")
-                  .classList.add("btn-primary");
+                // document
+                //   .querySelector(".btn-about")
+                //   .classList.add("btn-primary");
+                // document
+                //   .querySelector(".btn-research")
+                //   .classList.add("btn-primary");
               }}
             >
               แหล่งทุนงานวิจัย
@@ -170,18 +178,18 @@ export default function AddFundingResearch() {
                 document
                   .querySelector(".btn-acdemic")
                   .classList.remove("btn-primary");
-                document
-                  .querySelector(".btn-about")
-                  .classList.add("btn-primary");
-                document
-                  .querySelector(".btn-research")
-                  .classList.add("btn-primary");
+                // document
+                //   .querySelector(".btn-about")
+                //   .classList.add("btn-primary");
+                // document
+                //   .querySelector(".btn-research")
+                //   .classList.add("btn-primary");
               }}
             >
               แหล่งทุนงานบริการวิชาการ
             </button>
-          </NavLink>
-          <NavLink to="/addfunding/aboutfunding">
+          </NavLink> */}
+          {/* <NavLink to="/addfunding/aboutfunding">
             <button
               className="btn btn-primary btn-about card-header-menu"
               style={{ marginLeft: "1rem" }}
@@ -224,7 +232,7 @@ export default function AddFundingResearch() {
             >
               งานวิจัย
             </button>
-          </NavLink>
+          </NavLink> */}
         </Row>
         <div
           className="projcard-bar"
@@ -232,7 +240,7 @@ export default function AddFundingResearch() {
         ></div>
       </div>
 
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form ref={form} noValidate validated={validated} onSubmit={handleSubmit}>
         <h4 style={{ textAlign: "center" }}>เพิ่มข้อมูลแหล่งทุน งานวิจัย</h4>
 
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
@@ -522,16 +530,21 @@ export default function AddFundingResearch() {
                 </select>
 
                 <div>
-                  <i
-                    style={{ margin: "0.5rem", cursor: "pointer" }}
-                    onClick={() => setModalShow(true)}
-                    className="fas fa-plus-circle"
+                  <NavLink
+                    to="/addfunding/aboutfunding"
+                    style={{ color: "#000", fontSize: "14px" }}
                   >
-                    {" "}
-                    เพิ่มแหล่งทุน
-                  </i>
+                    <i
+                      style={{ margin: "0.5rem", cursor: "pointer" }}
+                      className="fas fa-plus-circle"
+                      // onClick={() => setModalShow(true)}
+                    >
+                      {" "}
+                      เพิ่มแหล่งทุน
+                    </i>
+                  </NavLink>
                 </div>
-                <Modal
+                {/* <Modal
                   size="lg"
                   aria-labelledby="contained-modal-title-vcenter"
                   centered
@@ -586,7 +599,7 @@ export default function AddFundingResearch() {
                       บันทึก
                     </Button>
                   </Modal.Footer>
-                </Modal>
+                </Modal> */}
               </div>
             </Col>
 
