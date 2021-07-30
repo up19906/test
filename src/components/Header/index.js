@@ -2,19 +2,30 @@
 import React, { useState, useEffect } from "react";
 import { Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import {
+  openmenu,
+  closemenu,
+  opensidebar,
+  closesidebar,
+} from "../../redux/header/action";
+import { connect } from "react-redux";
 // import $ from "jquery";
 
 import "./style.scss";
 
-export default function Header() {
-  const [sidebar, setSidebar] = useState(false);
+function Header(props) {
+  // const [sidebar, setSidebar] = useState(true);
   const [submenu, setsubmenu] = useState(true);
-  const [menu, setmenu] = useState(false);
+  // const [menu, setmenu] = useState(false);
+  console.log("testmenu:", props.menu);
 
   const openCloseSidebar = () => {
-    if (sidebar) {
-      setSidebar(!sidebar);
-      setmenu(false);
+    if (props.sidebar === false) {
+      // setSidebar(!sidebar);
+      // setmenu(false);
+      props.closesidebar();
+      // props.opensidebar();
+      props.closemenu();
       document
         .querySelector(".sidebar-mini")
         .classList.remove("sidebar-collapse");
@@ -25,9 +36,11 @@ export default function Header() {
       document
         .querySelector(".main-sidebar")
         .classList.remove("main-sidebar-open");
-    } else {
-      setSidebar(!sidebar);
-      setmenu(true);
+    } else if (props.sidebar === true) {
+      // setSidebar(!sidebar);
+      console.log("testmenu:", props.sidebar);
+      props.opensidebar();
+      props.openmenu();
       document.querySelector(".sidebar-mini").classList.add("sidebar-collapse");
       document.querySelector(".content-wrapper").classList.add("content-side");
       document.querySelector(".main-footer").classList.add("content-side");
@@ -57,12 +70,17 @@ export default function Header() {
     }
   };
 
-  useEffect(() => {}, []);
+  // useEffect(() => {
+  //   props.openmenu();
+  //   props.closemenu();
+  //   props.opensidebar();
+  //   props.closesidebar();
+  // }, [props]);
 
   return (
     <div className="wraper">
       <div
-        className={`offcanvas-menu-overlay ${menu && "active"}`}
+        className={`offcanvas-menu-overlay ${props.menu && "active"}`}
         onClick={() => openCloseSidebar()}
       />
       <body className="hold-transition sidebar-mini">
@@ -324,3 +342,16 @@ export default function Header() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  menu: state.header.menu,
+  sidebar: state.header.sidebar,
+});
+const mapDispatchToProps = (dispatch) => ({
+  openmenu: () => dispatch(openmenu()),
+  closemenu: () => dispatch(closemenu()),
+  opensidebar: () => dispatch(opensidebar()),
+  closesidebar: () => dispatch(closesidebar()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

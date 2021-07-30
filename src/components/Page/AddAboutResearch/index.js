@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 // import Axios from "axios";
 // import { Switch, Route } from "react-router-dom";
 // import { NavLink } from "react-router-dom";
@@ -7,12 +8,11 @@ import React from "react";
 import Welcome from "../Home/welcome";
 import AddAboutResearch from "./AddAboutResearch";
 // import AddResearch from "./AddResearch";
-
-export default function AboutResearch() {
+function AboutResearch(props) {
   return (
     <div>
       <div className="wrapper">
-        <div className="content-wrapper">
+        <div className={`content-wrapper ${props.menu && "  content-side"}`}>
           <div className="content-header">
             <div className="container-fluid" style={{ textAlign: "left" }}>
               <h1
@@ -39,3 +39,10 @@ export default function AboutResearch() {
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    menu: state.header.menu,
+  };
+};
+
+export default connect(mapStateToProps)(AboutResearch);

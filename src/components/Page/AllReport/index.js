@@ -1,16 +1,17 @@
 // import React from "react";
 import React from "react";
 import { Switch, Route } from "react-router-dom";
+import { connect } from "react-redux";
 import Researcher from "./Researcher";
 import Research from "./Research";
 import Budget from "./Budget";
 import Welcome from "../Home/welcome";
 
-function AllReport() {
+function AllReport(props) {
   return (
     <div>
       <div className="wrapper">
-        <div className="content-wrapper">
+        <div className={`content-wrapper ${props.menu && "  content-side"}`}>
           <div className="content-header">
             <div className="container-fluid" style={{ textAlign: "left" }}>
               <h1
@@ -51,4 +52,10 @@ function AllReport() {
   );
 }
 
-export default AllReport;
+const mapStateToProps = (state) => {
+  return {
+    menu: state.header.menu,
+  };
+};
+
+export default connect(mapStateToProps)(AllReport);

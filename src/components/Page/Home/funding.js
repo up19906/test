@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Modal, Form } from "react-bootstrap";
 import Axios from "axios";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+
+import { getcoordinator_funding } from "../../../redux/home/action";
+
 // import { NavLink } from "react-router-dom";
 
-export default function Finding() {
+function Finding(props) {
   var date = new Date();
   var today =
     [date.getFullYear(), date.getMonth() + 1, date.getDate()].join("-") +
@@ -21,7 +25,7 @@ export default function Finding() {
     { value: [date.getFullYear() + 540] },
     { value: [date.getFullYear() + 539] },
   ];
-  const [fundingagency, setfundingagency] = useState([]);
+  // const [fundingagency, setfundingagency] = useState([]);
   const [funding_research, setFunding_research] = useState([]);
   const [getupdate, setGetupdate] = useState([]);
   const [funding_project_name, setFunding_project_name] = useState(""); //ชื่อโครงการ
@@ -53,18 +57,21 @@ export default function Finding() {
   const [source_funds, setSource_fund] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:4000/api/get/coordinator_fundingagency").then(
-      (fundingagency) => {
-        setfundingagency(fundingagency.data);
-        console.log("test_fundingagency", fundingagency.data);
-      }
-    );
+    props.getcoordinator_funding();
+    // Axios.get("http://localhost:4000/api/get/coordinator_fundingagency").then(
+    //   (fundingagency) => {
+    //     setfundingagency(fundingagency.data);
+    //     console.log("test_fundingagency", fundingagency.data);
+    //   }
+    // );
+    
     Axios.get(
       "http://localhost:4000/api/get/concept_proposal_research_facultys"
     ).then((res) => {
       setresearch(res.data);
       console.log("research : ", research);
     });
+
     Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
       setSource_fund(source.data);
     });
@@ -228,7 +235,11 @@ export default function Finding() {
                         </thead>
                         <tbody>
                           {/* เริ่มดึงmap มาตรงนี้ */}
-                          {fundingagency.map(function (data, i) {
+                          {/* {props.statehome.coordinator_funding.length >0 } */}
+                          {props.statehome.coordinator_funding.map(function (
+                            data,
+                            i
+                          ) {
                             return (
                               <tr key={i}>
                                 <td>{data.coordinater_funding_project_name}</td>
@@ -776,3 +787,13 @@ export default function Finding() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    statehome: state.statehome,
+  };
+};
+
+export default connect(mapStateToProps, {
+  getcoordinator_funding,
+})(Finding);

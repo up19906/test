@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
 // import "./styles_header.scss";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -18,9 +20,11 @@ import "../src/components/Header/style.scss";
 
 ReactDOM.render(
   // <React.StrictMode>
-  <BrowserRouter basename={"/up_test"}>
-    <App />
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter basename={"/up_test"}>
+      <App />
+    </BrowserRouter>
+  </Provider>,
   // </React.StrictMode>,
   document.getElementById("root")
 );
