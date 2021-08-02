@@ -22,23 +22,26 @@ class ApiData {
   }
 
   //Funding
-  getcodinator_funding(){
+  getcodinator_funding() {
     return http.get("/get/coordinator_fundingagency");
   }
-  getconcept_proposal_research_facultys(){
+  getconcept_proposal_research_facultys() {
     return http.get("/get/concept_proposal_research_facultys");
   }
-  getsource_funds(){
+  getsource_funds() {
     return http.get("/get/source_funds");
   }
-  
+  getproject_type() {
+    return http.get("/get/project-type");
+  }
+  created_funding(data) {
+    return http.post("/create/coordinator_fundingagency", data);
+  }
 
-
-
-
-
-
-
+  // bb_user
+  getuser() {
+    return http.get("/get/bb-user");
+  }
 
   createabout_funding(data) {
     return http.post("/post/coordinator_about_fundingagency", data);

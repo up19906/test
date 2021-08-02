@@ -5,26 +5,18 @@ import { Row, Col, Button, Modal, Form } from "react-bootstrap";
 import Axios from "axios";
 import { connect } from "react-redux";
 
-import { addconcept } from "../../../redux/conceptProposal/action";
-import { data } from "jquery";
-// import Select from "react-select";
-// import makeAnimated from "react-select/animated";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
+import {
+  getUser,
+  getSource_funds,
+  getprojecttype,
+  getyear,
+  updateInput,
+  updateInput2,
+} from "../../../redux/conceptProposal/action";
 function AddConceptproposal(props) {
-  var date = new Date();
-  var today =
-    [date.getFullYear(), date.getMonth() + 1, date.getDate()].join("-") +
-    " " +
-    [date.getHours(), date.getMinutes(), date.getSeconds()].join(":");
-  console.log("testdate:string", today);
-  const year = [
-    { value: [date.getFullYear() + 544] },
-    { value: [date.getFullYear() + 543] },
-    { value: [date.getFullYear() + 542] },
-    { value: [date.getFullYear() + 541] },
-    { value: [date.getFullYear() + 540] },
-    { value: [date.getFullYear() + 539] },
-  ];
   const form = createRef();
 
   const [about_finding, setabout_finding] = useState([]);
@@ -34,62 +26,35 @@ function AddConceptproposal(props) {
   const [project_budget, setproject_budget] = useState(""); //งบประมาณที่ได้รับ
   const [project_star, setproject_star] = useState(""); //ปี
   const [project_agency, setproject_agency] = useState(""); //หน่วยงานเจ้าของโครงการ
-
-  // const [create_date, setCreate_date] = useState("");
+  const [select_researchname, setselect_researchname] = useState("");
   const [project_status, setproject_status] = useState(""); //สถานะโครงการ
 
   const [validated, setValidated] = useState(false);
-  // const [showtableResearcher, setshowtableResearcher] = React.useState(false);
-  //   const [source_funds_name, setsource_funds_name] = useState("");
-  // const [fname, setfname] = useState(null);
-  // const [lname, setlname] = useState(null);
-  // const [idcard, setidcard] = useState(null);
-
-  const [source_funds, setSource_fund] = useState([]);
-  const [project_type, setproject_type] = useState([]);
-  const [status_type, setstatus_type] = useState([]);
-  // const [select_researchname, setselect_researchname] = useState("");
-  const [research, setresearch] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
-      setSource_fund(source.data);
-    });
-    Axios.get(
-      "http://localhost:4000/api/get/concept_proposal_research_facultys"
-    ).then((res) => {
-      setresearch(res.data);
-      console.log("research : ", research);
-    });
-    Axios.get("http://localhost:4000/api/get/project-type").then((resp) => {
-      // console.log(resp.data);
-      setproject_type(resp.data);
-    });
-    Axios.get(
-      "http://localhost:4000/api/get/coordinator_fundingagency_status"
-    ).then((res) => {
-      setstatus_type(res.data);
-      console.log("setstatus_type : ", status_type);
-    });
+    props.getUser();
+    props.getSource_funds();
+    props.getprojecttype();
+    props.getyear();
   }, []);
 
-  // const researcher = (selectedOptions) => {
-  //   setselect_researchname(selectedOptions);
-  //   for (let i = 0; i < select_researchname.length; i = i + 1) {
-  //     select_research.push(select_researchname[i].value);
-  //   }
-  // };
-  // const animatedComponents = makeAnimated();
+  const animatedComponents = makeAnimated();
   var test = [];
-  for (let i = 0; i < research.length; i = i + 1) {
+  for (let i = 0; i < props.user.length; i = i + 1) {
     test.push({
-      value: research[i].research_faculty_idcrad,
+      value: props.user[i].user_idcard,
       label:
-        research[i].research_faculty_username +
+        props.user[i].user_first_name_th +
         " " +
-        research[i].research_faculty_lastname,
+        props.user[i].user_last_name_th,
     });
   }
+
+  // const handleChange = ({ target: { value } }) => {
+  //   props.updateInput(value);
+  // };
+
+  // console.log("reseacher : ", project_star);
 
   const handleSubmit = () => {
     props
@@ -161,7 +126,8 @@ function AddConceptproposal(props) {
     // }
   };
 
-  console.log("testconcept ", props.concept);
+  console.log("testconcept ", props.test);
+  console.log("testconcept 2: ", props.test2);
   return (
     <React.Fragment>
       <Form ref={form} noValidate validated={validated} onSubmit={handleSubmit}>
@@ -181,13 +147,18 @@ function AddConceptproposal(props) {
                   }}
                 >
                   <option value="">เลือกประเภท</option>
-                  {project_type.map((value, i) => {
-                    return (
-                      <option key={i} value={value.project_type_name}>
-                        {value.project_type_name}
-                      </option>
-                    );
-                  })}
+
+                  {props.project_type.length > 0 ? (
+                    <>
+                      {props.project_type.map((value, i) => {
+                        return (
+                          <option key={i} value={value.project_type_name}>
+                            {value.project_type_name}
+                          </option>
+                        );
+                      })}
+                    </>
+                  ) : null}
                 </select>
                 <Form.Control.Feedback type="invalid">
                   <h6 style={{ marginTop: "0.7rem" }}>** โปรดกรอกประเภท</h6>
@@ -204,7 +175,7 @@ function AddConceptproposal(props) {
                   name="project_name"
                   className="form-control"
                   onChange={(event) => {
-                    setproject_name(event.target.value);
+                    props.updateInput(event.target.value);
                   }}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -227,13 +198,17 @@ function AddConceptproposal(props) {
                   }}
                 >
                   <option value="">เลือกแหล่งทุน</option>
-                  {source_funds.map((value, i) => {
-                    return (
-                      <option key={i} value={value.source_funds_name}>
-                        {value.source_funds_name}
-                      </option>
-                    );
-                  })}
+                  {props.source_funds.length > 0 ? (
+                    <>
+                      {props.source_funds.map((value, i) => {
+                        return (
+                          <option key={i} value={value.source_funds_name}>
+                            {value.source_funds_name}
+                          </option>
+                        );
+                      })}
+                    </>
+                  ) : null}
                 </select>
                 <Form.Control.Feedback type="invalid">
                   <h6 style={{ marginTop: "0.7rem" }}>** โปรดกรอกแหล่งทุน</h6>
@@ -253,13 +228,17 @@ function AddConceptproposal(props) {
                   }}
                 >
                   <option value="">เลือกปี</option>
-                  {year.map((value, i) => {
-                    return (
-                      <option key={i} value={value.value}>
-                        {value.value}
-                      </option>
-                    );
-                  })}
+                  {props.year.length > 0 ? (
+                    <>
+                      {props.year.map((value, i) => {
+                        return (
+                          <option key={i} value={value.value}>
+                            {value.value}
+                          </option>
+                        );
+                      })}
+                    </>
+                  ) : null}
                 </select>
                 <Form.Control.Feedback type="invalid">
                   <h6 style={{ marginTop: "0.7rem" }}>** โปรดกรอกปีงบประมาณ</h6>
@@ -276,7 +255,7 @@ function AddConceptproposal(props) {
                   name="project_budget"
                   className="form-control"
                   onChange={(event) => {
-                    setproject_budget(event.target.value);
+                    props.updateInput2(event.target.value);
                   }}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -309,20 +288,15 @@ function AddConceptproposal(props) {
             <Col lg={7}>
               <div className="form-group">
                 <Form.Label>หัวหน้าแผน</Form.Label>
-                <Form.Control
-                  type="text"
-                  required
-                  name="project_agency"
-                  className="form-control"
-                  onChange={(event) => {
-                    setproject_agency(event.target.value);
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  onChange={(selectedOptions) => {
+                    setselect_researchname(selectedOptions);
                   }}
+                  // defaultValue={[colourOptions[4], colourOptions[5]]}
+                  options={test}
                 />
-                <Form.Control.Feedback type="invalid">
-                  <h6 style={{ marginTop: "0.7rem" }}>
-                    ** โปรดกรอกหน่วยงานเจ้าของโครงการ
-                  </h6>
-                </Form.Control.Feedback>
               </div>
             </Col>
             {/* เบอร์ติดต่อ */}
@@ -430,13 +404,17 @@ function AddConceptproposal(props) {
                       }}
                     >
                       <option value="">เลือกประเภท</option>
-                      {project_type.map((value, i) => {
-                        return (
-                          <option key={i} value={value.project_type_name}>
-                            {value.project_type_name}
-                          </option>
-                        );
-                      })}
+                      {props.project_type.length > 0 ? (
+                        <>
+                          {props.project_type.map((value, i) => {
+                            return (
+                              <option key={i} value={value.project_type_name}>
+                                {value.project_type_name}
+                              </option>
+                            );
+                          })}
+                        </>
+                      ) : null}
                     </select>
                     <Form.Control.Feedback type="invalid">
                       <h6 style={{ marginTop: "0.7rem" }}>** โปรดกรอกประเภท</h6>
@@ -476,7 +454,7 @@ function AddConceptproposal(props) {
                       }}
                     >
                       <option value="">เลือกแหล่งทุน</option>
-                      {source_funds.map((value, i) => {
+                      {props.source_funds.map((value, i) => {
                         return (
                           <option key={i} value={value.source_funds_name}>
                             {value.source_funds_name}
@@ -504,13 +482,18 @@ function AddConceptproposal(props) {
                       }}
                     >
                       <option value="">เลือกปี</option>
-                      {year.map((value, i) => {
-                        return (
-                          <option key={i} value={value.value}>
-                            {value.value}
-                          </option>
-                        );
-                      })}
+                      {props.year.length > 0 ? (
+                        <>
+                          {" "}
+                          {props.year.map((value, i) => {
+                            return (
+                              <option key={i} value={value.value}>
+                                {value.value}
+                              </option>
+                            );
+                          })}{" "}
+                        </>
+                      ) : null}
                     </select>
                     <Form.Control.Feedback type="invalid">
                       <h6 style={{ marginTop: "0.7rem" }}>
@@ -561,21 +544,17 @@ function AddConceptproposal(props) {
                 {/* หัวหน้าแผน */}
                 <Col lg={7}>
                   <div className="form-group">
-                    <Form.Label>หัวหน้าแผน</Form.Label>
-                    <Form.Control
-                      type="text"
-                      required
-                      name="project_agency"
-                      className="form-control"
-                      onChange={(event) => {
-                        setproject_agency(event.target.value);
+                    <label>ทีมนักวิจัย</label>
+                    <Select
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      onChange={(selectedOptions) => {
+                        setselect_researchname(selectedOptions);
                       }}
+                      // defaultValue={[colourOptions[4], colourOptions[5]]}
+                      isMulti
+                      options={test}
                     />
-                    <Form.Control.Feedback type="invalid">
-                      <h6 style={{ marginTop: "0.7rem" }}>
-                        ** โปรดกรอกหน่วยงานเจ้าของโครงการ
-                      </h6>
-                    </Form.Control.Feedback>
                   </div>
                 </Col>
                 {/* เบอร์ติดต่อ */}
@@ -630,29 +609,42 @@ function AddConceptproposal(props) {
 const mapStateToProps = (state) => {
   return {
     concept: state.concept.concept,
+    user: state.concept.user,
+    source_funds: state.concept.sourcefund,
+    project_type: state.concept.projecttype,
+    year: state.concept.year,
+    test: state.concept.test,
+    test2: state.concept.test2,
   };
 };
-const mapDispatchToProps = (dispatch) => ({
-  addconcept: (
-    selectProjectType,
-    project_name,
-    selectSourceFunds,
-    project_budget,
-    project_star,
-    project_agency,
-    project_status
-  ) =>
-    dispatch(
-      addconcept(
-        selectProjectType,
-        project_name,
-        selectSourceFunds,
-        project_budget,
-        project_star,
-        project_agency,
-        project_status
-      )
-    ),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   addconcept: (
+//     selectProjectType,
+//     project_name,
+//     selectSourceFunds,
+//     project_budget,
+//     project_star,
+//     project_agency,
+//     project_status
+//   ) =>
+//     dispatch(
+//       addconcept(
+//         selectProjectType,
+//         project_name,
+//         selectSourceFunds,
+//         project_budget,
+//         project_star,
+//         project_agency,
+//         project_status
+//       )
+//     ),
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddConceptproposal);
+export default connect(mapStateToProps, {
+  getUser,
+  getSource_funds,
+  getprojecttype,
+  getyear,
+  updateInput,
+  updateInput2,
+})(AddConceptproposal);

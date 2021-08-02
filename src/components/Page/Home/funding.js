@@ -8,6 +8,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 import { getcoordinator_funding } from "../../../redux/home/action";
+import { getUser } from "../../../redux/conceptProposal/action";
 
 // import { NavLink } from "react-router-dom";
 
@@ -58,13 +59,14 @@ function Finding(props) {
 
   useEffect(() => {
     props.getcoordinator_funding();
+    props.getUser();
     // Axios.get("http://localhost:4000/api/get/coordinator_fundingagency").then(
     //   (fundingagency) => {
     //     setfundingagency(fundingagency.data);
     //     console.log("test_fundingagency", fundingagency.data);
     //   }
     // );
-    
+
     Axios.get(
       "http://localhost:4000/api/get/concept_proposal_research_facultys"
     ).then((res) => {
@@ -796,4 +798,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getcoordinator_funding,
+  getUser,
 })(Finding);
