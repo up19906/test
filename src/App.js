@@ -11,14 +11,16 @@ import Home from "./components/Page/Home";
 // import Contact from "./components/Page/Contact";
 import { Route, Switch } from "react-router-dom";
 
+
 function App() {
   return (
     <div>
       <Header />
       <Switch>
         <Route exact path="/home" component={Home} />
+        <Route exact path="/" component={Home} />
         {/* <Route path="/contact" component={Contact} /> */}
-        <Route exact path="/addfunding" component={Home} />
+        {/* <Route exact path="/addfunding" component={createQuery} /> */}
         <Route
           exact
           path="/addfunding/addfundingresearch"

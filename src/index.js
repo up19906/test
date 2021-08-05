@@ -16,6 +16,7 @@ import "../src/style/plugins/overlayScrollbars/css/OverlayScrollbars.min.css";
 // import "../src/style/plugins/daterangepicker/daterangepicker.css";
 // import "../../../style/plugins/summernote/summernote-bs4.min.css";
 import "../src/components/Header/style.scss";
+// import "bootstrap/dist/css/bootstrap.min.css";
 // import "semantic-ui-css/semantic.min.css";
 
 ReactDOM.render(

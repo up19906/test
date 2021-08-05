@@ -10,13 +10,17 @@ import {
 
 const initialState = {
   concept: {
-    selectProjectType: "",
-    project_name: "",
-    selectSourceFunds: "",
-    project_budget: 0,
-    project_star: "",
-    project_agency: "",
-    project_status: "",
+    concept_budget: "",
+    concept_leader: "",
+    concept_phone: "",
+    concept_proposal_name: "",
+    concept_proposal_paln_master: "เลือกประเภท",
+    concept_proposal_paln_sub: "เลือกแหล่งทุน",
+    concept_proposal_type: "",
+    concept_univercity_budget: "",
+    concept_year: "เลือกปี",
+    id: 0,
+    user_idcard: "",
   },
   test: {},
   test2: {},
@@ -32,12 +36,6 @@ export default function reducerconcept(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case "UPDATE_INPUT":
-      return { ...state, test: payload };
-
-    case "UPDATE_INPUT2":
-      return { ...state, test2: payload };
-
     case GET_YEAR:
       return { ...state, year: payload };
 
@@ -51,7 +49,23 @@ export default function reducerconcept(state = initialState, action) {
       return { ...state, sourcefund: payload };
 
     case ADD_CONCEPT:
-      return { ...state, concept: payload };
+      return {
+        ...state,
+        concept: {
+          ...state.concept,
+          concept_budget: payload.concept_budget,
+          concept_leader: payload.concept_leader,
+          concept_phone: payload.concept_phone,
+          concept_proposal_name: payload.concept_proposal_name,
+          concept_proposal_paln_master: payload.concept_proposal_paln_master,
+          concept_proposal_paln_sub: payload.concept_proposal_paln_sub,
+          concept_proposal_type: payload.concept_proposal_type,
+          concept_univercity_budget: payload.concept_univercity_budget,
+          concept_year: payload.concept_year,
+          id: payload.id,
+          user_idcard: payload.user_idcard,
+        },
+      };
 
     case ADD_STUDYAREA:
       return { ...state, studyarea: payload };

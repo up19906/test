@@ -69,48 +69,35 @@ export const getSource_funds = () => async (dispatch) => {
   }
 };
 
-export const updateInput = (input) => ({
-  type: "UPDATE_INPUT",
-  payload: { txt: input },
-});
-export const updateInput2 = (input) => ({
-  type: "UPDATE_INPUT2",
-  payload: { test: input },
-});
-
 export const addconcept =
   (
-    selectProjectType,
-    project_name,
-    selectSourceFunds,
-    project_budget,
-    project_star,
-    project_agency,
-    project_status
+    project_type_id,
+    concept_proposal_name,
+    source_funds_id,
+    concept_year,
+    concept_budget,
+    concept_univercity_budget,
+    concept_leader,
+    concept_phone,
+    concept_proposal_type
   ) =>
   async (dispatch) => {
     try {
-      const res = {
-        selectProjectType,
-        project_name,
-        selectSourceFunds,
-        project_budget,
-        project_star,
-        project_agency,
-        project_status,
-      };
+      const res = await ApiData.create_concept({
+        project_type_id,
+        concept_proposal_name,
+        source_funds_id,
+        concept_year,
+        concept_budget,
+        concept_univercity_budget,
+        concept_leader,
+        concept_phone,
+        concept_proposal_type,
+      });
 
       dispatch({
         type: ADD_CONCEPT,
-        payload: {
-          selectProjectType: selectProjectType,
-          project_name: project_name,
-          selectSourceFunds: selectSourceFunds,
-          project_budget: project_budget,
-          project_star: project_star,
-          project_agency: project_agency,
-          project_status: project_status,
-        },
+        payload: res.data,
       });
 
       return Promise.resolve(res.data);

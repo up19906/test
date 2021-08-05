@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import {
@@ -182,9 +182,9 @@ function Header(props) {
                         </NavLink>
                       </li>
                       <li className="nav-item">
-                        <NavLink
-                          to="/addfunding"
-                          className="nav-link nav_link_add "
+                        <a
+                          style={{ cursor: "pointer" }}
+                          className="nav-link nav_link_add"
                           onClick={() => openMenu()}
                         >
                           <i className="nav-icon fas fa-plus-circle" />
@@ -196,7 +196,7 @@ function Header(props) {
                               <i className="right fas fa-angle-down" />
                             )}
                           </p>
-                        </NavLink>
+                        </a>
                         {/* start */}
                         <ul
                           className="nav nav-treeview nav_treeview_add "
@@ -211,15 +211,7 @@ function Header(props) {
                               <p>แหล่งทุนงานวิจัย</p>
                             </NavLink>
                           </li>
-                          {/* <li className="nav-item">
-                            <NavLink
-                              to="/addfunding/academic"
-                              className="nav-link"
-                            >
-                              <i className="far fas fa-angle-right nav-icon" />
-                              <p>แหล่งทุนงานบริการวิชาการ</p>
-                            </NavLink>
-                          </li> */}
+
                           <li className="nav-item">
                             <NavLink
                               to="/addfunding/aboutfunding"
@@ -229,15 +221,6 @@ function Header(props) {
                               <p>ข้อมูลทั่วไปเกี่ยวกับทุน</p>
                             </NavLink>
                           </li>
-                          {/* <li className="nav-item">
-                            <NavLink
-                              to="/addfunding/research"
-                              className="nav-link"
-                            >
-                              <i className="far fas fa-angle-right nav-icon" />
-                              <p>งานวิจัย</p>
-                            </NavLink>
-                          </li> */}
                         </ul>
                         {/* // end  */}
                       </li>{" "}
@@ -256,56 +239,16 @@ function Header(props) {
                           <i className="nav-icon 	fas fa-file-alt" />
                           <p>
                             AllReport
-                            <i className="right fas fa-angle-left" />
+                            {/* <i className="right fas fa-angle-left" /> */}
                           </p>
                         </NavLink>
-                        {/* ติดไว้ก่อน ค่อยทำ */}
-                        {/* <ul
-                          className="nav nav-treeview nav_treeview_add "
-                          // style={{ display: "block" }}
-                        >
-                          <li className="nav-item">
-                            <NavLink to="/addfunding" className="nav-link">
-                              <i className="far fa-circle nav-icon" />
-                              <p>แหล่งทุนงานวิจัย</p>
-                            </NavLink>
-                          </li>
-                          <li className="nav-item">
-                            <NavLink
-                              to="/addfunding/academic"
-                              className="nav-link"
-                            >
-                              <i className="far fa-circle nav-icon" />
-                              <p>แหล่งทุนงานบริการวิชาการ</p>
-                            </NavLink>
-                          </li>
-                          <li className="nav-item">
-                            <NavLink
-                              to="/addfunding/aboutfunding"
-                              className="nav-link"
-                            >
-                              <i className="far fa-circle nav-icon" />
-                              <p>ข้อมูลทั่วไปเกี่ยวกับทุน</p>
-                            </NavLink>
-                          </li>
-                          <li className="nav-item">
-                            <NavLink
-                              to="/addfunding/research"
-                              className="nav-link"
-                            >
-                              <i className="far fa-circle nav-icon" />
-                              <p>งานวิจัย</p>
-                            </NavLink>
-                          </li>
-                        </ul> */}
-                        {/* ติดไว้ก่อน ค่อยทำ */}
                       </li>
                       <li className="nav-item">
                         <a href="/" className="nav-link">
                           <i className="nav-icon fas fa-sign-out-alt" />
                           <p>
                             ออกจากระบบ
-                            <i className="fas fa-angle-left right" />
+                            {/* <i className="fas fa-angle-left right" /> */}
                           </p>
                         </a>
                       </li>

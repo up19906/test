@@ -32,7 +32,7 @@ export default function AddFundingAcademic() {
   const [funding_type, setfunding_type] = useState(""); //ประเภทงบประมาณ
   const [univercity_ac_budget, setunivercity_ac_budget] = useState(""); //รายได้เข้ามหาลัย
   const [modalShow, setModalShow] = React.useState(false);
-  const [source_funds_name, setSource_funds_name] = useState("");
+  // const [source_funds_name, setSource_funds_name] = useState("");
   const [select_researchname, setselect_researchname] = useState("");
 
   const [source_funds, setSource_fund] = useState([]);

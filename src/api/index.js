@@ -38,6 +38,14 @@ class ApiData {
     return http.post("/create/coordinator_fundingagency", data);
   }
 
+  //concept_proposol
+  create_concept(data) {
+    return http.post("/create/concept_proposal", data);
+  }
+  createsub_concept(data) {
+    return http.post("/createsubconcept/concept_proposal", data);
+  }
+
   // bb_user
   getuser() {
     return http.get("/get/bb-user");

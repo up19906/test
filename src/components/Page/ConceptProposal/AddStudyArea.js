@@ -6,23 +6,11 @@ import Axios from "axios";
 import { connect } from "react-redux";
 import { longdo, map, LongdoMap } from "./LongdoMap";
 
+import { addconcept } from "../../../redux/addconcept/action";
+
 function AddStudyArea(props) {
   console.log("testconcept:", props.concept);
   const mapKey = "de77f24988fb95703631f4f8800d502c";
-  var date = new Date();
-  var today =
-    [date.getFullYear(), date.getMonth() + 1, date.getDate()].join("-") +
-    " " +
-    [date.getHours(), date.getMinutes(), date.getSeconds()].join(":");
-  console.log("testdate:string", today);
-  const year = [
-    { value: [date.getFullYear() + 544] },
-    { value: [date.getFullYear() + 543] },
-    { value: [date.getFullYear() + 542] },
-    { value: [date.getFullYear() + 541] },
-    { value: [date.getFullYear() + 540] },
-    { value: [date.getFullYear() + 539] },
-  ];
   const form = createRef();
 
   const [about_finding, setabout_finding] = useState([]);
@@ -51,6 +39,7 @@ function AddStudyArea(props) {
 
   const [research, setresearch] = useState([]);
 
+  console.log("concept : ", props.concept.id);
   useEffect(() => {
     Axios.get(
       "http://localhost:4000/api/get/concept_proposal_research_facultys"
@@ -183,6 +172,7 @@ function AddStudyArea(props) {
                 <Form.Control
                   type="text"
                   required
+                  id="latitude"
                   name="project_latitude"
                   className="form-control"
                   onChange={(event) => {
@@ -202,6 +192,7 @@ function AddStudyArea(props) {
                 <Form.Control
                   type="text"
                   required
+                  id="longitude"
                   name="project_Longitude"
                   className="form-control"
                   onChange={(event) => {
@@ -262,8 +253,12 @@ function AddStudyArea(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  concept: state.concept.concept,
-});
+const mapStateToProps = (state) => {
+  return {
+    concept: state.concept.concept,
+  };
+};
 
-export default connect(mapStateToProps)(AddStudyArea);
+export default connect(mapStateToProps, {
+  addconcept,
+})(AddStudyArea);

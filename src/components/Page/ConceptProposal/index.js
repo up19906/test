@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import Welcome from "../Home/welcome";
 // import AddAboutResearch from "../AddFunding/AddAboutResearch";
 import AddConceptproposal from "./AddConceptproposal";
+import AddSubConcept from "./AddSubConcept";
 import AddStudyArea from "./AddStudyArea";
 import Network from "./Network";
 
@@ -42,6 +43,11 @@ function Conceptproposal(props) {
                       exact
                       path="/research"
                       component={AddConceptproposal}
+                    />
+                    <Route
+                      exact
+                      path="/research/addsubconcept"
+                      component={AddSubConcept}
                     />
                     <Route
                       path="/research/studyarea"
