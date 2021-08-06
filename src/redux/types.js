@@ -36,6 +36,7 @@ export const DELETE_COORDINATOR_FUNDING_ACADEMIC =
 
 // AddConceptProposal
 export const ADD_CONCEPT = "ADD_CONCEPT";
+export const ADD_ID_SUBCONCEPT = "ADD_ID_SUBCONCEPT";
 export const ADD_SUB_CONCEPT = "ADD_SUB_CONCEPT";
 export const ADD_STUDYAREA = "ADD_STUDYAREA";
 export const ADD_NETWORK = "ADD_NETWORK";

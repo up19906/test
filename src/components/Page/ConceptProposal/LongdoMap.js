@@ -44,24 +44,24 @@ export class LongdoMap extends Component {
     //   //เปิดการใข้งาน event 'overlayClick' ซึ่งจะเรียกฟังค์ชั่นทุกครั้งที่มีการคลิก overlay และตั้งชื่อ overlay ที่ถูกคลิกว่า markerSelect
     //   map.Overlays.remove(marker); //remove overlay ที่ชื่อว่า markerSelect
     // });
-    map.Event.bind("click", function () {
-      //เปิดการใช้งาน event 'click' ซึ่งจะเรียกฟังค์ชั่นทุกครั้งที่มีการคลิกบน map
-      var location = map.location("POINTER");
-      const marker = new longdo.Marker(
-        location, //สร้าง Marker ซึ่งเป็น longdo object โดยลิ้งค์icon ไปที่รูปรถบรรทุก และตั้งค่าให้ คลิก/ลาก ได้
-        {
-          icon: {
-            url: "https://www.km-innovations.rmuti.ac.th/researcher/images/maps-and-flags-50.png",
-          },
-          clickable: true,
-          draggable: false,
-        }
-      );
-      //map.Overlays.remove(marker);
-      map.Overlays.add(marker);
-      document.getElementById("latitude").value = location.lat;
-      document.getElementById("longitude").value = location.lon;
-    });
+    // map.Event.bind("click", function () {
+    //   //เปิดการใช้งาน event 'click' ซึ่งจะเรียกฟังค์ชั่นทุกครั้งที่มีการคลิกบน map
+    //   var location = map.location("POINTER");
+    //   const marker = new longdo.Marker(
+    //     location, //สร้าง Marker ซึ่งเป็น longdo object โดยลิ้งค์icon ไปที่รูปรถบรรทุก และตั้งค่าให้ คลิก/ลาก ได้
+    //     {
+    //       icon: {
+    //         url: "https://www.km-innovations.rmuti.ac.th/researcher/images/maps-and-flags-50.png",
+    //       },
+    //       clickable: true,
+    //       draggable: false,
+    //     }
+    //   );
+    //   //map.Overlays.remove(marker);
+    //   map.Overlays.add(marker);
+    //   document.getElementById("latitude").value = location.lat;
+    //   document.getElementById("longitude").value = location.lon;
+    // });
   }
 
   render() {

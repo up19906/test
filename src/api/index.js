@@ -42,8 +42,8 @@ class ApiData {
   create_concept(data) {
     return http.post("/create/concept_proposal", data);
   }
-  createsub_concept(data) {
-    return http.post("/createsubconcept/concept_proposal", data);
+  updateIDsubconcept(data) {
+    return http.post("/update/concpt_proposal_sub", data);
   }
 
   // bb_user

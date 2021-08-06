@@ -18,11 +18,11 @@ import {
 function AddConceptproposal(props) {
   const form = createRef();
 
-  const [about_finding, setabout_finding] = useState([]);
+  // const [about_finding, setabout_finding] = useState([]);
   const [project_type_id, setproject_type_id] = useState(""); //ประเภท
   const [concept_proposal_name, setconcept_proposal_name] = useState(""); //ชื่อโครงการ
   const [source_funds_id, setsource_funds_id] = useState(""); //แหล่งทุน
-  const [project_budget, setproject_budget] = useState(""); //งบประมาณที่ได้รับ
+  const [concept_budget, setconcept_budget] = useState(""); //งบประมาณที่ได้รับ
   const [concept_year, setconcept_year] = useState(""); //ปี
   const [concept_phone, setconcept_phone] = useState(""); //เบอร์ติดต่อ
   const [select_researchname, setselect_researchname] = useState("");
@@ -73,19 +73,20 @@ function AddConceptproposal(props) {
     //   setValidated(true);
     //   console.log("checkValidity : true :", validated);
     // } else {
+    const concept_leader = select_researchname.value;
+    const leader_name = select_researchname.label;
     if (props.concept.id === 0) {
       props.addconcept(
         project_type_id,
         concept_proposal_name,
         source_funds_id,
         concept_year,
-        project_budget,
+        concept_budget,
         concept_univercity_budget,
-        select_researchname.value,
+        concept_leader,
         concept_phone,
         concept_proposal_type
       );
-      // console.log("sucses id 0 :", props.concept.id);
       console.log("test 1");
       if (concept_proposal_type === "0") {
         props.history.push("/research/studyarea");
@@ -93,6 +94,7 @@ function AddConceptproposal(props) {
         props.history.push("/research/addsubconcept");
       }
     } else {
+      props.history.push("/research/addsubconcept");
       console.log("test 2");
 
       // return <Redirect to="/research/studyarea" />;
@@ -100,9 +102,16 @@ function AddConceptproposal(props) {
     // }
   };
   // console.log(" check1 :", check1);
-  // console.log(" check2 :", check2);
+  // console.log(" projecy_type :", props.concept.project_type_id);
   console.log("testconcept ", props.concept);
-  // console.log("testconcept 2: ", props.test2);
+  // console.log(
+  //   "projecy_type : ",
+  //   props.project_type[props.concept.project_type_id].project_type_name
+  // );
+
+  const poject_type_int = parseInt(props.concept.project_type_id);
+  console.log(" project Id : ", poject_type_int);
+
   return (
     <React.Fragment>
       <Form ref={form} noValidate validated={validated} onSubmit={handleSubmit}>
@@ -123,9 +132,18 @@ function AddConceptproposal(props) {
                     setproject_type_id(event.target.value);
                   }}
                 >
-                  <option value={props.concept.concept_proposal_paln_master}>
-                    {props.concept.concept_proposal_paln_master}
-                  </option>
+                  {
+                    props.concept.project_type_id === null ? (
+                      <option value="">เลือกประเภท</option>
+                    ) : null
+                    // <option value={props.concept.project_type_id}>
+                    //   {
+                    //     props.project_type[
+                    //       parseInt(props.concept.project_type_id)
+                    //     ].project_type_name
+                    //   }
+                    // </option>
+                  }
 
                   {props.project_type.length > 0 ? (
                     <>
@@ -179,14 +197,14 @@ function AddConceptproposal(props) {
                   }}
                 >
                   {
-                    props.concept.concept_proposal_paln_sub ===
-                    "เลือกแหล่งทุน" ? (
-                      <option value="">
-                        {props.concept.concept_proposal_paln_sub}
-                      </option>
+                    props.concept.source_funds_id === null ? (
+                      <option value="">เลือกแหล่งทุน</option>
                     ) : null
-                    // <option value={props.source_funds[props.concept.concept_proposal_paln_sub].source_funds_name}>
-                    //   {props.concept.concept_proposal_paln_sub}
+                    // <option value={props.concept.source_funds_id}>
+                    //   {
+                    //     props.source_funds[props.concept.source_funds_id]
+                    //       .source_funds_name
+                    //   }
                     // </option>
                   }
 
@@ -247,10 +265,10 @@ function AddConceptproposal(props) {
                   type="number"
                   required
                   defaultValue={props.concept.concept_budget}
-                  // name="project_budget"
+                  // name="concept_budget"
                   className="form-control"
                   onChange={(event) => {
-                    setproject_budget(event.target.value);
+                    setconcept_budget(event.target.value);
                   }}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -285,7 +303,7 @@ function AddConceptproposal(props) {
               <div className="form-group">
                 <Form.Label>หัวหน้าแผน</Form.Label>
                 <Select
-                  defaultValue={{ label: props.concept.concept_leader }}
+                  defaultValue={{ label: props.concept.leader_name }}
                   closeMenuOnSelect={true}
                   components={animatedComponents}
                   onChange={(selectedOptions) => {

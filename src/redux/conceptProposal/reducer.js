@@ -1,5 +1,7 @@
 import {
   ADD_CONCEPT,
+  ADD_ID_SUBCONCEPT,
+  ADD_SUB_CONCEPT,
   ADD_STUDYAREA,
   ADD_NETWORK,
   GET_USER,
@@ -10,20 +12,34 @@ import {
 
 const initialState = {
   concept: {
-    concept_budget: "",
-    concept_leader: "",
-    concept_phone: "",
+    project_type_id: null,
     concept_proposal_name: "",
-    concept_proposal_paln_master: "เลือกประเภท",
-    concept_proposal_paln_sub: "เลือกแหล่งทุน",
-    concept_proposal_type: "",
-    concept_univercity_budget: "",
+    source_funds_id: null,
     concept_year: "เลือกปี",
+    concept_budget: "",
+    concept_univercity_budget: "",
+    concept_leader: "",
+    leader_name: "",
+    concept_phone: "",
+    concept_proposal_type: null,
     id: 0,
-    user_idcard: "",
+    // user_idcard: "",
   },
-  test: {},
-  test2: {},
+  subconcept: {
+    project_type_id: null,
+    concept_proposal_name: "",
+    source_funds_id: null,
+    concept_year: "เลือกปี",
+    concept_budget: "",
+    concept_univercity_budget: "",
+    concept_leader: "",
+    leader_name: "",
+    concept_phone: "",
+    concept_proposal_type: null,
+    id: 0,
+    // user_idcard: "",
+  },
+  idsubconcept: {},
   studyarea: [],
   network: [],
   user: [],
@@ -48,22 +64,46 @@ export default function reducerconcept(state = initialState, action) {
     case GET_SOURCEFUND:
       return { ...state, sourcefund: payload };
 
+    case ADD_ID_SUBCONCEPT:
+      return { ...state, idsubconcept: payload };
+
     case ADD_CONCEPT:
       return {
         ...state,
         concept: {
           ...state.concept,
-          concept_budget: payload.concept_budget,
-          concept_leader: payload.concept_leader,
-          concept_phone: payload.concept_phone,
+          project_type_id: payload.project_type_id,
           concept_proposal_name: payload.concept_proposal_name,
-          concept_proposal_paln_master: payload.concept_proposal_paln_master,
-          concept_proposal_paln_sub: payload.concept_proposal_paln_sub,
-          concept_proposal_type: payload.concept_proposal_type,
-          concept_univercity_budget: payload.concept_univercity_budget,
+          source_funds_id: payload.source_funds_id,
           concept_year: payload.concept_year,
+          concept_budget: payload.concept_budget,
+          concept_univercity_budget: payload.concept_univercity_budget,
+          concept_leader: payload.concept_leader,
+          leader_name: payload.leader_name,
+          concept_phone: payload.concept_phone,
+          concept_proposal_type: payload.concept_proposal_type,
           id: payload.id,
-          user_idcard: payload.user_idcard,
+          // user_idcard: payload.user_idcard,
+        },
+      };
+
+    case ADD_SUB_CONCEPT:
+      return {
+        ...state,
+        subconcept: {
+          ...state.concept,
+          project_type_id: payload.project_type_id,
+          concept_proposal_name: payload.concept_proposal_name,
+          source_funds_id: payload.source_funds_id,
+          concept_year: payload.concept_year,
+          concept_budget: payload.concept_budget,
+          concept_univercity_budget: payload.concept_univercity_budget,
+          concept_leader: payload.concept_leader,
+          leader_name: payload.leader_name,
+          concept_phone: payload.concept_phone,
+          concept_proposal_type: payload.concept_proposal_type,
+          id: payload.id,
+          // user_idcard: payload.user_idcard,
         },
       };
 

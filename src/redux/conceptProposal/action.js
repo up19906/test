@@ -1,5 +1,7 @@
 import {
   ADD_CONCEPT,
+  ADD_ID_SUBCONCEPT,
+  ADD_SUB_CONCEPT,
   ADD_STUDYAREA,
   ADD_NETWORK,
   GET_USER,
@@ -78,6 +80,7 @@ export const addconcept =
     concept_budget,
     concept_univercity_budget,
     concept_leader,
+    // leader_name,
     concept_phone,
     concept_proposal_type
   ) =>
@@ -93,10 +96,75 @@ export const addconcept =
         concept_leader,
         concept_phone,
         concept_proposal_type,
+        // leader_name,
       });
 
+      // const data = res.data;
+      // const test = data[0].push({ leader_name: leader_name });
       dispatch({
         type: ADD_CONCEPT,
+        payload: res.data,
+      });
+
+      return Promise.resolve(res.data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
+
+export const addsubconcept =
+  (
+    project_type_id,
+    concept_proposal_name,
+    source_funds_id,
+    concept_year,
+    concept_budget,
+    concept_univercity_budget,
+    concept_leader,
+    // leader_name,
+    concept_phone,
+    concept_proposal_type
+  ) =>
+  async (dispatch) => {
+    try {
+      const res = await ApiData.create_concept({
+        project_type_id,
+        concept_proposal_name,
+        source_funds_id,
+        concept_year,
+        concept_budget,
+        concept_univercity_budget,
+        concept_leader,
+        concept_phone,
+        concept_proposal_type,
+        // leader_name,
+      });
+
+      // const data = res.data;
+      // const test = data[0].push({ leader_name: leader_name });
+      dispatch({
+        type: ADD_SUB_CONCEPT,
+        payload: res.data,
+      });
+
+      return Promise.resolve(res.data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
+export const updateIDsubconcept =
+  (concpt_proposal_sub, id) => async (dispatch) => {
+    try {
+      const res = await ApiData.updateIDsubconcept({
+        concpt_proposal_sub,
+        id,
+        // leader_name,
+      });
+
+      // const data = res.data;
+      // const test = data[0].push({ leader_name: leader_name });
+      dispatch({
+        type: ADD_ID_SUBCONCEPT,
         payload: res.data,
       });
 
