@@ -18,7 +18,6 @@ import {
 function AddConceptproposal(props) {
   const form = createRef();
 
-  // const [about_finding, setabout_finding] = useState([]);
   const [project_type_id, setproject_type_id] = useState(""); //ประเภท
   const [concept_proposal_name, setconcept_proposal_name] = useState(""); //ชื่อโครงการ
   const [source_funds_id, setsource_funds_id] = useState(""); //แหล่งทุน
@@ -30,20 +29,11 @@ function AddConceptproposal(props) {
   const [concept_univercity_budget, setconcept_univercity_budget] = useState(0);
   const [validated, setValidated] = useState(false);
 
-  // const [check1, setcheck1] = useState("0");
-  // const [check2, setcheck2] = useState("");
-
   useEffect(() => {
     props.getUser();
     props.getSource_funds();
     props.getprojecttype();
     props.getyear();
-
-    // if (props.concept.concept_proposal_type === "0") {
-    //   setcheck1("0");
-    // } else if (props.concept.concept_proposal_type === "1") {
-    //   setcheck2("0");
-    // }
   }, []);
 
   const animatedComponents = makeAnimated();
@@ -58,12 +48,6 @@ function AddConceptproposal(props) {
     });
   }
 
-  // const handleChange = ({ target: { value } }) => {
-  //   props.updateInput(value);
-  // };
-
-  // console.log("reseacher : ", select_researchname.value);
-
   const handleSubmit = (event) => {
     // event.preventDefault();
     // const forms = event.currentTarget;
@@ -74,41 +58,38 @@ function AddConceptproposal(props) {
     //   console.log("checkValidity : true :", validated);
     // } else {
     const concept_leader = select_researchname.value;
-    const leader_name = select_researchname.label;
-    if (props.concept.id === 0) {
-      props.addconcept(
-        project_type_id,
-        concept_proposal_name,
-        source_funds_id,
-        concept_year,
-        concept_budget,
-        concept_univercity_budget,
-        concept_leader,
-        concept_phone,
-        concept_proposal_type
-      );
-      console.log("test 1");
-      if (concept_proposal_type === "0") {
-        props.history.push("/research/studyarea");
-      } else if (concept_proposal_type === "1") {
-        props.history.push("/research/addsubconcept");
-      }
-    } else {
+    const concpt_proposal_sub = null;
+    const data = {
+      concpt_proposal_sub,
+      project_type_id,
+      concept_proposal_name,
+      source_funds_id,
+      concept_year,
+      concept_budget,
+      concept_univercity_budget,
+      concept_leader,
+      concept_phone,
+      concept_proposal_type,
+    };
+    // if (props.concept.id === 0) {
+    props.addconcept(data);
+    console.log("test 1");
+    if (concept_proposal_type === "0") {
+      props.history.push("/research/studyarea");
+    } else if (concept_proposal_type === "1") {
       props.history.push("/research/addsubconcept");
-      console.log("test 2");
-
-      // return <Redirect to="/research/studyarea" />;
     }
+    // } else {
+    //   props.history.push("/research/addsubconcept");
+    //   console.log("test 2");
+
+    //   // return <Redirect to="/research/studyarea" />;
+    // }
     // }
   };
   // console.log(" check1 :", check1);
   // console.log(" projecy_type :", props.concept.project_type_id);
   console.log("testconcept ", props.concept);
-  // console.log(
-  //   "projecy_type : ",
-  //   props.project_type[props.concept.project_type_id].project_type_name
-  // );
-
   const poject_type_int = parseInt(props.concept.project_type_id);
   console.log(" project Id : ", poject_type_int);
 
@@ -122,18 +103,15 @@ function AddConceptproposal(props) {
             <Col lg={12}>
               <div className="form-group">
                 <Form.Label>ประเภท</Form.Label>
-                {/* <Form.Control required> */}
                 <select
                   required
                   className="form-control"
-                  // name="project_type_id"
-
                   onChange={(event) => {
                     setproject_type_id(event.target.value);
                   }}
                 >
                   {
-                    props.concept.project_type_id === null ? (
+                    props.concept.length === 0 ? (
                       <option value="">เลือกประเภท</option>
                     ) : null
                     // <option value={props.concept.project_type_id}>
@@ -144,7 +122,6 @@ function AddConceptproposal(props) {
                     //   }
                     // </option>
                   }
-
                   {props.project_type.length > 0 ? (
                     <>
                       {props.project_type.map((value, i) => {
@@ -157,10 +134,6 @@ function AddConceptproposal(props) {
                     </>
                   ) : null}
                 </select>
-                {/* </Form.Control> */}
-                <Form.Control.Feedback type="invalid">
-                  <h6 style={{ marginTop: "0.7rem" }}>** โปรดกรอกประเภท</h6>
-                </Form.Control.Feedback>
               </div>
             </Col>
             {/* ชื่อโครงการ */}
@@ -197,7 +170,7 @@ function AddConceptproposal(props) {
                   }}
                 >
                   {
-                    props.concept.source_funds_id === null ? (
+                    props.concept.length === 0 ? (
                       <option value="">เลือกแหล่งทุน</option>
                     ) : null
                     // <option value={props.concept.source_funds_id}>
@@ -237,9 +210,17 @@ function AddConceptproposal(props) {
                     setconcept_year(event.target.value);
                   }}
                 >
-                  <option value={props.concept.concept_year}>
-                    {props.concept.concept_year}
-                  </option>
+                  {
+                    props.concept.length === 0 ? (
+                      <option value="">เลือกปีงบประมาณ</option>
+                    ) : null
+                    // <option value={props.concept.source_funds_id}>
+                    //   {
+                    //     props.source_funds[props.concept.source_funds_id]
+                    //       .source_funds_name
+                    //   }
+                    // </option>
+                  }
                   {props.year.length > 0 ? (
                     <>
                       {props.year.map((value, i) => {
@@ -335,7 +316,6 @@ function AddConceptproposal(props) {
                 </Form.Control.Feedback>
               </div>
             </Col>
-
             {/* สถานะโครงการ */}
             <Col lg={12}>
               <div className="form-group">
@@ -388,8 +368,6 @@ function AddConceptproposal(props) {
             <Col>
               <div className="center">
                 <Button
-                  // onClick={handleSubmit}
-                  // href="/"
                   type="submit"
                   className="btn bg-gradient-primary btn-md"
                 >

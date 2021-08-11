@@ -102,7 +102,10 @@ function Header(props) {
         </nav>
         {/* /.navbar */}
         {/* transition: margin-left .3s ease-in-out,width .3s ease-in-out; */}
-        <aside className="main-sidebar sidebar-dark-primary elevation-4">
+        <aside
+          className="main-sidebar sidebar-dark-primary elevation-4"
+          style={{ fontSize: "14px" }}
+        >
           {/* Brand Logo */}
           <NavLink to="/home" className="brand-link">
             <Image

@@ -45,6 +45,9 @@ class ApiData {
   updateIDsubconcept(data) {
     return http.post("/update/concpt_proposal_sub", data);
   }
+  get_co_research_group() {
+    return http.get("/get/co-researcher-group");
+  }
 
   // bb_user
   getuser() {
