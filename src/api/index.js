@@ -25,28 +25,50 @@ class ApiData {
   getcodinator_funding() {
     return http.get("/get/coordinator_fundingagency");
   }
+
   getconcept_proposal_research_facultys() {
     return http.get("/get/concept_proposal_research_facultys");
   }
+
   getsource_funds() {
     return http.get("/get/source_funds");
   }
+
   getproject_type() {
     return http.get("/get/project-type");
   }
+
+  getresearch_faculty() {
+    return http.get("/get/concept_proposal_research_facultys");
+  }
+
+  getbudget_type() {
+    return http.get("/get/coordinator_budget_type");
+  }
+
+  getfunding_status() {
+    return http.get("/get/coordinator_fundingagency_status");
+  }
+
   created_funding(data) {
     return http.post("/create/coordinator_fundingagency", data);
+  }
+
+  createsource_funds(data) {
+    return http.post("/create/source_funds", data);
   }
 
   //concept_proposol
   create_concept(data) {
     return http.post("/create/concept_proposal", data);
   }
-  updateIDsubconcept(data) {
-    return http.post("/update/concpt_proposal_sub", data);
-  }
+
   get_co_research_group() {
     return http.get("/get/co-researcher-group");
+  }
+  
+  create_co_research(data) {
+    return http.post("/create/co-researcher", data);
   }
 
   // bb_user
