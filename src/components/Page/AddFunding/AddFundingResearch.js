@@ -1,291 +1,184 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable no-use-before-define */
-/* eslint-disable react/jsx-no-duplicate-props */
-import React, { useEffect, useState, createRef } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, withRouter } from "react-router-dom";
+
 import { Row, Col, Button, Modal, Form } from "react-bootstrap";
-import Axios from "axios";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-export default function AddFundingResearch() {
-  const form = createRef();
-  var date = new Date();
-  const year = [
-    { value: [date.getFullYear() + 544] },
-    { value: [date.getFullYear() + 543] },
-    { value: [date.getFullYear() + 542] },
-    { value: [date.getFullYear() + 541] },
-    { value: [date.getFullYear() + 540] },
-    { value: [date.getFullYear() + 539] },
-  ];
-  const [funding_research, setFunding_research] = useState([]);
-  const [funding_project_name, setFunding_project_name] = useState(""); //ชื่อโครงการ
-  const [coordinator_project, setCoordinator_project] = useState(""); //ผู้ประสานงาน
-  const [funding_agency, setFunding_agency] = useState(""); //หน่วยงานที่รับผิดชอบ
-  const [funding_project_leader, setFunding_project_leader] = useState(""); //นักวิจัยผู้รับผิดชอบ
-  const [funding_phone, setFunding_phone] = useState(0); //เบอร์ติดต่อ
-  var select_research = []; //เลือกทีมนักวิจัย
-  const [project_status, setproject_status] = useState(""); //สถานะโครงการ
-  const [funding_year, setFunding_year] = useState(0); //ปีงบประมาณ
-  const [funding_budget, setFunding_budget] = useState(0); //งบประมาณ
-  const [funding_name, setFunding_name] = useState(""); //ชื่อแหล่งทุน
-  const [funding_type, setfunding_type] = useState(""); // ประเภทงบประมาณ
+import { connect } from "react-redux";
+import {
+  getUser,
+  getSource_funds,
+  getprojecttype,
+  getyear,
+} from "../../../redux/conceptProposal/action";
+
+import {
+  getresearch_faculty,
+  getbudget_type,
+  getfunding_status,
+  insertfunding,
+  clearfunding,
+} from "../../../redux/funding/action";
+
+function AddFundingResearch(props) {
+  // const form = createRef();
+
+  const [project_type_id, setproject_type_id] = useState(""); //ประเภท
+  const [
+    coordinater_funding_project_name,
+    setcoordinater_funding_project_name,
+  ] = useState(""); //ชื่อโครงการ
+  const [coordinator_project, setcoordinator_project] = useState(""); //ผู้ประสานงาน
+  const [coordinater_funding_agency, setcoordinater_funding_agency] =
+    useState(""); //หน่วยงานที่รับผิดชอบ
+  const [project_leader, setproject_leader] = useState(""); //นักวิจัยผู้รับผิดชอบ
+  const [coordinater_funding_phone, setcoordinater_funding_phone] = useState(0); //เบอร์ติดต่อ
+  const coordinater_funding_ac_research_team = []; //เลือกทีมนักวิจัย
+  const [
+    coordinator_fundingagency_status_id,
+    setcoordinator_fundingagency_status_id,
+  ] = useState(""); //สถานะโครงการ
+  const [coordinater_funding_year, setcoordinater_funding_year] = useState(0); //ปีงบประมาณ
+  const [coordinater_funding_budget, setcoordinater_funding_budget] =
+    useState(0); //งบประมาณ
+  const [coordinater_funding_name, setcoordinater_funding_name] = useState(""); //ชื่อแหล่งทุน
+  const [budget_id, setbudget_id] = useState(""); // ประเภทงบประมาณ
   const [coordinator_univercity_budget, setcoordinator_univercity_budget] =
     useState(""); //รายได้เข้ามหาลัย
 
-  const [modalShow, setModalShow] = React.useState(false);
   const [modalShowResearcher, setmodalShowResearcher] = React.useState(false);
-  const [source_funds_name, setSource_funds_name] = useState("");
-  const [select_researchname, setselect_researchname] = useState("");
 
-  const [source_funds, setSource_fund] = useState([]);
-  const [status_type, setstatus_type] = useState([]);
-  const [research, setresearch] = useState([]);
-  const [budget_type, setbudget_type] = useState([]);
-  const [validated, setValidated] = useState(false);
+  const [select_researchname, setselect_researchname] = useState("");
+  // const [validated, setValidated] = useState(false);
 
   useEffect(() => {
-    Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
-      setSource_fund(source.data);
-      console.log("source_funds_name : ", source_funds);
-    });
-    Axios.get(
-      "http://localhost:4000/api/get/concept_proposal_research_facultys"
-    ).then((res) => {
-      setresearch(res.data);
-      console.log("research : ", research);
-    });
-    Axios.get("http://localhost:4000/api/get/coordinator_budget_type").then(
-      (res) => {
-        setbudget_type(res.data);
-        console.log("budget_type : ", res.data[2].coordinator_Budget_type_name);
-      }
-    );
-    Axios.get(
-      "http://localhost:4000/api/get/coordinator_fundingagency_status"
-    ).then((res) => {
-      setstatus_type(res.data);
-      console.log("setstatus_type : ", status_type);
-    });
+    props.getSource_funds();
+    props.getprojecttype();
+    props.getyear();
+    props.getresearch_faculty();
+    props.getbudget_type();
+    props.getfunding_status();
   }, []);
 
   const animatedComponents = makeAnimated();
-  var test = [];
-  for (let i = 0; i < research.length; i = i + 1) {
-    test.push({
-      value: research[i].research_faculty_idcrad,
+  var research = [];
+
+  for (const data of props.researchfaculty) {
+    research.push({
+      value: data.research_faculty_idcrad,
       label:
-        research[i].research_faculty_username +
-        " " +
-        research[i].research_faculty_lastname,
+        data.research_faculty_username + " " + data.research_faculty_lastname,
     });
   }
 
-  // console.log("test :1", project_status);
-
-  const handleSubmit = (event) => {
-    const forms = event.currentTarget;
-    if (forms.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-      console.log("checkValidity");
-    } else {
-      for (let i = 0; i < select_researchname.length; i = i + 1) {
-        select_research.push(select_researchname[i].value);
-      }
-      // let text = select_research.toString();
-      // console.log("testSelect : ", select_research);
-      const dataArray = new FormData(form.current);
-      Axios.post("http://localhost:4000/api/create/coordinator_fundingagency", {
-        funding_project_name: funding_project_name,
-        coordinator_project: coordinator_project,
-        funding_agency: funding_agency,
-        funding_project_leader: funding_project_leader,
-        funding_phone: funding_phone,
-        select_research: select_research,
-        project_status: project_status,
-        funding_year: funding_year,
-        funding_budget: funding_budget,
-        funding_name: funding_name,
-        funding_type: funding_type,
-        coordinator_univercity_budget: coordinator_univercity_budget,
-        // created_date: today,
-      })
-        .then(() => {
-          alert("บันทึกข้อมูลสำเร็จ!!");
-          // console.log(res.data.massage);
-          // alert(res.data.massage);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      setFunding_research([
-        ...funding_research,
-        {
-          funding_project_name: funding_project_name,
-          coordinator_project: coordinator_project,
-          funding_agency: funding_agency,
-          funding_project_leader: funding_project_leader,
-          funding_phone: funding_phone,
-          select_research: select_research,
-          project_status: project_status,
-          funding_year: funding_year,
-          funding_budget: funding_budget,
-          funding_name: funding_name,
-          funding_type: funding_type,
-          coordinator_univercity_budget: coordinator_univercity_budget,
-          // created_date: today,
-        },
-      ]);
+  const handleSubmit = () => {
+    for (const data of select_researchname) {
+      coordinater_funding_ac_research_team.push(data.value);
     }
+
+    const newdata = {
+      project_type_id,
+      coordinater_funding_project_name,
+      coordinator_project,
+      coordinater_funding_agency,
+      project_leader,
+      coordinater_funding_phone,
+      coordinater_funding_ac_research_team,
+      coordinator_fundingagency_status_id,
+      coordinater_funding_year,
+      coordinater_funding_budget,
+      coordinater_funding_name,
+      budget_id,
+      coordinator_univercity_budget,
+    };
+
+    props.insertfunding(newdata).then(() => {
+      alert("บันทึกข้อมูลสำเร็จ");
+      props.clearfunding();
+      props.history.push("/");
+    });
   };
+
   return (
-    <>
+    <React.Fragment>
       <div className="card-header">
-        <Row>
-          {/* <NavLink to="/addfunding/fundingresearch">
-            <button
-              className="btn  btn-fundingresearch card-header-menu "
-              onClick={() => {
-                document
-                  .querySelector(".btn-fundingresearch")
-                  .classList.remove("btn-primary");
-                document
-                  .querySelector(".btn-acdemic")
-                  .classList.add("btn-primary");
-                // document
-                //   .querySelector(".btn-about")
-                //   .classList.add("btn-primary");
-                // document
-                //   .querySelector(".btn-research")
-                //   .classList.add("btn-primary");
-              }}
-            >
-              แหล่งทุนงานวิจัย
-            </button>
-          </NavLink>
-          <NavLink to="/addfunding/academic">
-            <button
-              className="btn btn-primary btn-acdemic card-header-menu"
-              style={{ marginLeft: "1rem" }}
-              onClick={() => {
-                document
-                  .querySelector(".btn-fundingresearch")
-                  .classList.add("btn-primary");
-                document
-                  .querySelector(".btn-acdemic")
-                  .classList.remove("btn-primary");
-                // document
-                //   .querySelector(".btn-about")
-                //   .classList.add("btn-primary");
-                // document
-                //   .querySelector(".btn-research")
-                //   .classList.add("btn-primary");
-              }}
-            >
-              แหล่งทุนงานบริการวิชาการ
-            </button>
-          </NavLink> */}
-          {/* <NavLink to="/addfunding/aboutfunding">
-            <button
-              className="btn btn-primary btn-about card-header-menu"
-              style={{ marginLeft: "1rem" }}
-              onClick={() => {
-                document
-                  .querySelector(".btn-fundingresearch")
-                  .classList.add("btn-primary");
-                document
-                  .querySelector(".btn-acdemic")
-                  .classList.add("btn-primary");
-                document
-                  .querySelector(".btn-about")
-                  .classList.remove("btn-primary");
-                document
-                  .querySelector(".btn-research")
-                  .classList.add("btn-primary");
-              }}
-            >
-              ข้อมูลทั่วไปเกี่ยวกับทุน
-            </button>
-          </NavLink>
-          <NavLink to="/addfunding/research">
-            <button
-              className="btn btn-primary btn-research card-header-menu"
-              style={{ marginLeft: "1rem" }}
-              onClick={() => {
-                document
-                  .querySelector(".btn-fundingresearch")
-                  .classList.add("btn-primary");
-                document
-                  .querySelector(".btn-acdemic")
-                  .classList.add("btn-primary");
-                document
-                  .querySelector(".btn-about")
-                  .classList.add("btn-primary");
-                document
-                  .querySelector(".btn-research")
-                  .classList.remove("btn-primary");
-              }}
-            >
-              งานวิจัย
-            </button>
-          </NavLink> */}
-        </Row>
         <div
           className="projcard-bar"
           style={{ marginLeft: "0", marginRight: "0" }}
         ></div>
       </div>
 
-      <Form ref={form} noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form>
         <h4 style={{ textAlign: "center" }}>เพิ่มข้อมูลแหล่งทุน งานวิจัย</h4>
-
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
         <div className="card-body card-body-pading">
           <Row>
+            {/* ประเภทแหล่งทุน */}
+            <Col lg={12}>
+              <div className="form-group">
+                <Form.Label>ประเภท</Form.Label>
+                <select
+                  required
+                  className="form-control"
+                  onChange={(event) => {
+                    setproject_type_id(event.target.value);
+                  }}
+                >
+                  {
+                    props.concept.length === 0 ? (
+                      <option value="">เลือกประเภท</option>
+                    ) : null
+                    // <option value={props.concept.project_type_id}>
+                    //   {
+                    //     props.project_type[
+                    //       parseInt(props.concept.project_type_id)
+                    //     ].project_type_name
+                    //   }
+                    // </option>
+                  }
+                  {props.project_type.length > 0 ? (
+                    <>
+                      {props.project_type.map((value, i) => {
+                        return (
+                          <option key={i} value={value.project_type_id}>
+                            {value.project_type_name}
+                          </option>
+                        );
+                      })}
+                    </>
+                  ) : null}
+                </select>
+              </div>
+            </Col>
+            {/* ชื่อโครงการ */}
             <Col lg={12}>
               <div className="form-group">
                 <Form.Label>ชื่อโครงการ</Form.Label>
                 <Form.Control
                   type="text"
                   className="form-control"
-                  required
                   onChange={(event) => {
-                    setFunding_project_name(event.target.value);
+                    setcoordinater_funding_project_name(event.target.value);
                   }}
                 />
-                <Form.Control.Feedback type="invalid">
-                  <h6 style={{ marginTop: "0.7rem" }}>
-                    ** โปรดกรอกชื่อโครงการ
-                  </h6>
-                </Form.Control.Feedback>
               </div>
             </Col>
-          </Row>
-
-          <Row>
+            {/* ผู้ประสานงานโครงการ */}
             <Col lg={6}>
               <div className="form-group">
                 <Form.Label>ผู้ประสานงานโครงการ</Form.Label>
                 <Form.Control
                   type="text"
                   className="form-control"
-                  required
                   onChange={(event) => {
-                    setCoordinator_project(event.target.value);
+                    setcoordinator_project(event.target.value);
                   }}
                 />
-                <Form.Control.Feedback type="invalid">
-                  <h6 style={{ marginTop: "0.7rem" }}>
-                    ** โปรดกรอกผู้ประสานงานโครงการ
-                  </h6>
-                </Form.Control.Feedback>
               </div>
             </Col>
-
+            {/* หน่วยงานรับผิดชอบ */}
             <Col lg={6}>
               <div className="form-group">
                 <Form.Label>หน่วยงานรับผิดชอบ</Form.Label>
@@ -294,18 +187,12 @@ export default function AddFundingResearch() {
                   className="form-control"
                   required
                   onChange={(event) => {
-                    setFunding_agency(event.target.value);
+                    setcoordinater_funding_agency(event.target.value);
                   }}
                 />
-                <Form.Control.Feedback type="invalid">
-                  <h6 style={{ marginTop: "0.7rem" }}>
-                    ** โปรดกรอกหน่วยงานรับผิดชอบ
-                  </h6>
-                </Form.Control.Feedback>
               </div>
             </Col>
-          </Row>
-          <Row>
+            {/* นักวิจัยผู้รับผิดสอบ */}
             <Col lg={8}>
               <div className="form-group">
                 <Form.Label>นักวิจัยผู้รับผิดชอบ</Form.Label>
@@ -313,12 +200,12 @@ export default function AddFundingResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setFunding_project_leader(event.target.value);
+                    setproject_leader(event.target.value);
                   }}
                 />
               </div>
             </Col>
-
+            {/* เบอร์ติดต่อ */}
             <Col lg={4}>
               <div className="form-group">
                 <Form.Label>เบอร์ติดต่อ</Form.Label>
@@ -326,11 +213,12 @@ export default function AddFundingResearch() {
                   type="phone"
                   className="form-control"
                   onChange={(event) => {
-                    setFunding_phone(event.target.value);
+                    setcoordinater_funding_phone(event.target.value);
                   }}
                 />
               </div>
             </Col>
+            {/* ทีมนักวิจัย */}
             <Col lg={12}>
               <div className="form-group">
                 <Form.Label>ทีมนักวิจัย</Form.Label>
@@ -343,7 +231,7 @@ export default function AddFundingResearch() {
                   }}
                   // defaultValue={[colourOptions[4], colourOptions[5]]}
                   isMulti
-                  options={test}
+                  options={research}
                 />
                 <div>
                   <i
@@ -441,28 +329,35 @@ export default function AddFundingResearch() {
                 </Modal>
               </div>
             </Col>
-
+            {/* สถานะโครงการ */}
             <Col lg={12}>
               <div className="form-group">
                 <Form.Label>สถานะโครงการ :</Form.Label>
                 <div className="form-control" style={{ border: "none" }}>
-                  {status_type.map(function (data, i) {
-                    return (
-                      <Form.Check
-                        key={i}
-                        style={{ marginLeft: "2rem" }}
-                        inline
-                        required
-                        label={data.coordinator_fundingagency_status_name}
-                        name="project_status"
-                        value={data.coordinator_fundingagency_status_id}
-                        type="radio"
-                        onChange={(event) => {
-                          setproject_status(event.target.value);
-                        }}
-                      />
-                    );
-                  })}
+                  {props.fundingstatus.length > 0 ? (
+                    <>
+                      {props.fundingstatus.map(function (data, i) {
+                        return (
+                          <Form.Check
+                            key={i}
+                            style={{ marginLeft: "2rem" }}
+                            inline
+                            required
+                            label={data.coordinator_fundingagency_status_name}
+                            name="coordinator_fundingagency_status_id"
+                            value={data.coordinator_fundingagency_status_id}
+                            type="radio"
+                            onChange={(event) => {
+                              setcoordinator_fundingagency_status_id(
+                                event.target.value
+                              );
+                            }}
+                          />
+                        );
+                      })}
+                    </>
+                  ) : null}
+
                   <Form.Control.Feedback type="invalid">
                     <h6 style={{ marginTop: "0.7rem" }}>
                       ** โปรดกรอกประเภทงบประมาณ
@@ -475,17 +370,18 @@ export default function AddFundingResearch() {
 
           <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
           <Row>
+            {/* ปีงบประมาณ */}
             <Col lg={5}>
               <div className="form-group">
                 <Form.Label>ปีงบประมาณ</Form.Label>
                 <select
                   className="form-control"
                   onChange={(event) => {
-                    setFunding_year(event.target.value);
+                    setcoordinater_funding_year(event.target.value);
                   }}
                 >
                   <option value="">เลือกปี</option>
-                  {year.map((value, i) => {
+                  {props.year.map((value, i) => {
                     return (
                       <option key={i} value={value.value}>
                         {value.value}
@@ -495,7 +391,7 @@ export default function AddFundingResearch() {
                 </select>
               </div>
             </Col>
-
+            {/* งบประมาณที่ได้รับ */}
             <Col lg={7}>
               <div className="form-group">
                 <Form.Label>งบประมาณที่ได้รับ</Form.Label>
@@ -503,30 +399,33 @@ export default function AddFundingResearch() {
                   type="number"
                   className="form-control"
                   onChange={(event) => {
-                    setFunding_budget(event.target.value);
+                    setcoordinater_funding_budget(event.target.value);
                   }}
                 />
               </div>
             </Col>
-          </Row>
-          <Row>
+            {/* ชื่อแหล่งทุน */}
             <Col lg={7}>
               <div className="form-group">
                 <Form.Label>ชื่อแหล่งทุน</Form.Label>
                 <select
                   className="form-control"
                   onChange={(event) => {
-                    setFunding_name(event.target.value);
+                    setcoordinater_funding_name(event.target.value);
                   }}
                 >
                   <option value="">เลือกแหล่งทุน</option>
-                  {source_funds.map((value, i) => {
-                    return (
-                      <option key={i} value={value.source_funds_name}>
-                        {value.source_funds_name}
-                      </option>
-                    );
-                  })}
+                  {props.source_funds.length > 0 ? (
+                    <>
+                      {props.source_funds.map((value, i) => {
+                        return (
+                          <option key={i} value={value.source_funds_name}>
+                            {value.source_funds_name}
+                          </option>
+                        );
+                      })}
+                    </>
+                  ) : null}
                 </select>
 
                 <div>
@@ -544,65 +443,9 @@ export default function AddFundingResearch() {
                     </i>
                   </NavLink>
                 </div>
-                {/* <Modal
-                  size="lg"
-                  aria-labelledby="contained-modal-title-vcenter"
-                  centered
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                      เพิ่มแหล่งทุน
-                    </Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <div className="form-group">
-                      <Row>
-                        <Col lg={2}>
-                          {" "}
-                          <Form.Label>ชื่อแหล่งทุน</Form.Label>
-                        </Col>
-                        <Col lg={9}>
-                          <Form.Control
-                            type="text"
-                            className="form-control"
-                            onChange={(event) => {
-                              setSource_funds_name(event.target.value);
-                            }}
-                          />
-                        </Col>
-                      </Row>
-                    </div>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button
-                      variant="secondary"
-                      // href="/"
-                      type="button"
-                      onClick={() => setModalShow(false)}
-                    >
-                      ยกเลิก
-                    </Button>
-                    <Button
-                      href="/addfunding"
-                      onClick={() => {
-                        Axios.post(
-                          "http://localhost:4000/api/create/source_funds",
-                          {
-                            source_funds_name: source_funds_name,
-                          }
-                        );
-                        setModalShow(false);
-                      }}
-                    >
-                      บันทึก
-                    </Button>
-                  </Modal.Footer>
-                </Modal> */}
               </div>
             </Col>
-
+            {/* ประเภทงบประมาณ */}
             <Col lg={5}>
               <div className="form-group">
                 <Form.Label>ประเภทงบประมาณ</Form.Label>
@@ -610,17 +453,25 @@ export default function AddFundingResearch() {
                   required
                   className="form-control"
                   onChange={(event) => {
-                    setfunding_type(event.target.value);
+                    setbudget_id(event.target.value);
                   }}
                 >
                   <option value="">เลือกประเภทงบประมาณ</option>
-                  {budget_type.map((value, i) => {
-                    return (
-                      <option key={i} value={value.coordinator_Budget_type_id}>
-                        {value.coordinator_Budget_type_name}
-                      </option>
-                    );
-                  })}
+
+                  {props.budgettype.length > 0 ? (
+                    <>
+                      {props.budgettype.map((value, i) => {
+                        return (
+                          <option
+                            key={i}
+                            value={value.coordinator_Budget_type_id}
+                          >
+                            {value.coordinator_Budget_type_name}
+                          </option>
+                        );
+                      })}
+                    </>
+                  ) : null}
                 </select>
                 <Form.Control.Feedback type="invalid">
                   <h6 style={{ marginTop: "0.7rem" }}>
@@ -629,6 +480,7 @@ export default function AddFundingResearch() {
                 </Form.Control.Feedback>
               </div>
             </Col>
+            {/* รายได้เข้ามหาลัย */}
             <Col lg={12}>
               <div className="form-group">
                 <Form.Label>รายได้เข้ามหาลัย</Form.Label>
@@ -657,9 +509,9 @@ export default function AddFundingResearch() {
             <Col>
               <div className="center">
                 <Button
-                  // onClick={handleSubmit}
+                  onClick={handleSubmit}
+                  // type="submit"
                   // href="/"
-                  type="submit"
                   className="btn bg-gradient-primary btn-md"
                 >
                   บันทึก
@@ -669,6 +521,31 @@ export default function AddFundingResearch() {
           </Row>
         </div>
       </Form>
-    </>
+    </React.Fragment>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    researchfaculty: state.funding.researchfaculty,
+    budgettype: state.funding.budgettype,
+    fundingstatus: state.funding.fundingstatus,
+    year: state.concept.year,
+    concept: state.concept.concept,
+    user: state.concept.user,
+    source_funds: state.concept.sourcefund,
+    project_type: state.concept.projecttype,
+  };
+};
+
+export default connect(mapStateToProps, {
+  getUser,
+  getSource_funds,
+  getprojecttype,
+  getyear,
+  getresearch_faculty,
+  getbudget_type,
+  getfunding_status,
+  insertfunding,
+  clearfunding,
+})(withRouter(AddFundingResearch));

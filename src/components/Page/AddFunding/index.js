@@ -1,13 +1,7 @@
 import React from "react";
-// import Axios from "axios";
-// import { Switch, Route } from "react-router-dom";
-// import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import AddFundingResearch from "./AddFundingResearch";
-// import AddFundingAcademic from "./AddFundingAcademic";
 import Welcome from "../Home/welcome";
-// import AddAboutResearch from "../AddAboutResearch";
-// import AddResearch from "../Reseacrch/AddResearch";
 
 function AddFunding(props) {
   return (
@@ -32,22 +26,6 @@ function AddFunding(props) {
                 <Welcome />
                 <div className="card card-primary card-outline">
                   <AddFundingResearch />
-                  {/* <Switch>
-                    <Route exact path="/addfunding/fundingresearch">
-                      <AddFundingResearch />
-                    </Route>
-                    {/* <Route
-                      exact
-                      path="/addfunding/fundingresearch"
-                      component={AddFundingResearch}
-                    /> */}
-
-                  {/* <Route
-                      exact
-                      path="/addfunding/aboutfunding"
-                      component={AddAboutResearch}
-                    />
-                  </Switch> */}
                 </div>
               </div>
             </div>
