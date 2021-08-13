@@ -1,8 +1,18 @@
-import { ADD_COORDINATOR_FUNDING } from "../types";
+import {
+  INSERT_COORDINATOR_FUNDING,
+  INSERT_SOURCEFUND,
+  GET_RESEARCH_FACULTY,
+  GET_BUDGET_TYPE,
+  GET_FUNDING_STATUS,
+  CLEAR_COORDINATOR_FUNDING,
+} from "../types";
 
 const initialState = {
-  usergroup: [],
-  conceptproposal: [],
+  insertfunding: [],
+  researchfaculty: [],
+  budgettype: [],
+  fundingstatus: [],
+  insertsourcefund: [],
   funding_budget: 0,
   funding_academic_budget: 0,
   count_funding: [],
@@ -15,26 +25,23 @@ export default function reducerhome(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case ADD_COORDINATOR_FUNDING:
-      return { ...state, usergroup: payload };
+    case GET_FUNDING_STATUS:
+      return { ...state, fundingstatus: payload };
 
-    // case UPDATE_TUTORIAL:
-    //   return state.map((tutorial) => {
-    //     if (tutorial.id === payload.id) {
-    //       return {
-    //         ...tutorial,
-    //         ...payload,
-    //       };
-    //     } else {
-    //       return tutorial;
-    //     }
-    //   });
+    case GET_RESEARCH_FACULTY:
+      return { ...state, researchfaculty: payload };
 
-    // case DELETE_TUTORIAL:
-    //   return state.filter(({ id }) => id !== payload.id);
+    case GET_BUDGET_TYPE:
+      return { ...state, budgettype: payload };
 
-    // case DELETE_ALL_TUTORIALS:
-    //   return [];
+    case INSERT_COORDINATOR_FUNDING:
+      return { ...state, insertfunding: payload };
+
+    case INSERT_SOURCEFUND:
+      return { ...state, insertsourcefund: payload };
+
+    case CLEAR_COORDINATOR_FUNDING:
+      return { ...state, insertfunding: payload };
 
     default:
       return state;
