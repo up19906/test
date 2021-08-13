@@ -12,31 +12,22 @@ import {
   addnetwork,
   get_co_research_group,
   insertconcept,
-  insertsubconcept,
+  clearconcept,
 } from "../../../redux/conceptProposal/action";
+
+import ApiData from "../../../api/index";
 
 function Network(props) {
   const [co_researcher_name_th, setco_researcher_name_th] = useState(""); //ชื่อชุมชน
-  const [co_research_type, setco_research_type] = useState(""); //ประเภทเครือข่าย
+  const [co_researcher_group_id, setco_researcher_group_id] = useState(""); //ประเภทเครือข่าย
   const [coordinator_name_th, setcoordinator_name_th] = useState(""); //ผู้ประสานงาน
   const [co_researcher_phone, setco_researcher_phone] = useState(""); //เบอร์ติดต่อ
   const [co_researcher_latitude, setco_researcher_latitude] = useState(0); //พื้นที่ศึกษา lat
   const [co_researcher_longitude, setco_researcher_longitude] = useState(0); //พื้นที่ศึกษา long
 
-  // console.log("concept : ", props.concept.id);
-  var concpt_proposal_sub = [];
-  // var concpt_proposal_sub = [1, 2, 4, 5, 6, 8, 7];
   useEffect(() => {
     props.get_co_research_group();
   }, []);
-
-  const getNumFruit = () => {
-    for (let i = 0; i < props.subconcept.length; i = i + 1) {
-      props.insertsubconcept(props.subconcept[i]);
-      concpt_proposal_sub.push(props.insertIDsubconcept[i].id);
-    }
-    // return concpt_proposal_sub.push(props.insertIDsubconcept[i].id);
-  };
 
   const project_type_id = props.concept.project_type_id;
   const concept_proposal_name = props.concept.concept_proposal_name;
@@ -47,87 +38,93 @@ function Network(props) {
   const concept_leader = props.concept.concept_leader;
   const concept_phone = props.concept.concept_phone;
   const concept_proposal_type = props.concept.concept_proposal_type;
+  const co_researcher_id = [];
+  const concpt_proposal_sub = [];
 
-  const forLoop = async (data) => {
-    console.log("Start");
-    for (const item of data) {
-      const value = await getNumFruit();
-      console.log(value);
-      console.log(item);
+  // function delay() {
+  //   return new Promise((resolve) => setTimeout(resolve, 300));
+  // }
+
+  async function insertsubconcept(data) {
+    try {
+      const res = await ApiData.create_concept(data);
+      console.log("testInsert ..........", res.data);
+      concpt_proposal_sub.push(res.data.id);
+      return Promise.resolve(res.data);
+    } catch (err) {
+      return Promise.reject(err);
     }
-    // for (let i = 0; i < props.subconcept.length; i = i + 1) {
-    //   await props.insertsubconcept(props.subconcept[i]);
-    //   await getNumFruit();
-    //   // concpt_proposal_sub.push(props.insertIDsubconcept[i].id);
+  }
 
-    //   console.log("loop Sub :", i);
-    // }
-    const newdataconcept = {
-      concpt_proposal_sub,
-      project_type_id,
-      concept_proposal_name,
-      source_funds_id,
-      concept_year,
-      concept_budget,
-      concept_univercity_budget,
-      concept_leader,
-      concept_phone,
-      concept_proposal_type,
-    };
+  async function insertstudyarea(data) {
+    try {
+      const res = await ApiData.create_co_research(data);
+      console.log("testInsert ..........", res.data);
+      co_researcher_id.push(res.data.id);
+      return Promise.resolve(res.data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
 
-    console.log("testNewConcept :", newdataconcept);
+  async function insertnetwork(data) {
+    try {
+      const res = await ApiData.create_co_research(data);
+      console.log("testInsert ..........", res.data);
+      co_researcher_id.push(res.data.id);
+      return Promise.resolve(res.data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
 
-    props.insertconcept(newdataconcept);
-    console.log("End");
-  };
+  async function insert(subconcept, studyarea, network) {
+    console.log("Start...............");
+
+    for (const item of subconcept) {
+      await insertsubconcept(item);
+    }
+    await insertstudyarea(studyarea);
+    await insertnetwork(network);
+
+    console.log("Done!111111"); //1
+  }
 
   const handleSubmit = () => {
     const data = {
       co_researcher_name_th,
-      co_research_type,
+      co_researcher_group_id,
       coordinator_name_th,
       co_researcher_phone,
       co_researcher_latitude,
       co_researcher_longitude,
     };
 
-    if (props.concept.concept_proposal_type === "1") {
-      // for (let i = 0; i < props.subconcept.length; i = i + 1) {
-      //   props.insertsubconcept(props.subconcept[i]).then(() => {
-      //     concpt_proposal_sub.push(props.insertIDsubconcept[i].id);
-      //   });
-      //   console.log("loop Sub :", i);
-      // }
-      forLoop(props.subconcept);
-      // concpt_proposal_sub
-
-      // newconcept.push({ concpt_proposal_sub: idsubconcept });
-    } else {
-      // props.insertconcept(props.concept);
-      props.addnetwork(data);
-      //   .then(() => {
-      //     props.history.push("/");
-      //   });
-      // });
-    }
-
-    console.log("testNewConcept2 :", concpt_proposal_sub);
-    // newconcept.push({ concpt_proposal_sub: idsubconcept });
-
-    // console.log("testNewConcept :", props.concept);
-    // props.insertconcept(newconcept).then(() => {
-    //   props.addnetwork(data).then(() => {
-    //     props.history.push("/");
-    //   });
-    // });
+    insert(props.subconcept, props.studyarea, data).then(() => {
+      console.log("...subconcept: ", concpt_proposal_sub);
+      console.log("...IdCo ", co_researcher_id);
+      const newdataconcept = {
+        concpt_proposal_sub,
+        co_researcher_id,
+        project_type_id,
+        concept_proposal_name,
+        source_funds_id,
+        concept_year,
+        concept_budget,
+        concept_univercity_budget,
+        concept_leader,
+        concept_phone,
+        concept_proposal_type,
+      };
+      console.log("testNewConcept2 :", concpt_proposal_sub); //4
+      props.insertconcept(newdataconcept).then(() => {
+        props.clearconcept();
+        props.history.push("/");
+      }); //2
+    });
+    console.log("end............. ");
+    console.log("..............3", props.insertIDsubconcept);
   };
-
-  console.log("testConcept :", props.concept);
-  console.log("testSubConcept :", props.subconcept);
-  console.log("testStudyArea :", props.studyarea);
-  console.log("testNetwork :", props.network);
-  console.log("testinsertConcept :", props.insertIDsubconcept);
-  console.log("testIDinsertConcept :", concpt_proposal_sub);
   return (
     <React.Fragment>
       <Form>
@@ -163,7 +160,7 @@ function Network(props) {
                   required
                   className="form-control"
                   onChange={(event) => {
-                    setco_research_type(event.target.value);
+                    setco_researcher_group_id(event.target.value);
                   }}
                 >
                   {
@@ -358,8 +355,6 @@ const mapStateToProps = (state) => {
   return {
     concept: state.concept.concept,
     subconcept: state.concept.subconcept,
-    insertIDsubconcept: state.concept.insertsubconcept,
-    insertIDconcept: state.concept.insertconcept,
     studyarea: state.concept.studyarea,
     network: state.concept.network,
     co_research_group: state.concept.co_research_group,
@@ -371,5 +366,5 @@ export default connect(mapStateToProps, {
   addnetwork,
   get_co_research_group,
   insertconcept,
-  insertsubconcept,
+  clearconcept,
 })(Network);

@@ -19,12 +19,11 @@ function AddStudyArea(props) {
   const [co_researcher_phone, setco_researcher_phone] = useState(""); //เบอร์ติดต่อ
   const [co_researcher_latitude, setco_researcher_latitude] = useState(0); //พื้นที่ศึกษา lat
   const [co_researcher_longitude, setco_researcher_longitude] = useState(0); //พื้นที่ศึกษา long
-
-  console.log("concept : ", props.concept.id);
-
   const handleSubmit = () => {
+    const co_researcher_group_id = 1;
     const data = {
       co_researcher_name_th,
+      co_researcher_group_id,
       coordinator_name_th,
       co_researcher_phone,
       co_researcher_latitude,
@@ -35,10 +34,9 @@ function AddStudyArea(props) {
     });
   };
 
-  console.log("teststudyarea:", props.studyarea);
   return (
     <React.Fragment>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
         <div className="card-body card-body-pading">
           <h5 style={{ textAlign: "left" }}>พื้นที่ศึกษา</h5>
@@ -210,7 +208,10 @@ function AddStudyArea(props) {
               </NavLink>
             </Col>
             <Col lg={6} style={{ textAlign: "right" }}>
-              <Button type="submit" className="btn bg-gradient-primary btn-md">
+              <Button
+                onClick={handleSubmit}
+                className="btn bg-gradient-primary btn-md"
+              >
                 ถัดไป
               </Button>
             </Col>
@@ -224,6 +225,7 @@ function AddStudyArea(props) {
 const mapStateToProps = (state) => {
   return {
     concept: state.concept.concept,
+    subconcept: state.concept.subconcept,
     studyarea: state.concept.studyarea,
   };
 };

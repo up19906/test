@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
-import React, { useEffect, useState, createRef } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Row, Col, Form, Button } from "react-bootstrap";
-// import Axios from "axios";
 import { connect } from "react-redux";
 
 import Select from "react-select";
@@ -14,7 +13,6 @@ import {
   getprojecttype,
   getyear,
   addsubconcept,
-  updateIDsubconcept,
 } from "../../../redux/conceptProposal/action";
 function AddConceptproposal(props) {
   const [project_type_id, setproject_type_id] = useState(""); //ประเภท
@@ -38,20 +36,18 @@ function AddConceptproposal(props) {
   }, []);
 
   const animatedComponents = makeAnimated();
-  var test = [];
-  for (let i = 0; i < props.user.length; i = i + 1) {
-    test.push({
-      value: props.user[i].user_idcard,
-      label:
-        props.user[i].user_first_name_th +
-        " " +
-        props.user[i].user_last_name_th,
+  const researcher = [];
+
+  for (const data of props.user) {
+    researcher.push({
+      value: data.user_idcard,
+      label: data.user_first_name_th + " " + data.user_last_name_th,
     });
   }
   const handleSubmit = () => {
     const concept_leader = select_researchname.value;
     // const concept_proposal_type = 0;
-    const concpt_proposal_sub = null;
+    const concpt_proposal_sub = "";
     const data = {
       concpt_proposal_sub,
       project_type_id,
@@ -66,20 +62,11 @@ function AddConceptproposal(props) {
     };
     props.addsubconcept(data);
     setcountsubconcept(countsubconcept + 1);
-    // .then(() => {
-    //   const concpt_proposal_sub = props.subconcept.id;
-    //   const id = props.concept.id;
-    //   props.updateIDsubconcept(concpt_proposal_sub, id);
-    // });
-    // .then(() => {
+
     if (gotopage === true) {
       props.history.push("/research/studyarea");
       console.log("test 1");
     }
-    // });
-    console.log("test 2");
-    // return <Redirect to="/research/studyarea" />;
-    // }
   };
   console.log("testconcept ", props.subconcept);
 
@@ -265,7 +252,7 @@ function AddConceptproposal(props) {
                     setselect_researchname(selectedOptions);
                   }}
                   // defaultValue={[colourOptions[4], colourOptions[5]]}
-                  options={test}
+                  options={researcher}
                 />
               </div>
             </Col>
@@ -371,7 +358,7 @@ function AddConceptproposal(props) {
                         <Form.Control
                           type="text"
                           // name="concept_proposal_name"
-                          defaultValue={props.concept.concept_proposal_name}
+                          // defaultValue={props.concept.concept_proposal_name}
                           className="form-control"
                           onChange={(event) => {
                             setconcept_proposal_name(event.target.value);
@@ -391,7 +378,7 @@ function AddConceptproposal(props) {
                             setsource_funds_id(event.target.value);
                           }}
                         >
-                          {
+                          {/* {
                             props.concept.source_funds_id === null ? (
                               <option value="">เลือกแหล่งทุน</option>
                             ) : null
@@ -401,7 +388,7 @@ function AddConceptproposal(props) {
                             //       .source_funds_name
                             //   }
                             // </option>
-                          }
+                          } */}
 
                           {props.source_funds.length > 0 ? (
                             <>
@@ -452,7 +439,7 @@ function AddConceptproposal(props) {
                         <Form.Label>งบประมาณที่ได้รับ</Form.Label>
                         <Form.Control
                           type="number"
-                          defaultValue={props.concept.concept_budget}
+                          // defaultValue={props.concept.concept_budget}
                           // name="concept_budget"
                           className="form-control"
                           onChange={(event) => {
@@ -468,7 +455,7 @@ function AddConceptproposal(props) {
                         <Form.Control
                           type="number"
                           className="form-control"
-                          defaultValue={props.concept.concept_univercity_budget}
+                          // defaultValue={props.concept.concept_univercity_budget}
                           onChange={(event) => {
                             setconcept_univercity_budget(event.target.value);
                           }}
@@ -480,7 +467,7 @@ function AddConceptproposal(props) {
                       <div className="form-group">
                         <Form.Label>หัวหน้าแผน</Form.Label>
                         <Select
-                          defaultValue={{ label: props.concept.leader_name }}
+                          // defaultValue={{ label: props.concept.leader_name }}
                           closeMenuOnSelect={true}
                           components={animatedComponents}
                           onChange={(selectedOptions) => {
@@ -498,7 +485,7 @@ function AddConceptproposal(props) {
                         <Form.Control
                           type="text"
                           // name="concept_phone"
-                          defaultValue={props.concept.concept_phone}
+                          // defaultValue={props.concept.concept_phone}
                           className="form-control"
                           onChange={(event) => {
                             setconcept_phone(event.target.value);
@@ -559,13 +546,10 @@ const mapStateToProps = (state) => {
   return {
     concept: state.concept.concept,
     subconcept: state.concept.subconcept,
-    idsubconcept: state.concept.idsubconcept,
     user: state.concept.user,
     source_funds: state.concept.sourcefund,
     project_type: state.concept.projecttype,
     year: state.concept.year,
-    test: state.concept.test,
-    test2: state.concept.test2,
   };
 };
 
@@ -575,5 +559,4 @@ export default connect(mapStateToProps, {
   getprojecttype,
   getyear,
   addsubconcept,
-  updateIDsubconcept,
 })(AddConceptproposal);

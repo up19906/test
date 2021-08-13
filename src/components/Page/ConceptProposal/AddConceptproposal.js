@@ -1,10 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { useEffect, useState, createRef } from "react";
-// import { NavLink, Redirect } from "react-router-dom";
-import { Row, Col, Button, Modal, Form } from "react-bootstrap";
-// import Axios from "axios";
+import { Row, Col, Button, Form } from "react-bootstrap";
 import { connect } from "react-redux";
-
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
@@ -15,9 +12,10 @@ import {
   getyear,
   addconcept,
 } from "../../../redux/conceptProposal/action";
-function AddConceptproposal(props) {
-  const form = createRef();
 
+function AddConceptproposal(props) {
+
+  const form = createRef();
   const [project_type_id, setproject_type_id] = useState(""); //ประเภท
   const [concept_proposal_name, setconcept_proposal_name] = useState(""); //ชื่อโครงการ
   const [source_funds_id, setsource_funds_id] = useState(""); //แหล่งทุน
@@ -37,26 +35,16 @@ function AddConceptproposal(props) {
   }, []);
 
   const animatedComponents = makeAnimated();
-  var test = [];
-  for (let i = 0; i < props.user.length; i = i + 1) {
-    test.push({
-      value: props.user[i].user_idcard,
-      label:
-        props.user[i].user_first_name_th +
-        " " +
-        props.user[i].user_last_name_th,
+  const researcher = [];
+
+  for (const data of props.user) {
+    researcher.push({
+      value: data.user_idcard,
+      label: data.user_first_name_th + " " + data.user_last_name_th,
     });
   }
 
   const handleSubmit = (event) => {
-    // event.preventDefault();
-    // const forms = event.currentTarget;
-    // if (forms.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //   setValidated(true);
-    //   console.log("checkValidity : true :", validated);
-    // } else {
     const concept_leader = select_researchname.value;
     const concpt_proposal_sub = null;
     const data = {
@@ -71,7 +59,6 @@ function AddConceptproposal(props) {
       concept_phone,
       concept_proposal_type,
     };
-    // if (props.concept.id === 0) {
     props.addconcept(data);
     console.log("test 1");
     if (concept_proposal_type === "0") {
@@ -79,16 +66,7 @@ function AddConceptproposal(props) {
     } else if (concept_proposal_type === "1") {
       props.history.push("/research/addsubconcept");
     }
-    // } else {
-    //   props.history.push("/research/addsubconcept");
-    //   console.log("test 2");
-
-    //   // return <Redirect to="/research/studyarea" />;
-    // }
-    // }
   };
-  // console.log(" check1 :", check1);
-  // console.log(" projecy_type :", props.concept.project_type_id);
   console.log("testconcept ", props.concept);
   const poject_type_int = parseInt(props.concept.project_type_id);
   console.log(" project Id : ", poject_type_int);
@@ -291,7 +269,7 @@ function AddConceptproposal(props) {
                     setselect_researchname(selectedOptions);
                   }}
                   // defaultValue={[colourOptions[4], colourOptions[5]]}
-                  options={test}
+                  options={researcher}
                 />
               </div>
             </Col>
