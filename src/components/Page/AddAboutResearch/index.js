@@ -1,13 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-// import Axios from "axios";
-// import { Switch, Route } from "react-router-dom";
-// import { NavLink } from "react-router-dom";
-// import AddFundingResearch from "./AddFundingResearch";
-// import AddFundingAcademic from "./AddFundingAcademic";
+
 import Welcome from "../Home/welcome";
 import AddAboutResearch from "./AddAboutResearch";
-// import AddResearch from "./AddResearch";
 function AboutResearch(props) {
   return (
     <div>

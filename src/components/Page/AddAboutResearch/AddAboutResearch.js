@@ -1,177 +1,45 @@
-/* eslint-disable react/jsx-no-duplicate-props */
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Row, Col, Button } from "react-bootstrap";
-import Axios from "axios";
+import { connect } from "react-redux";
 
-export default function AddAboutResearch() {
-  var date = new Date();
-  var today =
-    [date.getFullYear(), date.getMonth() + 1, date.getDate()].join("-") +
-    " " +
-    [date.getHours(), date.getMinutes(), date.getSeconds()].join(":");
-  console.log("testdate:string", today);
+import { insertsource_fund, clearfunding } from "../../../redux/funding/action";
 
-  const [about_finding, setabout_finding] = useState([]);
-  const [about_fundingagency_name, setabout_fundingagency_name] = useState(""); //ชื่อทุน
-  const [about_fundingagency_institution, setabout_fundingagency_institution] =
-    useState(""); //หน่วยงาน
-  const [about_fundingagency_paln_master, setabout_fundingagency_paln_master] =
-    useState(""); //แผนหลัก
-  const [about_fundingagency_paln_sub, setabout_fundingagency_paln_sub] =
-    useState(""); //แผนรอง
-  const [about_fundingagency_platform, setabout_fundingagency_platform] =
-    useState(""); //แฟลตฟอร์ม
-  const [about_fundingagency_program, setabout_fundingagency_program] =
-    useState(0); //โปรแกรม
-  const [about_fundingagency_point, setabout_fundingagency_point] =
-    useState(""); //ประเด็นเริ่มสำคัญ
-  const [about_fundingagency_goal, setabout_fundingagency_goal] = useState(""); //เป้าหมาย
-  // const [create_date, setCreate_date] = useState("");
-  const [
-    about_fundingagency_achievement_main,
-    setabout_fundingagency_achievement_main,
-  ] = useState(""); //ผลสัมถฤทธิ์ที่สำคัญ หลัก
-  const [
-    about_fundingagency_achievement_small,
-    setabout_fundingagency_achievement_small,
-  ] = useState(""); //ผลสัมถฤทธิ์ที่สำคัญ รอง
-
-  //   const [modalShow, setModalShow] = React.useState(false);
-  //   const [source_funds_name, setSource_funds_name] = useState("");
-
-  //   const [source_funds, setSource_fund] = useState([]);
-
-  //   useEffect(() => {
-  //     Axios.get("http://localhost:3002/api/get/source_funds").then((source) => {
-  //       setSource_fund(source.data);
-  //     });
-  //   }, []);
+function AddAboutResearch(props) {
+  const [source_funds_name, setsource_funds_name] = useState(""); //ชื่อทุน
+  const [source_funds_institution, setsource_funds_institution] = useState(""); //หน่วยงาน
+  const [source_funds_paln_master, setsource_funds_paln_master] = useState(""); //แผนหลัก
+  const [source_funds_paln_sub, setsource_funds_paln_sub] = useState(""); //แผนรอง
+  const [source_funds_platform, setsource_funds_platform] = useState(""); //แฟลตฟอร์ม
+  const [source_funds_program, setsource_funds_program] = useState(0); //โปรแกรม
+  const [source_funds_point, setsource_funds_point] = useState(""); //ประเด็นเริ่มสำคัญ
+  const [source_funds_goal, setsource_funds_goal] = useState(""); //เป้าหมาย
+  const [source_funds_achievement_main, setsource_funds_achievement_main] =
+    useState(""); //ผลสัมถฤทธิ์ที่สำคัญ หลัก
+  const [source_funds_achievement_small, setsource_funds_achievement_small] =
+    useState(""); //ผลสัมถฤทธิ์ที่สำคัญ รอง
 
   const handleSubmit = () => {
-    const fundingagencyObj = {
-      about_fundingagency_name: about_fundingagency_name,
-      about_fundingagency_institution: about_fundingagency_institution,
-      about_fundingagency_paln_master: about_fundingagency_paln_master,
-      about_fundingagency_paln_sub: about_fundingagency_paln_sub,
-      about_fundingagency_platform: about_fundingagency_platform,
-      about_fundingagency_program: about_fundingagency_program,
-      about_fundingagency_point: about_fundingagency_point,
-      about_fundingagency_goal: about_fundingagency_goal,
-      about_fundingagency_achievement_main:
-        about_fundingagency_achievement_main,
-      about_fundingagency_achievement_small:
-        about_fundingagency_achievement_small,
+    const newdata = {
+      source_funds_name,
+      source_funds_institution,
+      source_funds_paln_master,
+      source_funds_paln_sub,
+      source_funds_platform,
+      source_funds_program,
+      source_funds_point,
+      source_funds_goal,
+      source_funds_achievement_main,
+      source_funds_achievement_small,
     };
-    Axios.post(
-      "http://localhost:4000/api/post/coordinator_about_fundingagency",
-      fundingagencyObj
-    ).then(() => {
-      alert("บันทึกข้อมูลสำเร็จ!!");
-      setabout_finding([
-        ...about_finding,
-        {
-          about_fundingagency_name: about_fundingagency_name,
-          about_fundingagency_institution: about_fundingagency_institution,
-          about_fundingagency_paln_master: about_fundingagency_paln_master,
-          about_fundingagency_paln_sub: about_fundingagency_paln_sub,
-          about_fundingagency_platform: about_fundingagency_platform,
-          about_fundingagency_program: about_fundingagency_program,
-          about_fundingagency_point: about_fundingagency_point,
-          about_fundingagency_goal: about_fundingagency_goal,
-          about_fundingagency_achievement_main:
-            about_fundingagency_achievement_main,
-          about_fundingagency_achievement_small:
-            about_fundingagency_achievement_small,
-          created_date: today,
-        },
-      ]);
+    props.insertsource_fund(newdata).then(() => {
+      alert("บันทึกข้อมูล สำเร็จ");
+      props.history.push("/addfunding/addfundingresearch");
     });
   };
   return (
-    <>
+    <React.Fragment>
       <div className="card-header">
-        {/* <NavLink to="/addfunding/fundingresearch">
-          <button
-            className="btn btn-primary btn-fundingresearch card-header-menu"
-            onClick={() => {
-              document
-                .querySelector(".btn-fundingresearch")
-                .classList.remove("btn-primary");
-              document
-                .querySelector(".btn-acdemic")
-                .classList.add("btn-primary");
-              document.querySelector(".btn-about").classList.add("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.add("btn-primary");
-            }}
-          >
-            แหล่งทุนงานวิจัย
-          </button>
-        </NavLink>
-        <NavLink to="/addfunding/academic">
-          <button
-            className="btn btn-primary btn-acdemic card-header-menu"
-            style={{ marginLeft: "1rem" }}
-            onClick={() => {
-              document
-                .querySelector(".btn-fundingresearch")
-                .classList.add("btn-primary");
-              document
-                .querySelector(".btn-acdemic")
-                .classList.remove("btn-primary");
-              document.querySelector(".btn-about").classList.add("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.add("btn-primary");
-            }}
-          >
-            แหล่งทุนงานบริการวิชาการ
-          </button>
-        </NavLink>
-        <NavLink to="/addfunding/aboutfunding">
-          <button
-            className="btn  btn-about card-header-menu"
-            style={{ marginLeft: "1rem" }}
-            onClick={() => {
-              document
-                .querySelector(".btn-fundingresearch ")
-                .classList.add("btn-primary");
-              document
-                .querySelector(".btn-acdemic")
-                .classList.add("btn-primary");
-              document
-                .querySelector(".btn-about")
-                .classList.remove("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.add("btn-primary");
-            }}
-          >
-            ข้อมูลทั่วไปเกี่ยวกับทุน
-          </button>
-        </NavLink>
-        <NavLink to="/addfunding/research">
-          <button
-            className="btn btn-primary btn-research card-header-menu"
-            style={{ marginLeft: "1rem" }}
-            onClick={() => {
-              document
-                .querySelector(".btn-fundingresearch")
-                .classList.add("btn-primary");
-              document
-                .querySelector(".btn-acdemic")
-                .classList.add("btn-primary");
-              document.querySelector(".btn-about").classList.add("btn-primary");
-              document
-                .querySelector(".btn-research")
-                .classList.remove("btn-primary");
-            }}
-          >
-            งานวิจัย
-          </button>
-        </NavLink> */}
         <div
           className="projcard-bar"
           style={{ marginLeft: "0", marginRight: "0" }}
@@ -191,7 +59,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_name(event.target.value);
+                    setsource_funds_name(event.target.value);
                   }}
                 />
               </div>
@@ -203,7 +71,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_institution(event.target.value);
+                    setsource_funds_institution(event.target.value);
                   }}
                 />
               </div>
@@ -215,7 +83,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_paln_master(event.target.value);
+                    setsource_funds_paln_master(event.target.value);
                   }}
                 />
               </div>
@@ -227,7 +95,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_paln_sub(event.target.value);
+                    setsource_funds_paln_sub(event.target.value);
                   }}
                 />
               </div>
@@ -239,7 +107,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_platform(event.target.value);
+                    setsource_funds_platform(event.target.value);
                   }}
                 />
               </div>
@@ -252,7 +120,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_program(event.target.value);
+                    setsource_funds_program(event.target.value);
                   }}
                 />
               </div>
@@ -264,7 +132,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_point(event.target.value);
+                    setsource_funds_point(event.target.value);
                   }}
                 />
               </div>
@@ -276,7 +144,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_goal(event.target.value);
+                    setsource_funds_goal(event.target.value);
                   }}
                 />
               </div>
@@ -290,7 +158,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_achievement_main(event.target.value);
+                    setsource_funds_achievement_main(event.target.value);
                   }}
                 />
               </div>
@@ -304,9 +172,7 @@ export default function AddAboutResearch() {
                   type="text"
                   className="form-control"
                   onChange={(event) => {
-                    setabout_fundingagency_achievement_small(
-                      event.target.value
-                    );
+                    setsource_funds_achievement_small(event.target.value);
                   }}
                 />
               </div>
@@ -323,7 +189,7 @@ export default function AddAboutResearch() {
                 <Button
                   onClick={handleSubmit}
                   // href="/"
-                  type="submit"
+                  // type="submit"
                   className="btn  bg-gradient-primary btn-md"
                 >
                   บันทึก
@@ -333,6 +199,24 @@ export default function AddAboutResearch() {
           </Row>
         </div>
       </form>
-    </>
+    </React.Fragment>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    researchfaculty: state.funding.researchfaculty,
+    budgettype: state.funding.budgettype,
+    fundingstatus: state.funding.fundingstatus,
+    year: state.concept.year,
+    concept: state.concept.concept,
+    user: state.concept.user,
+    source_funds: state.concept.sourcefund,
+    project_type: state.concept.projecttype,
+  };
+};
+
+export default connect(mapStateToProps, {
+  insertsource_fund,
+  clearfunding,
+})(withRouter(AddAboutResearch));
