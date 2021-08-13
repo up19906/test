@@ -1,11 +1,10 @@
 import {
   ADD_CONCEPT,
   INSERT_CONCEPT,
-  ADD_ID_SUBCONCEPT,
   ADD_SUB_CONCEPT,
-  INSERT_SUB_CONCEPT,
   ADD_STUDYAREA,
   ADD_NETWORK,
+  CLEAR_CONCEPT,
   GET_USER,
   GET_SOURCEFUND,
   GET_PROJECT_TYPE,
@@ -17,8 +16,6 @@ const initialState = {
   concept: [],
   subconcept: [],
   insertconcept: [],
-  insertsubconcept: [],
-  idsubconcept: [],
   studyarea: [],
   network: [],
   co_research_group: [],
@@ -47,9 +44,6 @@ export default function reducerconcept(state = initialState, action) {
     case GET_SOURCEFUND:
       return { ...state, sourcefund: payload };
 
-    case ADD_ID_SUBCONCEPT:
-      return { ...state, idsubconcept: payload };
-
     case ADD_CONCEPT:
       return { ...state, concept: payload };
 
@@ -59,17 +53,21 @@ export default function reducerconcept(state = initialState, action) {
     case ADD_SUB_CONCEPT:
       return { ...state, subconcept: [...state.subconcept, payload] };
 
-    case INSERT_SUB_CONCEPT:
-      return {
-        ...state,
-        insertsubconcept: [...state.insertsubconcept, payload],
-      };
-
     case ADD_STUDYAREA:
       return { ...state, studyarea: payload };
 
     case ADD_NETWORK:
       return { ...state, network: payload };
+
+    case CLEAR_CONCEPT:
+      return {
+        ...state,
+        concept: payload,
+        subconcept: payload,
+        studyarea: payload,
+        network: payload,
+        insertconcept: payload,
+      };
 
     // case RETRIEVE_TUTORIALS:
     //   return payload;

@@ -1,12 +1,10 @@
 import {
   ADD_CONCEPT,
   INSERT_CONCEPT,
-  ADD_ID_SUBCONCEPT,
   ADD_SUB_CONCEPT,
-  INSERT_SUB_CONCEPT,
   ADD_STUDYAREA,
-  INSERT_STUDYAREA,
   ADD_NETWORK,
+  CLEAR_CONCEPT,
   GET_USER,
   GET_SOURCEFUND,
   GET_PROJECT_TYPE,
@@ -89,18 +87,31 @@ export const getSource_funds = () => async (dispatch) => {
 };
 
 export const addconcept = (data) => async (dispatch) => {
-  // try {
-  // const res = await ApiData.create_concept(data);
-  // const data = res.data;
-  // const test = data[0].push({ leader_name: leader_name });
   dispatch({
     type: ADD_CONCEPT,
     payload: data,
   });
-  //   return Promise.resolve(res.data);
-  // } catch (err) {
-  //   return Promise.reject(err);
-  // }
+};
+
+export const addsubconcept = (data) => async (dispatch) => {
+  dispatch({
+    type: ADD_SUB_CONCEPT,
+    payload: data,
+  });
+};
+
+export const addstudyarea = (data) => async (dispatch) => {
+  dispatch({
+    type: ADD_STUDYAREA,
+    payload: data,
+  });
+};
+
+export const addnetwork = (data) => async (dispatch) => {
+  dispatch({
+    type: ADD_NETWORK,
+    payload: data,
+  });
 };
 
 export const insertconcept = (data) => async (dispatch) => {
@@ -116,100 +127,9 @@ export const insertconcept = (data) => async (dispatch) => {
   }
 };
 
-export const insertsubconcept = (data) => async (dispatch) => {
-  try {
-    const res = await ApiData.create_concept(data);
-    dispatch({
-      type: INSERT_SUB_CONCEPT,
-      payload: res.data,
-    });
-    return Promise.resolve(res.data);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
-
-export const insertstudyarea = (data) => async (dispatch) => {
-  try {
-    const res = await ApiData.create_concept(data);
-    dispatch({
-      type: INSERT_STUDYAREA,
-      payload: data,
-    });
-    return Promise.resolve(res.data);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
-
-export const addsubconcept = (data) => async (dispatch) => {
-  // try {
-  //   const res = await ApiData.create_concept({
-  //     data,
-  //     // leader_name,
-  //   });
-
-  // const data = res.data;
-  // const test = data[0].push({ leader_name: leader_name });
+export const clearconcept = () => async (dispatch) => {
   dispatch({
-    type: ADD_SUB_CONCEPT,
-    payload: data,
+    type: CLEAR_CONCEPT,
+    payload: [],
   });
-
-  //   return Promise.resolve(res.data);
-  // } catch (err) {
-  //   return Promise.reject(err);
-  // }
-};
-
-export const updateIDsubconcept =
-  (concpt_proposal_sub, id) => async (dispatch) => {
-    try {
-      const res = await ApiData.updateIDsubconcept({
-        concpt_proposal_sub,
-        id,
-        // leader_name,
-      });
-
-      // const data = res.data;
-      // const test = data[0].push({ leader_name: leader_name });
-      dispatch({
-        type: ADD_ID_SUBCONCEPT,
-        payload: res.data,
-      });
-
-      return Promise.resolve(res.data);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  };
-
-export const addstudyarea = (data) => async (dispatch) => {
-  // try {
-  //   const res = { data };
-
-  dispatch({
-    type: ADD_STUDYAREA,
-    payload: data,
-  });
-
-  //   return Promise.resolve(res.data);
-  // } catch (err) {
-  //   return Promise.reject(err);
-  // }
-};
-
-export const addnetwork = (data) => async (dispatch) => {
-  // try {
-  //   const res = { data };
-
-  dispatch({
-    type: ADD_NETWORK,
-    payload: data,
-  });
-
-  //   return Promise.resolve(res.data);
-  // } catch (err) {
-  //   return Promise.reject(err);
-  // }
 };
