@@ -1,5 +1,5 @@
 // import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
@@ -12,8 +12,8 @@ import {
 } from "../../../redux/home/action";
 import "./style.scss";
 import Funding from "./funding";
-import FindingAcademic from "./fundingAcademic";
 import Welcome from "./welcome";
+import ShowConceptProposal from "./showconceptproposal";
 
 function Home(props) {
   var d = new Date();
@@ -124,7 +124,7 @@ function Home(props) {
 
             <Funding />
             <br />
-            <FindingAcademic />
+            <ShowConceptProposal />
           </div>
         </div>
       </div>

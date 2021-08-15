@@ -19,6 +19,7 @@ function Finding(props) {
     " " +
     [date.getHours(), date.getMinutes(), date.getSeconds()].join(":");
   console.log("testdate:string", today);
+
   const year = [
     { value: [date.getFullYear() + 543] },
     { value: [date.getFullYear() + 542] },
@@ -223,10 +224,14 @@ function Finding(props) {
                       </div>
                     </div>
                     {/* /.card-header */}
-                    <div className="card-body table-responsive p-0">
-                      <table className="table table-hover text-nowrap">
+                    <div
+                      className="card-body table-responsive p-0"
+                      style={{ maxHeight: "40vh" }}
+                    >
+                      <table className="table table-hover text-nowrap table table-head-fixed">
                         <thead>
                           <tr>
+                            <th>ประเภทโครงการ</th>
                             <th>ชื่อโครงการ</th>
                             <th>ชื่อแหล่งทุน</th>
                             <th>ประจำปี</th>
@@ -244,6 +249,7 @@ function Finding(props) {
                           ) {
                             return (
                               <tr key={i}>
+                                <td>{data.project_type_id}</td>
                                 <td>{data.coordinater_funding_project_name}</td>
                                 <td>{data.coordinater_funding_name}</td>
                                 <td>{data.coordinater_funding_year}</td>
@@ -293,7 +299,7 @@ function Finding(props) {
                     <Col>
                       <div className="center">
                         <NavLink
-                          to="/addfunding/fundingresearch"
+                          to="/addfunding/addfundingresearch"
                           type="button"
                           className="btn bg-gradient-primary btn-md"
                         >
