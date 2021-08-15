@@ -95,7 +95,8 @@ function AddConceptproposal(props) {
                     setproject_type_id(event.target.value);
                   }}
                 >
-                  {
+                  <option value="">เลือกประเภท</option>
+                  {/* {
                     props.subconcept.length === 0 ? (
                       <option value="">เลือกประเภท</option>
                     ) : null
@@ -104,7 +105,7 @@ function AddConceptproposal(props) {
                     //     {props.project_type[poject_type_int].project_type_name}
                     //   </option>
                     // )
-                  }
+                  } */}
 
                   {props.project_type.length > 0 ? (
                     <>
@@ -148,7 +149,8 @@ function AddConceptproposal(props) {
                     setsource_funds_id(event.target.value);
                   }}
                 >
-                  {
+                  <option value="">เลือกแหล่งทุน</option>
+                  {/* {
                     props.subconcept.length === 0 ? (
                       <option value="">เลือกแหล่งทุน</option>
                     ) : null
@@ -158,7 +160,7 @@ function AddConceptproposal(props) {
                     //       .source_funds_name
                     //   }
                     // </option>
-                  }
+                  } */}
 
                   {props.source_funds.length > 0 ? (
                     <>
@@ -186,7 +188,8 @@ function AddConceptproposal(props) {
                     setconcept_year(event.target.value);
                   }}
                 >
-                  {
+                  <option value="">เลือกปีงบประมาณ </option>
+                  {/* {
                     props.subconcept.length === 0 ? (
                       <option value="">เลือกปีงบประมาณ </option>
                     ) : null
@@ -196,7 +199,7 @@ function AddConceptproposal(props) {
                     //       .source_funds_name
                     //   }
                     // </option>
-                  }
+                  } */}
                   {props.year.length > 0 ? (
                     <>
                       {props.year.map((value, i) => {
@@ -325,7 +328,8 @@ function AddConceptproposal(props) {
                             setproject_type_id(event.target.value);
                           }}
                         >
-                          {
+                          <option value="">เลือกประเภท</option>
+                          {/* {
                             props.concept.project_type_id === null ? (
                               <option value="">เลือกประเภท</option>
                             ) : null
@@ -334,7 +338,7 @@ function AddConceptproposal(props) {
                             //     {props.project_type[poject_type_int].project_type_name}
                             //   </option>
                             // )
-                          }
+                          } */}
 
                           {props.project_type.length > 0 ? (
                             <>
@@ -378,6 +382,7 @@ function AddConceptproposal(props) {
                             setsource_funds_id(event.target.value);
                           }}
                         >
+                          <option value="">เลือกแหล่งทุน</option>
                           {/* {
                             props.concept.source_funds_id === null ? (
                               <option value="">เลือกแหล่งทุน</option>
@@ -416,9 +421,10 @@ function AddConceptproposal(props) {
                             setconcept_year(event.target.value);
                           }}
                         >
-                          <option value={props.concept.concept_year}>
+                          <option value="">เลือกปี</option>
+                          {/* <option value={props.concept.concept_year}>
                             {props.concept.concept_year}
-                          </option>
+                          </option> */}
                           {props.year.length > 0 ? (
                             <>
                               {props.year.map((value, i) => {
@@ -474,7 +480,7 @@ function AddConceptproposal(props) {
                             setselect_researchname(selectedOptions);
                           }}
                           // defaultValue={[colourOptions[4], colourOptions[5]]}
-                          options={test}
+                          options={researcher}
                         />
                       </div>
                     </Col>
