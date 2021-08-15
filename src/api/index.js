@@ -59,6 +59,8 @@ class ApiData {
   }
 
   //concept_proposol
+
+
   create_concept(data) {
     return http.post("/create/concept_proposal", data);
   }
