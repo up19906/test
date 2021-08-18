@@ -189,6 +189,7 @@ function Network(props) {
                 </select>
               </div>
             </Col>
+            
             {/* ผู้ประสานงาน */}
             <Col lg={8}>
               <div className="form-group">
@@ -330,7 +331,7 @@ function Network(props) {
             <Col lg={6} style={{ float: "left" }}>
               <NavLink
                 className="btn bg-gradient-primary btn-md"
-                to="/research/studyarea"
+                to="/conceptproposal/studyarea"
               >
                 ย้อนกลับ
               </NavLink>

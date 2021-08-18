@@ -91,8 +91,7 @@ function Home(props) {
                       </div>
                       <div className="card-body">
                         <h5 className="card-text">
-                          {props.statehome.funding_budget +
-                            props.statehome.funding_academic_budget}{" "}
+                          {props.statehome.funding_budget}{" "}
                           บาท
                         </h5>
                       </div>
@@ -111,8 +110,7 @@ function Home(props) {
                       </div>
                       <div className="card-body">
                         <h5 className="card-text">
-                          {props.statehome.count_funding.length +
-                            props.statehome.count_funding_academic.length}{" "}
+                          {props.statehome.count_funding.length}{" "}
                           ทุน
                         </h5>
                       </div>

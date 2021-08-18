@@ -19,6 +19,7 @@ import {
   getbudget_type,
   getfunding_status,
   insertfunding,
+  updatefunding,
   clearfunding,
 } from "../../../redux/funding/action";
 
@@ -94,11 +95,18 @@ function AddFundingResearch(props) {
       coordinator_univercity_budget,
     };
 
-    props.insertfunding(newdata).then(() => {
-      alert("บันทึกข้อมูลสำเร็จ");
-      props.clearfunding();
-      props.history.push("/");
-    });
+    if (props.getonefunding) {
+      console.log("testUpdate")
+      props.updatefunding(props.getonefunding.id, newdata);
+      console.log("testUpdate2")
+    } else {
+      console.log("testInsert")
+      props.insertfunding(newdata).then(() => {
+        alert("บันทึกข้อมูลสำเร็จ");
+        props.clearfunding();
+        props.history.push("/");
+      });
+    }
   };
 
   return (
@@ -127,7 +135,7 @@ function AddFundingResearch(props) {
                   }}
                 >
                   {
-                    props.concept.length === 0 ? (
+                    props.getonefunding.project_type ? (
                       <option value="">เลือกประเภท</option>
                     ) : null
                     // <option value={props.concept.project_type_id}>
@@ -535,6 +543,7 @@ const mapStateToProps = (state) => {
     user: state.concept.user,
     source_funds: state.concept.sourcefund,
     project_type: state.concept.projecttype,
+    getonefunding: state.funding.getonefunding,
   };
 };
 
@@ -547,5 +556,6 @@ export default connect(mapStateToProps, {
   getbudget_type,
   getfunding_status,
   insertfunding,
+  updatefunding,
   clearfunding,
 })(withRouter(AddFundingResearch));

@@ -14,7 +14,7 @@ function AddFunding(props) {
                 className="text-dark"
                 style={{ padding: "0.25rem", marginLeft: "3.5rem" }}
               >
-                กองนโยบายและแผน
+               ข้อมูลแหล่งทุน
               </h1>
               <div className="projcard-bar"></div>
             </div>

@@ -64,7 +64,7 @@ function AddConceptproposal(props) {
     setcountsubconcept(countsubconcept + 1);
 
     if (gotopage === true) {
-      props.history.push("/research/studyarea");
+      props.history.push("/conceptproposal/studyarea");
       console.log("test 1");
     }
   };

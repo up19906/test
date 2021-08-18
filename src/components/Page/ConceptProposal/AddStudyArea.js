@@ -15,12 +15,13 @@ import {
 
 function AddStudyArea(props) {
   const [co_researcher_name_th, setco_researcher_name_th] = useState(""); //ชื่อชุมชน
+  const [co_researcher_group_id, setco_researcher_group_id] = useState(""); //ประเภทเครือข่าย
   const [coordinator_name_th, setcoordinator_name_th] = useState(""); //ผู้ประสานงาน
   const [co_researcher_phone, setco_researcher_phone] = useState(""); //เบอร์ติดต่อ
   const [co_researcher_latitude, setco_researcher_latitude] = useState(0); //พื้นที่ศึกษา lat
   const [co_researcher_longitude, setco_researcher_longitude] = useState(0); //พื้นที่ศึกษา long
   const handleSubmit = () => {
-    const co_researcher_group_id = 1;
+    // const co_researcher_group_id = 1;
     const data = {
       co_researcher_name_th,
       co_researcher_group_id,
@@ -30,7 +31,7 @@ function AddStudyArea(props) {
       co_researcher_longitude,
     };
     props.addstudyarea(data).then(() => {
-      props.history.push("/research/network");
+      props.history.push("/conceptproposal/network");
     });
   };
 
@@ -44,7 +45,7 @@ function AddStudyArea(props) {
         <div className="card-body card-body-pading">
           <Row>
             {/* ชุมชน */}
-            <Col lg={12}>
+            <Col lg={7}>
               <div className="form-group">
                 <Form.Label>ชื่อชุมชน</Form.Label>
                 <Form.Control
@@ -61,6 +62,45 @@ function AddStudyArea(props) {
                 </Form.Control.Feedback>
               </div>
             </Col>
+
+            {/* ประเภทเครือข่าย */}
+            <Col lg={5}>
+              <div className="form-group">
+                <Form.Label>ประเภท</Form.Label>
+                <select
+                  required
+                  className="form-control"
+                  onChange={(event) => {
+                    setco_researcher_group_id(event.target.value);
+                  }}
+                > 
+                  {
+                    props.network.length === 0 ? (
+                      <option value="">เลือกประเภท</option>
+                    ) : null
+                    // <option value={props.concept.project_type_id}>
+                    //   {
+                    //     props.project_type[
+                    //       parseInt(props.concept.project_type_id)
+                    //     ].project_type_name
+                    //   }
+                    // </option>
+                  }
+                  {props.co_research_group.length > 0 ? (
+                    <>
+                      {props.co_research_group.map((value, i) => {
+                        return (
+                          <option key={i} value={value.co_researcher_group_id}>
+                            {value.co_researcher_group_name_th}
+                          </option>
+                        );
+                      })}
+                    </>
+                  ) : null}
+                </select>
+              </div>
+            </Col>
+            
             {/* ผู้ประสานงาน */}
             <Col lg={8}>
               <div className="form-group">
@@ -202,7 +242,7 @@ function AddStudyArea(props) {
             <Col lg={6} style={{ float: "left" }}>
               <NavLink
                 className="btn bg-gradient-primary btn-md"
-                to="/research"
+                to="/conceptproposal"
               >
                 ย้อนกลับ
               </NavLink>
@@ -225,7 +265,9 @@ function AddStudyArea(props) {
 const mapStateToProps = (state) => {
   return {
     concept: state.concept.concept,
+    network: state.concept.network,
     subconcept: state.concept.subconcept,
+    co_research_group: state.concept.co_research_group,
     studyarea: state.concept.studyarea,
   };
 };

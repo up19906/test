@@ -2,6 +2,10 @@ import http from "./http-common";
 
 class ApiData {
   //Home
+
+  getuserlogin(uid){
+    return http.get(`get/bb-user-detail/${uid}`)
+  }
   getusergroup() {
     return http.get("/get/user_group");
   }
@@ -11,12 +15,14 @@ class ApiData {
   getcoordinater_funding_budgetByYear(date) {
     return http.get(`/get/sum_coordinater_funding_budget/${date}`);
   }
-  getcoordinater_funding_budget_academicByYear(date) {
-    return http.get(`/get/sum_coordinater_funding_budget_academic/${date}`);
-  }
   getcount_coordinater_fundingByYear(date) {
     return http.get(`/get/count_coordinator_fundingagency/${date}`);
   }
+
+  getcoordinater_funding_budget_academicByYear(date) {
+    return http.get(`/get/sum_coordinater_funding_budget_academic/${date}`);
+  }
+
   getcount_coordinater_funding_academicByYear(date) {
     return http.get(`/get/count_coordinator_fundingagency_academic/${date}`);
   }
@@ -25,6 +31,18 @@ class ApiData {
   getcodinator_funding() {
     return http.get("/get/coordinator_fundingagency");
   }
+
+  //Funding Update
+  getone_coordinator_funding(id) {
+    return http.get(`/get/coordinator_fundingagency/${id}`);
+  }
+  update_coordinator_funding(id, data) {
+    return http.put(`/update/coordinator_fundingagency/${id}`, data);
+  }
+  delete_coordinator_funding(id) {
+    return http.delete(`delete/coordinator_fundingagency/${id}`);
+  }
+  // End
 
   getconcept_proposal_research_facultys() {
     return http.get("/get/concept_proposal_research_facultys");
@@ -60,7 +78,6 @@ class ApiData {
 
   //concept_proposol
 
-
   create_concept(data) {
     return http.post("/create/concept_proposal", data);
   }
@@ -68,7 +85,7 @@ class ApiData {
   get_co_research_group() {
     return http.get("/get/co-researcher-group");
   }
-  
+
   create_co_research(data) {
     return http.post("/create/co-researcher", data);
   }

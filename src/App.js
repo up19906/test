@@ -1,16 +1,17 @@
 import "./App.css";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AddFunding from "./components/Page/AddFunding";
 import AllReport from "./components/Page/AllReport";
-import Research from "./components/Page/ConceptProposal";
+import ConceptProposal from "./components/Page/ConceptProposal";
 import AddAboutResearch from "./components/Page/AddAboutResearch";
 
 // import AddFundingAcademic from "./components/Page/AddFunding/AddFundingAcademic";
 import Home from "./components/Page/Home";
 // import Contact from "./components/Page/Contact";
 import { Route, Switch } from "react-router-dom";
-
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
         />
 
         <Route path="/allreport" component={AllReport} />
-        <Route path="/research" component={Research} />
+        <Route path="/conceptproposal" component={ConceptProposal} />
         {/* <Route path="/academic" component={AddFunding} /> */}
         {/* <Route path="/addfunding/academic" render={(props) => <AddFunding />} /> */}
       </Switch>

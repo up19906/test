@@ -22,7 +22,7 @@ import "../src/components/Header/style.scss";
 ReactDOM.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <BrowserRouter basename={"/up_test"}>
+    <BrowserRouter basename={"/researcher/coordinator"}>
       <App />
     </BrowserRouter>
   </Provider>,

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Modal, Form } from "react-bootstrap";
 import Axios from "axios";
-import { NavLink } from "react-router-dom";
+import { NavLink,withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 import { getcoordinator_funding } from "../../../redux/home/action";
+import { getonefunding } from "../../../redux/funding/action";
+
 import { getUser } from "../../../redux/conceptProposal/action";
 
 // import { NavLink } from "react-router-dom";
@@ -61,12 +63,6 @@ function Finding(props) {
   useEffect(() => {
     props.getcoordinator_funding();
     props.getUser();
-    // Axios.get("http://localhost:4000/api/get/coordinator_fundingagency").then(
-    //   (fundingagency) => {
-    //     setfundingagency(fundingagency.data);
-    //     console.log("test_fundingagency", fundingagency.data);
-    //   }
-    // );
 
     Axios.get(
       "http://localhost:4000/api/get/concept_proposal_research_facultys"
@@ -139,27 +135,8 @@ function Finding(props) {
 
   const handleGetUpdate = (id) => {
     console.log("test ID : ", id);
-    Axios.get(
-      `http://localhost:4000/api/get/coordinator_fundingagency/${id}`
-    ).then((data) => {
-      setGetupdate(data.data);
-      setModalShow(true);
-      setFunding_project_name(data.data.coordinater_funding_project_name);
-      setCoordinator_project(data.data.coordinator_project);
-      setFunding_agency(data.data.coordinater_funding_agency);
-      setFunding_project_leader(data.data.project_leader);
-      setFunding_phone(data.data.coordinater_funding_phone);
-      setproject_status(data.data.coordinator_fundingagency_status_id);
-      setFunding_year(data.data.coordinater_funding_year);
-      setFunding_budget(data.data.coordinater_funding_budget);
-      setFunding_name(data.data.coordinater_funding_name);
-      setfunding_type(data.data.budget_id);
-      setcoordinator_univercity_budget(data.data.coordinator_univercity_budget);
-      console.log("testGetupdate : ", getupdate);
-      // console.log(
-      //   "testGetupdate : Project ",
-      //   data.data.coordinater_funding_project_name
-      // );
+    props.getonefunding(id).then(() => {
+      props.history.push("/addfunding/addfundingresearch");
     });
   };
   // console.log("testGetupdate : Project ", getupdate[2]);
@@ -805,4 +782,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   getcoordinator_funding,
   getUser,
-})(Finding);
+  getonefunding,
+})(withRouter(Finding));

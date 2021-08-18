@@ -62,9 +62,9 @@ function AddConceptproposal(props) {
     props.addconcept(data);
     console.log("test 1");
     if (concept_proposal_type === "0") {
-      props.history.push("/research/studyarea");
+      props.history.push("/conceptproposal/studyarea");
     } else if (concept_proposal_type === "1") {
-      props.history.push("/research/addsubconcept");
+      props.history.push("/conceptproposal/addsubconcept");
     }
   };
   console.log("testconcept ", props.concept);

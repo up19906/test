@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import {
@@ -7,17 +8,78 @@ import {
   closemenu,
   opensidebar,
   closesidebar,
+  removeruserlogin,
 } from "../../redux/header/action";
+
+import { getuserlogin } from "../../redux/home/action";
 import { connect } from "react-redux";
 // import $ from "jquery";
 
 import "./style.scss";
 
 function Header(props) {
-  // const [sidebar, setSidebar] = useState(true);
+
   const [submenu, setsubmenu] = useState(true);
-  // const [menu, setmenu] = useState(false);
   console.log("testmenu:", props.menu);
+
+  const [currentUser, setCurrentUser] = useState({});
+
+  const processUser = () => {
+    const parameters = window.location.search.substring(1).split("&");
+    const temp = parameters[0].split("=");
+    const uid = unescape(temp[1]);
+    // var temp2 = parameters[1].split("=");
+    // const p = unescape(temp2[1]);
+    return uid;
+  };
+
+  const saveDatatoStorage = (uid) => {
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        uid: uid,
+      })
+    );
+  };
+
+  const getCurrentUser = () => {
+    return JSON.parse(localStorage.getItem("user"));
+  };
+
+ const getUser = async (uid) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/get/bb-user-detail/${uid}`
+      );
+      return response.data;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    if (getCurrentUser() == null || getCurrentUser().uid == "undefined") {
+      const data = processUser();
+      saveDatatoStorage(data);
+    }
+
+    if (getCurrentUser().uid == "undefined") {
+      window.location.href =
+        "https://www.km-innovations.rmuti.ac.th/researcher/";
+    }
+
+    const user = getCurrentUser();
+    console.log(user);
+    const user_detail = await getUser(user.uid);
+    console.log(user_detail);
+    setCurrentUser({ ...currentUser, ...user_detail });
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    window.location.href = "https://www.km-innovations.rmuti.ac.th/researcher/";
+  };
 
   const openCloseSidebar = () => {
     if (props.sidebar === false) {
@@ -70,6 +132,7 @@ function Header(props) {
     }
   };
 
+  console.log("test .......", currentUser);
   // useEffect(() => {
   //   props.openmenu();
   //   props.closemenu();
@@ -109,7 +172,7 @@ function Header(props) {
           {/* Brand Logo */}
           <NavLink to="/home" className="brand-link">
             <Image
-              src="https://af.surin.rmuti.ac.th/Quota/Registration/img/RMUTI-logo-color.png"
+              src="https://www.km-innovations.rmuti.ac.th/researcher/images/rmuti"
               alt="AdminLTE Logo"
               className="brand-image "
               style={{
@@ -152,20 +215,27 @@ function Header(props) {
                   }}
                 >
                   {/* Sidebar user panel (optional) */}
+
                   <div className="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div className="image">
-                      <Image
-                        className="img-circle elevation-2"
-                        src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png"
-                        alt="User Image"
-                      />
-                    </div>
+                    {/* <div className="image">
+                        <Image
+                          className="img-circle elevation-2"
+                          src="https://image.flaticon.com/icons/png/512/219/219986.png"
+                          alt="User Image"
+                        />
+                      </div> */}
                     <div className="info">
-                      <NavLink to="/home" className="d-block">
-                        Alexander Pierce
-                      </NavLink>
+                      <a
+                        href="https://www.km-innovations.rmuti.ac.th/researcher/researcher/profile"
+                        className="nav-link d-block"
+                      >
+                        {currentUser.user_first_name_th +
+                          " " +
+                          currentUser.user_last_name_th}
+                      </a>
                     </div>
                   </div>
+
                   <nav className="mt-2">
                     <ul
                       className="nav nav-pills nav-sidebar flex-column"
@@ -183,6 +253,20 @@ function Header(props) {
                             </span> */}
                           </p>
                         </NavLink>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          href="https://www.km-innovations.rmuti.ac.th/researcher/researcher/profile"
+                          className="nav-link"
+                        >
+                          <i className="nav-icon fas fa-users" />
+                          <p>
+                            ข้อมูลส่วนตัว
+                            {/* <span className="right badge badge-danger">
+                              New
+                            </span> */}
+                          </p>
+                        </a>
                       </li>
                       <li className="nav-item">
                         <a
@@ -229,7 +313,7 @@ function Header(props) {
                       </li>{" "}
                       <li className="nav-item">
                         <NavLink
-                          to="/research"
+                          to="/conceptproposal"
                           className="nav-link"
                           // onClick={() => openMenu(false)}
                         >
@@ -247,7 +331,11 @@ function Header(props) {
                         </NavLink>
                       </li>
                       <li className="nav-item">
-                        <a href="/" className="nav-link">
+                        <a
+                          className="nav-link"
+                          style={{ cursor: "pointer" }}
+                          onClick={logout}
+                        >
                           <i className="nav-icon fas fa-sign-out-alt" />
                           <p>
                             ออกจากระบบ
@@ -292,12 +380,14 @@ function Header(props) {
 const mapStateToProps = (state) => ({
   menu: state.header.menu,
   sidebar: state.header.sidebar,
+  userlogin: state.statehome.userlogin,
 });
 const mapDispatchToProps = (dispatch) => ({
   openmenu: () => dispatch(openmenu()),
   closemenu: () => dispatch(closemenu()),
   opensidebar: () => dispatch(opensidebar()),
   closesidebar: () => dispatch(closesidebar()),
+  removeruserlogin,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, { getuserlogin })(Header);

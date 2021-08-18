@@ -23,7 +23,7 @@ function Conceptproposal(props) {
                 className="text-dark"
                 style={{ padding: "0.25rem", marginLeft: "3.5rem" }}
               >
-                กองนโยบายและแผน
+                ข้อเสนอโครงการ
               </h1>
               <div className="projcard-bar"></div>
             </div>
@@ -41,19 +41,19 @@ function Conceptproposal(props) {
                   <Switch>
                     <Route
                       exact
-                      path="/research"
+                      path="/conceptproposal"
                       component={AddConceptproposal}
                     />
                     <Route
                       exact
-                      path="/research/addsubconcept"
+                      path="/conceptproposal/addsubconcept"
                       component={AddSubConcept}
                     />
                     <Route
-                      path="/research/studyarea"
+                      path="/conceptproposal/studyarea"
                       component={AddStudyArea}
                     />
-                    <Route path="/research/network" component={Network} />
+                    <Route path="/conceptproposal/network" component={Network} />
                   </Switch>
 
                   {/* <AddConceptproposal /> */}

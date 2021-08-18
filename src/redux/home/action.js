@@ -1,5 +1,6 @@
 import {
   GET_USERGROUP,
+  GET_USER_LOGIN,
   GET_CONCEPT_PROPOSAL,
   GET_BUDGET_FUNDING,
   GET_BUDGET_FUNDING_ACADEMIC,
@@ -15,6 +16,22 @@ import {
 } from "../types";
 
 import ApiData from "../../api";
+
+
+
+export const getuserlogin = async (uid) =>  (dispatch) => {
+  try {
+    const res =  ApiData.getuserlogin(uid);
+    
+    dispatch({
+      type: GET_USER_LOGIN,
+      payload: res.data,
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const getUsergroup = () => async (dispatch) => {
   try {

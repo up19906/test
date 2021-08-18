@@ -1,5 +1,7 @@
 import {
   INSERT_COORDINATOR_FUNDING,
+  GETONE_COORDINATOR_FUNDING,
+  UPDATE_COORDINATOR_FUNDING,
   INSERT_SOURCEFUND,
   GET_RESEARCH_FACULTY,
   GET_BUDGET_TYPE,
@@ -19,6 +21,8 @@ const initialState = {
   count_funding_academic: [],
   coordinator_funding: [],
   coordinator_funding_academic: [],
+  getonefunding: [],
+  updatefunding: [],
 };
 
 export default function reducerhome(state = initialState, action) {
@@ -39,6 +43,13 @@ export default function reducerhome(state = initialState, action) {
 
     case INSERT_SOURCEFUND:
       return { ...state, insertsourcefund: payload };
+
+    //Update Funding
+    case GETONE_COORDINATOR_FUNDING:
+      return { ...state, getonefunding: payload };
+    case UPDATE_COORDINATOR_FUNDING:
+      return { ...state, updatefunding: payload };
+    //End Update Funding
 
     case CLEAR_COORDINATOR_FUNDING:
       return { ...state, insertfunding: payload };
