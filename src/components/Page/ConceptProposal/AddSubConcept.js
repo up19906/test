@@ -47,9 +47,9 @@ function AddConceptproposal(props) {
   const handleSubmit = () => {
     const concept_leader = select_researchname.value;
     // const concept_proposal_type = 0;
-    const concpt_proposal_sub = "";
+    // const concpt_proposal_sub = null;
     const data = {
-      concpt_proposal_sub,
+      // concpt_proposal_sub,
       project_type_id,
       concept_proposal_name,
       source_funds_id,
@@ -526,7 +526,7 @@ function AddConceptproposal(props) {
             <Col lg={6} style={{ float: "left" }}>
               <NavLink
                 className="btn bg-gradient-primary btn-md"
-                to="/research"
+                to="/conceptproposal"
               >
                 ย้อนกลับ
               </NavLink>

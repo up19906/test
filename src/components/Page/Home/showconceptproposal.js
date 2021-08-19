@@ -76,7 +76,7 @@ function ShowConceptProposal(props) {
                     <Col>
                       <div className="center">
                         <NavLink
-                          to="/research"
+                          to="/conceptproposal"
                           type="button"
                           className="btn bg-gradient-primary btn-md"
                         >

@@ -10,6 +10,8 @@ import {
   GET_PROJECT_TYPE,
   GET_YEAR,
   GET_CO_RESEARCH_GROUP,
+  INSERT_STUDYAREA,
+  INSERT_NETWORK,
 } from "../types";
 
 import ApiData from "../../api";
@@ -119,6 +121,32 @@ export const insertconcept = (data) => async (dispatch) => {
     const res = await ApiData.create_concept(data);
     dispatch({
       type: INSERT_CONCEPT,
+      payload: res.data,
+    });
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const insertstudyarea = (data) => async (dispatch) => {
+  try {
+    const res = await ApiData.create_co_research(data);
+    dispatch({
+      type: INSERT_STUDYAREA,
+      payload: res.data,
+    });
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const insertnetwork = (data) => async (dispatch) => {
+  try {
+    const res = await ApiData.create_co_research(data);
+    dispatch({
+      type: INSERT_NETWORK,
       payload: res.data,
     });
     return Promise.resolve(res.data);

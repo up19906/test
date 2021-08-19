@@ -14,7 +14,6 @@ import {
 } from "../../../redux/conceptProposal/action";
 
 function AddConceptproposal(props) {
-
   const form = createRef();
   const [project_type_id, setproject_type_id] = useState(""); //ประเภท
   const [concept_proposal_name, setconcept_proposal_name] = useState(""); //ชื่อโครงการ
@@ -27,6 +26,9 @@ function AddConceptproposal(props) {
   const [concept_univercity_budget, setconcept_univercity_budget] = useState(0);
   const [validated, setValidated] = useState(false);
 
+  console.log("test.1", props.user);
+  console.log("test.2", props.source_funds);
+  console.log("test.3", props.project_type);
   useEffect(() => {
     props.getUser();
     props.getSource_funds();
@@ -46,7 +48,7 @@ function AddConceptproposal(props) {
 
   const handleSubmit = (event) => {
     const concept_leader = select_researchname.value;
-    const concpt_proposal_sub = null;
+    const concpt_proposal_sub = "";
     const data = {
       concpt_proposal_sub,
       project_type_id,
@@ -366,8 +368,6 @@ const mapStateToProps = (state) => {
     source_funds: state.concept.sourcefund,
     project_type: state.concept.projecttype,
     year: state.concept.year,
-    test: state.concept.test,
-    test2: state.concept.test2,
   };
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Modal, Form } from "react-bootstrap";
 import Axios from "axios";
-import { NavLink,withRouter } from "react-router-dom";
+import { NavLink, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Select from "react-select";
@@ -135,8 +135,11 @@ function Finding(props) {
 
   const handleGetUpdate = (id) => {
     console.log("test ID : ", id);
-    props.getonefunding(id).then(() => {
-      props.history.push("/addfunding/addfundingresearch");
+    props.getonefunding(id);
+    props.history.push({
+      pathname: "/addfunding/addfundingresearch",
+      stateid: id,
+      title:"แก้ไขข้อมูลแหล่งทุน งานวิจัย"
     });
   };
   // console.log("testGetupdate : Project ", getupdate[2]);

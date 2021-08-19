@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-duplicate-props */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -11,6 +11,7 @@ import icon from "./constants";
 import {
   addconcept,
   addstudyarea,
+  get_co_research_group,
 } from "../../../redux/conceptProposal/action";
 
 function AddStudyArea(props) {
@@ -20,6 +21,11 @@ function AddStudyArea(props) {
   const [co_researcher_phone, setco_researcher_phone] = useState(""); //เบอร์ติดต่อ
   const [co_researcher_latitude, setco_researcher_latitude] = useState(0); //พื้นที่ศึกษา lat
   const [co_researcher_longitude, setco_researcher_longitude] = useState(0); //พื้นที่ศึกษา long
+
+  useEffect(() => {
+    props.get_co_research_group();
+  }, []);
+
   const handleSubmit = () => {
     // const co_researcher_group_id = 1;
     const data = {
@@ -73,7 +79,7 @@ function AddStudyArea(props) {
                   onChange={(event) => {
                     setco_researcher_group_id(event.target.value);
                   }}
-                > 
+                >
                   {
                     props.network.length === 0 ? (
                       <option value="">เลือกประเภท</option>
@@ -100,7 +106,7 @@ function AddStudyArea(props) {
                 </select>
               </div>
             </Col>
-            
+
             {/* ผู้ประสานงาน */}
             <Col lg={8}>
               <div className="form-group">
@@ -240,12 +246,21 @@ function AddStudyArea(props) {
         >
           <Row style={{ padding: "0 5rem" }}>
             <Col lg={6} style={{ float: "left" }}>
-              <NavLink
-                className="btn bg-gradient-primary btn-md"
-                to="/conceptproposal"
-              >
-                ย้อนกลับ
-              </NavLink>
+              {props.subconcept.length > 0 ? (
+                <NavLink
+                  className="btn bg-gradient-primary btn-md"
+                  to="/conceptproposal/addsubconcept"
+                >
+                  ย้อนกลับ
+                </NavLink>
+              ) : (
+                <NavLink
+                  className="btn bg-gradient-primary btn-md"
+                  to="/conceptproposal"
+                >
+                  ย้อนกลับ
+                </NavLink>
+              )}
             </Col>
             <Col lg={6} style={{ textAlign: "right" }}>
               <Button
@@ -275,4 +290,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   addconcept,
   addstudyarea,
+  get_co_research_group,
 })(AddStudyArea);

@@ -21,6 +21,7 @@ import {
   insertfunding,
   updatefunding,
   clearfunding,
+  getonefunding,
 } from "../../../redux/funding/action";
 
 function AddFundingResearch(props) {
@@ -54,7 +55,11 @@ function AddFundingResearch(props) {
   const [select_researchname, setselect_researchname] = useState("");
   // const [validated, setValidated] = useState(false);
 
+  const testid = props.location.stateid;
+  const testitle = props.location.title;
+
   useEffect(() => {
+    props.getonefunding(testid);
     props.getSource_funds();
     props.getprojecttype();
     props.getyear();
@@ -74,6 +79,8 @@ function AddFundingResearch(props) {
     });
   }
 
+  console.log("testfunding...", testitle);
+  console.log("testfunding...222", props.funding);
   const handleSubmit = () => {
     for (const data of select_researchname) {
       coordinater_funding_ac_research_team.push(data.value);
@@ -95,12 +102,12 @@ function AddFundingResearch(props) {
       coordinator_univercity_budget,
     };
 
-    if (props.getonefunding) {
-      console.log("testUpdate")
-      props.updatefunding(props.getonefunding.id, newdata);
-      console.log("testUpdate2")
+    if (props.funding) {
+      console.log("testUpdate");
+      props.updatefunding(props.funding.id, newdata);
+      console.log("testUpdate2");
     } else {
-      console.log("testInsert")
+      console.log("testInsert");
       props.insertfunding(newdata).then(() => {
         alert("บันทึกข้อมูลสำเร็จ");
         props.clearfunding();
@@ -119,7 +126,12 @@ function AddFundingResearch(props) {
       </div>
 
       <Form>
-        <h4 style={{ textAlign: "center" }}>เพิ่มข้อมูลแหล่งทุน งานวิจัย</h4>
+        {testitle ? (
+          <h4 style={{ textAlign: "center" }}>{testitle}</h4>
+        ) : (
+          <h4 style={{ textAlign: "center" }}>เพิ่มข้อมูลแหล่งทุน งานวิจัย</h4>
+        )}
+
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
         <div className="card-body card-body-pading">
           <Row>
@@ -134,18 +146,19 @@ function AddFundingResearch(props) {
                     setproject_type_id(event.target.value);
                   }}
                 >
-                  {
-                    props.getonefunding.project_type ? (
-                      <option value="">เลือกประเภท</option>
-                    ) : null
-                    // <option value={props.concept.project_type_id}>
-                    //   {
-                    //     props.project_type[
-                    //       parseInt(props.concept.project_type_id)
-                    //     ].project_type_name
-                    //   }
-                    // </option>
-                  }
+               
+                  {props.funding.length === 0? (
+                    <option value="">เลือกประเภท</option>
+                  ) : (
+                    <option value={props.funding.project_type}>
+                      test
+                      {/* {
+                        props.project_type[
+                          parseInt(props.funding.project_type)
+                        ].project_type_name
+                      } */}
+                    </option>
+                  )}
                   {props.project_type.length > 0 ? (
                     <>
                       {props.project_type.map((value, i) => {
@@ -543,7 +556,7 @@ const mapStateToProps = (state) => {
     user: state.concept.user,
     source_funds: state.concept.sourcefund,
     project_type: state.concept.projecttype,
-    getonefunding: state.funding.getonefunding,
+    funding: state.funding.getonefunding,
   };
 };
 
@@ -554,6 +567,7 @@ export default connect(mapStateToProps, {
   getyear,
   getresearch_faculty,
   getbudget_type,
+  getonefunding,
   getfunding_status,
   insertfunding,
   updatefunding,

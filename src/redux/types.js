@@ -50,12 +50,14 @@ export const GET_FUNDING_STATUS = "GET_FUNDING_STATUS";
 //ConceptProposal
 
 export const GET_CONCEPT_PROPOSAL = "GET_CONCEPT_PROPOSAL";
-
+export const ID_CONCEPT_PROPOSAL = "ID_CONCEPT_PROPOSAL";
 // AddConceptProposal
 export const ADD_CONCEPT = "ADD_CONCEPT";
 export const ADD_SUB_CONCEPT = "ADD_SUB_CONCEPT";
 export const ADD_STUDYAREA = "ADD_STUDYAREA";
+export const INSERT_STUDYAREA = "INSERT_STUDYAREA";
 export const ADD_NETWORK = "ADD_NETWORK";
+export const INSERT_NETWORK = "INSERT_NETWORK";
 // InsertConceptProposal
 export const INSERT_CONCEPT = "INSERT_CONCEPT";
 export const CLEAR_CONCEPT = "CLEAR_CONCEPT";

@@ -47,6 +47,7 @@ export default function reducerhome(state = initialState, action) {
     //Update Funding
     case GETONE_COORDINATOR_FUNDING:
       return { ...state, getonefunding: payload };
+      
     case UPDATE_COORDINATOR_FUNDING:
       return { ...state, updatefunding: payload };
     //End Update Funding
