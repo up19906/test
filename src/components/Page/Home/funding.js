@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Modal, Form } from "react-bootstrap";
 import Axios from "axios";
-import { NavLink, withRouter, Redirect } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Select from "react-select";
@@ -139,7 +139,7 @@ function Finding(props) {
     props.history.push({
       pathname: "/addfunding/addfundingresearch",
       stateid: id,
-      title:"แก้ไขข้อมูลแหล่งทุน งานวิจัย"
+      title: "แก้ไขข้อมูลแหล่งทุน งานวิจัย",
     });
   };
   // console.log("testGetupdate : Project ", getupdate[2]);
@@ -229,9 +229,9 @@ function Finding(props) {
                           ) {
                             return (
                               <tr key={i}>
-                                <td>{data.project_type_id}</td>
+                                <td>{data.project_type_name}</td>
                                 <td>{data.coordinater_funding_project_name}</td>
-                                <td>{data.coordinater_funding_name}</td>
+                                <td>{data.source_funds_name}</td>
                                 <td>{data.coordinater_funding_year}</td>
                                 <td>{data.coordinater_funding_budget}</td>
                                 <td>{data.project_leader}</td>
