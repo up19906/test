@@ -59,7 +59,7 @@ function Header(props) {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    if (getCurrentUser() == null || getCurrentUser().uid == "undefined") {
+    if (getCurrentUser() == null || getCurrentUser().uid === "undefined") {
       const data = processUser();
       saveDatatoStorage(data);
     }

@@ -407,7 +407,23 @@ function AddConceptproposal(props) {
                             </>
                           ) : null}
                         </select>
+                        <div>
+                  <NavLink
+                    to="/addfunding/aboutfunding"
+                    style={{ color: "#000", fontSize: "14px" }}
+                  >
+                    <i
+                      style={{ margin: "0.5rem", cursor: "pointer" }}
+                      className="fas fa-plus-circle"
+                      // onClick={() => setModalShow(true)}
+                    >
+                      {" "}
+                      เพิ่มแหล่งทุน
+                    </i>
+                  </NavLink>
+                </div>
                       </div>
+
                     </Col>
                     {/* ปีงบประมาณ */}
                     <Col lg={4}>

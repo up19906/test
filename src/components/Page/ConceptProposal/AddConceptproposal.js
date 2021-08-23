@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { useEffect, useState, createRef } from "react";
 import { Row, Col, Button, Form } from "react-bootstrap";
+import { NavLink} from "react-router-dom";
 import { connect } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -173,9 +174,21 @@ function AddConceptproposal(props) {
                     </>
                   ) : null}
                 </select>
-                <Form.Control.Feedback type="invalid">
-                  <h6 style={{ marginTop: "0.7rem" }}>** โปรดกรอกแหล่งทุน</h6>
-                </Form.Control.Feedback>
+                <div>
+                  <NavLink
+                    to="/addfunding/aboutfunding"
+                    style={{ color: "#000", fontSize: "14px" }}
+                  >
+                    <i
+                      style={{ margin: "0.5rem", cursor: "pointer" }}
+                      className="fas fa-plus-circle"
+                      // onClick={() => setModalShow(true)}
+                    >
+                      {" "}
+                      เพิ่มแหล่งทุน
+                    </i>
+                  </NavLink>
+                </div>
               </div>
             </Col>
             {/* ปีงบประมาณ */}

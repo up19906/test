@@ -21,7 +21,6 @@ import {
   insertfunding,
   updatefunding,
   clearfunding,
-  getonefunding,
 } from "../../../redux/funding/action";
 
 function AddFundingResearch(props) {
@@ -108,23 +107,23 @@ function AddFundingResearch(props) {
       coordinator_univercity_budget,
     };
 
-    if (props.funding) {
-      console.log("testUpdate");
-      props
-        .updatefunding(props.funding.coordinater_funding_id, newdata)
-        .then(() => {
-          props.clearfunding();
-          props.history.push("/");
-        });
-      console.log("testUpdate2");
-    } else {
+    // if (props.funding) {
+    //   console.log("testUpdate");
+    //   props
+    //     .updatefunding(props.funding.coordinater_funding_id, newdata)
+    //     .then(() => {
+    //       props.clearfunding();
+    //       props.history.push("/");
+    //     });
+    //   console.log("testUpdate2");
+    // } else {
       console.log("testInsert");
       props.insertfunding(newdata).then(() => {
         alert("บันทึกข้อมูลสำเร็จ");
         props.clearfunding();
         props.history.push("/");
       });
-    }
+    // }
   };
 
   return (
