@@ -236,7 +236,7 @@ function Finding(props) {
                                 <td>{data.coordinater_funding_budget}</td>
                                 <td>{data.project_leader}</td>
                                 <td>
-                                  <button
+                                  {/* <button
                                     onClick={() => {
                                       handleGetUpdate(
                                         data.coordinater_funding_id
@@ -249,8 +249,18 @@ function Finding(props) {
                                       className="fas fa-edit"
                                       aria-hidden="true"
                                     />
-                                  </button>
-                                  {"   "}|{"   "}
+                                  </button> */}
+                                  <NavLink
+                                    to={`/addfunding/editfunding/${data.coordinater_funding_id}`}
+                                    className="btn btn-primary"
+                                    style={{ padding: ".02rem .5rem" }}
+                                  >
+                                    <i
+                                      className="fas fa-edit"
+                                      aria-hidden="true"
+                                    />
+                                  </NavLink>
+
                                   <button
                                     onClick={() => {
                                       handleGetDelet(

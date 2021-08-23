@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, withRouter } from "react-router-dom";
+import { NavLink, withRouter, useParams } from "react-router-dom";
 
-import { Row, Col, Button, Modal, Form } from "react-bootstrap";
+import { Row, Col, Button, Form } from "react-bootstrap";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -36,7 +36,7 @@ function AddFundingResearch(props) {
     useState(""); //หน่วยงานที่รับผิดชอบ
   const [project_leader, setproject_leader] = useState(""); //นักวิจัยผู้รับผิดชอบ
   const [coordinater_funding_phone, setcoordinater_funding_phone] = useState(0); //เบอร์ติดต่อ
-  const coordinater_funding_ac_research_team = []; //เลือกทีมนักวิจัย
+  // const coordinater_funding_ac_research_team = []; //เลือกทีมนักวิจัย
   const [
     coordinator_fundingagency_status_id,
     setcoordinator_fundingagency_status_id,
@@ -49,16 +49,19 @@ function AddFundingResearch(props) {
   const [coordinator_univercity_budget, setcoordinator_univercity_budget] =
     useState(""); //รายได้เข้ามหาลัย
 
-  const [modalShowResearcher, setmodalShowResearcher] = React.useState(false);
+  // const [modalShowResearcher, setmodalShowResearcher] = React.useState(false);
 
-  const [select_researchname, setselect_researchname] = useState("");
+  // const [select_researchname, setselect_researchname] = useState("");
   // const [validated, setValidated] = useState(false);
 
   // const testid = props.location.stateid;
+  const { account } = useParams();
   const testitle = props.location.title;
+  console.log("object", account);
 
   useEffect(() => {
     // props.getonefunding(testid);
+    props.getUser();
     props.getSource_funds();
     props.getprojecttype();
     props.getyear();
@@ -68,13 +71,12 @@ function AddFundingResearch(props) {
   }, []);
 
   const animatedComponents = makeAnimated();
-  var research = [];
+  const researcher = [];
 
-  for (const data of props.researchfaculty) {
-    research.push({
-      value: data.research_faculty_idcrad,
-      label:
-        data.research_faculty_username + " " + data.research_faculty_lastname,
+  for (const data of props.user) {
+    researcher.push({
+      value: data.user_idcard,
+      label: data.user_first_name_th + " " + data.user_last_name_th,
     });
   }
 
@@ -87,9 +89,9 @@ function AddFundingResearch(props) {
   };
 
   const handleSubmit = () => {
-    for (const data of select_researchname) {
-      coordinater_funding_ac_research_team.push(data.value);
-    }
+    // for (const data of project_leader) {
+    //   coordinater_funding_ac_research_team.push(data.value);
+    // }
 
     const newdata = {
       project_type_id,
@@ -98,7 +100,6 @@ function AddFundingResearch(props) {
       coordinater_funding_agency,
       project_leader,
       coordinater_funding_phone,
-      coordinater_funding_ac_research_team,
       coordinator_fundingagency_status_id,
       coordinater_funding_year,
       coordinater_funding_budget,
@@ -117,12 +118,12 @@ function AddFundingResearch(props) {
     //     });
     //   console.log("testUpdate2");
     // } else {
-      console.log("testInsert");
-      props.insertfunding(newdata).then(() => {
-        alert("บันทึกข้อมูลสำเร็จ");
-        props.clearfunding();
-        props.history.push("/");
-      });
+    console.log("testInsert");
+    props.insertfunding(newdata).then(() => {
+      alert("บันทึกข้อมูลสำเร็จ");
+      props.clearfunding();
+      props.history.push("/");
+    });
     // }
   };
 
@@ -223,15 +224,17 @@ function AddFundingResearch(props) {
             {/* นักวิจัยผู้รับผิดสอบ */}
             <Col lg={8}>
               <div className="form-group">
-                <Form.Label>นักวิจัยผู้รับผิดชอบ</Form.Label>
-                <Form.Control
-                  type="text"
-                  className="form-control"
-                  defaultValue={props.funding.project_leader}
-                  onChange={(event) => {
-                    setproject_leader(event.target.value);
+                <Form.Label>นักวิจัยผู้รับผิดสอบ</Form.Label>
+                <Select
+                  // defaultValue={{ label: props.concept.leader_name }}
+                  closeMenuOnSelect={true}
+                  components={animatedComponents}
+                  onChange={(selectedOptions) => {
+                    setproject_leader(selectedOptions);
                   }}
-                />
+                  // defaultValue={[colourOptions[4], colourOptions[5]]}
+                  options={researcher}
+                ></Select>
               </div>
             </Col>
             {/* เบอร์ติดต่อ */}
@@ -246,117 +249,6 @@ function AddFundingResearch(props) {
                     setcoordinater_funding_phone(event.target.value);
                   }}
                 />
-              </div>
-            </Col>
-            {/* ทีมนักวิจัย */}
-            <Col lg={12}>
-              <div className="form-group">
-                <Form.Label>ทีมนักวิจัย</Form.Label>
-                <Select
-                  closeMenuOnSelect={false}
-                  name="select_research"
-                  components={animatedComponents}
-                  onChange={(selectedOptions) => {
-                    setselect_researchname(selectedOptions);
-                  }}
-                  // defaultValue={[colourOptions[4], colourOptions[5]]}
-                  isMulti
-                  options={research}
-                />
-                <div>
-                  <i
-                    style={{ margin: "0.5rem", cursor: "pointer" }}
-                    onClick={() => setmodalShowResearcher(true)}
-                    className="fas fa-plus-circle"
-                  >
-                    {" "}
-                    เพิ่มนักวิจัย
-                  </i>
-                </div>
-
-                <Modal
-                  size="lg"
-                  aria-labelledby="contained-modal-title-vcenter"
-                  centered
-                  show={modalShowResearcher}
-                  onHide={() => setmodalShowResearcher(false)}
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                      เพิ่มทีมนักวิจัย
-                    </Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <div className="form-group">
-                      <Row>
-                        <Col lg={6}>
-                          <div className="form-group">
-                            <label>ชื่อ</label>
-                            <input
-                              type="text"
-                              name="project_Longitude"
-                              className="form-control"
-                              // onChange={(event) => {
-                              //   setproject_Longitude(event.target.value);
-                              // }}
-                            />
-                          </div>
-                        </Col>
-                        <Col lg={5}>
-                          <div className="form-group">
-                            <label>นามสกุล</label>
-                            <input
-                              type="text"
-                              name="project_Longitude"
-                              className="form-control"
-                              // onChange={(event) => {
-                              //   setproject_Longitude(event.target.value);
-                              // }}
-                            />
-                          </div>
-                        </Col>
-                      </Row>
-                      <Row style={{ marginTop: "1rem" }}>
-                        {/* <Col lg={1} /> */}
-                        <Col lg={11}>
-                          <label htmlFor="type_source">ตำแหน่งในโครงการ</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            // onChange={(event) => {
-                            //   setSource_funds_name(event.target.value);
-                            // }}
-                          />
-                        </Col>
-                      </Row>
-                    </div>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button
-                      variant="secondary"
-                      // href="/"
-                      type="button"
-                      onClick={() => setmodalShowResearcher(false)}
-                    >
-                      ยกเลิก
-                    </Button>
-                    <Button
-                    // href="/addfunding"
-                    // onClick={() => {
-                    //   Axios.post(
-                    //     "http://localhost:4000/api/create/source_funds",
-                    //     {
-                    //       source_funds_name: source_funds_name,
-                    //       created_date: today,
-                    //     }
-                    //   );
-                    //   setmodalShowResearcher(false);
-                    // }}
-                    >
-                      บันทึก
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
               </div>
             </Col>
             {/* สถานะโครงการ */}
@@ -390,17 +282,10 @@ function AddFundingResearch(props) {
                       })}
                     </>
                   ) : null}
-
-                  <Form.Control.Feedback type="invalid">
-                    <h6 style={{ marginTop: "0.7rem" }}>
-                      ** โปรดกรอกประเภทงบประมาณ
-                    </h6>
-                  </Form.Control.Feedback>
                 </div>
               </div>
             </Col>
           </Row>
-
           <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
           <Row>
             {/* ปีงบประมาณ */}
@@ -529,11 +414,6 @@ function AddFundingResearch(props) {
                     </>
                   ) : null}
                 </select>
-                <Form.Control.Feedback type="invalid">
-                  <h6 style={{ marginTop: "0.7rem" }}>
-                    ** โปรดกรอกประเภทงบประมาณ
-                  </h6>
-                </Form.Control.Feedback>
               </div>
             </Col>
             {/* รายได้เข้ามหาลัย */}
@@ -549,11 +429,6 @@ function AddFundingResearch(props) {
                     setcoordinator_univercity_budget(event.target.value);
                   }}
                 />
-                <Form.Control.Feedback type="invalid">
-                  <h6 style={{ marginTop: "0.7rem" }}>
-                    ** โปรดกรอกรายได้เข้ามหาลัย
-                  </h6>
-                </Form.Control.Feedback>
               </div>
             </Col>
           </Row>
@@ -568,8 +443,6 @@ function AddFundingResearch(props) {
                 <div className="center">
                   <Button
                     onClick={handleSubmit}
-                    // type="submit"
-                    // href="/"
                     className="btn bg-gradient-primary btn-md"
                   >
                     บันทึก

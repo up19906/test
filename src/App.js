@@ -12,6 +12,7 @@ import AddAboutResearch from "./components/Page/AddAboutResearch";
 import Home from "./components/Page/Home";
 // import Contact from "./components/Page/Contact";
 import { Route, Switch } from "react-router-dom";
+import EditFunding from "./components/Page/EditFunding";
 
 function App() {
   return (
@@ -24,8 +25,13 @@ function App() {
         {/* <Route exact path="/addfunding" component={createQuery} /> */}
         <Route
           exact
-          path="/addfunding/addfundingresearch"
+          path="/addfunding/addfundingresearch/"
           component={AddFunding}
+        />
+        <Route
+          exact
+          path="/addfunding/editfunding/:id"
+          component={EditFunding}
         />
         <Route
           exact

@@ -18,7 +18,6 @@ import { connect } from "react-redux";
 import "./style.scss";
 
 function Header(props) {
-
   const [submenu, setsubmenu] = useState(true);
   console.log("testmenu:", props.menu);
 
@@ -46,7 +45,7 @@ function Header(props) {
     return JSON.parse(localStorage.getItem("user"));
   };
 
- const getUser = async (uid) => {
+  const getUser = async (uid) => {
     try {
       const response = await axios.get(
         `http://localhost:4000/api/get/bb-user-detail/${uid}`
@@ -64,7 +63,7 @@ function Header(props) {
       saveDatatoStorage(data);
     }
 
-    if (getCurrentUser().uid == "undefined") {
+    if (getCurrentUser().uid === "undefined") {
       window.location.href =
         "https://www.km-innovations.rmuti.ac.th/researcher/";
     }
