@@ -59,16 +59,11 @@ function Network(props) {
   }
 
   async function insert(concept) {
-    // console.log("Start...............");
-    await insertconcept(concept);
-    // console.log("ID ...", concpt_proposal_sub);
 
+    await insertconcept(concept);
     for (const item of props.subconcept) {
-      // console.log("testitem..........", item);
       const newdataconcept = item;
       newdataconcept["concpt_proposal_sub"] = concpt_proposal_sub;
-      // console.log("testdata........", newdataconcept);
-
       await insertsubconcept(newdataconcept);
     }
 
@@ -87,26 +82,21 @@ function Network(props) {
 
     const datastudyarea = props.studyarea;
     datastudyarea["concept_proposal_id"] = concpt_proposal_sub;
-    // console.log("dataArea.......", datastudyarea);
     props.insertstudyarea(datastudyarea);
     props.insertnetwork(data);
 
-    // console.log("Done!111111"); //1
   }
 
   const handleSubmit = () => {
     insert(props.concept).then(() => {
-      // console.log("ID ...2222", concpt_proposal_sub);
-
       props.clearconcept().then(() => {
         concpt_proposal_sub = null;
         console.log(concpt_proposal_sub);
       });
       props.history.push("/");
     });
-    // console.log("end............. ");
-    // console.log("..............3", props.insertIDsubconcept);
   };
+  
   return (
     <React.Fragment>
       <Form>

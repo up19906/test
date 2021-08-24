@@ -22,31 +22,31 @@ function Research() {
   const [project_type, setproject_type] = useState([]);
   const [budget_type, setbudget_type] = useState([]);
 
-  useEffect(() => {
-    Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
-      setSource_fund(source.data);
-    });
-    Axios.get("http://localhost:4000/api/get/project-type")
-      .then((resp) => {
-        // console.log(resp.data);
-        setproject_type(resp.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    Axios.get("http://localhost:4000/api/get/coordinator_budget_type").then(
-      (res) => {
-        setbudget_type(res.data);
-        console.log("budget_type : ", budget_type);
-      }
-    );
-    Axios.get(
-      "http://localhost:4000/api/get/coordinator_fundingagency_academic"
-    ).then((fundingagency) => {
-      setfundingagency(fundingagency.data);
-      console.log("test_fundingagency", fundingagency);
-    });
-  }, []);
+  // useEffect(() => {
+  //   Axios.get("http://localhost:4000/api/get/source_funds").then((source) => {
+  //     setSource_fund(source.data);
+  //   });
+  //   Axios.get("http://localhost:4000/api/get/project-type")
+  //     .then((resp) => {
+  //       // console.log(resp.data);
+  //       setproject_type(resp.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  //   Axios.get("http://localhost:4000/api/get/coordinator_budget_type").then(
+  //     (res) => {
+  //       setbudget_type(res.data);
+  //       console.log("budget_type : ", budget_type);
+  //     }
+  //   );
+  //   Axios.get(
+  //     "http://localhost:4000/api/get/coordinator_fundingagency_academic"
+  //   ).then((fundingagency) => {
+  //     setfundingagency(fundingagency.data);
+  //     console.log("test_fundingagency", fundingagency);
+  //   });
+  // }, []);
 
   return (
     <div>

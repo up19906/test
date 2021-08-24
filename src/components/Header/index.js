@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import "./Treeview";
 import { Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import {
@@ -8,18 +8,20 @@ import {
   closemenu,
   opensidebar,
   closesidebar,
-  removeruserlogin,
 } from "../../redux/header/action";
 
-import { getuserlogin } from "../../redux/home/action";
+// import { getuserlogin } from "../../redux/home/action";
 import { connect } from "react-redux";
-// import $ from "jquery";
+
+import * as $ from "jquery";
+import * as AdminLte from "admin-lte";
+
+import ApiData from "../../api/index";
 
 import "./style.scss";
 
 function Header(props) {
-  const [submenu, setsubmenu] = useState(true);
-  console.log("testmenu:", props.menu);
+  // const [submenu, setsubmenu] = useState(true);
 
   const [currentUser, setCurrentUser] = useState({});
 
@@ -27,6 +29,7 @@ function Header(props) {
     const parameters = window.location.search.substring(1).split("&");
     const temp = parameters[0].split("=");
     const uid = unescape(temp[1]);
+    // console.log("testuser....",uid);
     // var temp2 = parameters[1].split("=");
     // const p = unescape(temp2[1]);
     return uid;
@@ -45,34 +48,41 @@ function Header(props) {
     return JSON.parse(localStorage.getItem("user"));
   };
 
-  const getUser = async (uid) => {
+  async function getUser(uid) {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/api/get/bb-user-detail/${uid}`
-      );
-      return response.data;
+      const response = await ApiData.getuserlogin(uid);
+      setCurrentUser({ ...currentUser, ...response.data });
+      return Promise.resolve(response.data);
     } catch (e) {
+      Promise.reject(e);
       console.log(e);
     }
-  };
+  }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
-    if (getCurrentUser() == null || getCurrentUser().uid === "undefined") {
+  async function login() {
+    if (getCurrentUser() === null || getCurrentUser().uid === "undefined") {
       const data = processUser();
       saveDatatoStorage(data);
     }
-
     if (getCurrentUser().uid === "undefined") {
       window.location.href =
         "https://www.km-innovations.rmuti.ac.th/researcher/";
     }
-
     const user = getCurrentUser();
-    console.log(user);
-    const user_detail = await getUser(user.uid);
-    console.log(user_detail);
-    setCurrentUser({ ...currentUser, ...user_detail });
+    console.log("Param :", processUser().uid);
+
+    if (user.uid !== processUser().uid) {
+      const data = processUser();
+      saveDatatoStorage(data);
+    }
+    console.log("User...!!", user);
+    await getUser(user.uid);
+    console.log("userDetail", currentUser);
+  }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    login();
   }, []);
 
   const logout = () => {
@@ -111,33 +121,31 @@ function Header(props) {
     }
   };
 
-  const openMenu = () => {
-    if (submenu) {
-      setsubmenu(!submenu);
-      document.querySelector(".nav_link_add").classList.add("menu-open");
-      document.querySelector(".nav_link_add").classList.add("menu-is-opening");
-      document
-        .querySelector(".nav_treeview_add")
-        .classList.add("navteameview_open");
-    } else {
-      setsubmenu(!submenu);
-      document.querySelector(".nav_link_add").classList.remove("menu-open");
-      document
-        .querySelector(".nav_link_add")
-        .classList.remove("menu-is-opening");
-      document
-        .querySelector(".nav_treeview_add")
-        .classList.remove("navteameview_open");
-    }
-  };
+  // const openMenu = () => {
+  //   if (submenu) {
+  //     setsubmenu(!submenu);
+  //     document.querySelector(".nav_link_add").classList.add("menu-open");
+  //     document.querySelector(".nav_link_add").classList.add("menu-is-opening");
+  //     document
+  //       .querySelector(".nav_treeview_add")
+  //       .classList.add("navteameview_open");
+  //   } else {
+  //     setsubmenu(!submenu);
+  //     document.querySelector(".nav_link_add").classList.remove("menu-open");
+  //     document
+  //       .querySelector(".nav_link_add")
+  //       .classList.remove("menu-is-opening");
+  //     document
+  //       .querySelector(".nav_treeview_add")
+  //       .classList.remove("navteameview_open");
+  //   }
+  // };
+
+
 
   console.log("test .......", currentUser);
-  // useEffect(() => {
-  //   props.openmenu();
-  //   props.closemenu();
-  //   props.opensidebar();
-  //   props.closesidebar();
-  // }, [props]);
+
+
 
   return (
     <div className="wraper">
@@ -234,117 +242,322 @@ function Header(props) {
                       </a>
                     </div>
                   </div>
-
-                  <nav className="mt-2">
-                    <ul
-                      className="nav nav-pills nav-sidebar flex-column"
-                      data-widget="treeview"
-                      role="menu"
-                      data-accordion="false"
-                    >
-                      <li className="nav-item">
-                        <NavLink to="/home" className="nav-link">
-                          <i className="nav-icon fas fa-home" />
-                          <p>
-                            หน้าแรก
-                            {/* <span className="right badge badge-danger">
-                              New
-                            </span> */}
-                          </p>
-                        </NavLink>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          href="https://www.km-innovations.rmuti.ac.th/researcher/researcher/profile"
-                          className="nav-link"
-                        >
-                          <i className="nav-icon fas fa-users" />
-                          <p>
-                            ข้อมูลส่วนตัว
-                            {/* <span className="right badge badge-danger">
-                              New
-                            </span> */}
-                          </p>
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          style={{ cursor: "pointer" }}
-                          className="nav-link nav_link_add"
-                          onClick={() => openMenu()}
-                        >
-                          <i className="nav-icon fas fa-plus-circle" />
-                          <p>
-                            เพิ่มข้อมูลแหล่งทุน
-                            {submenu === true ? (
+                  {currentUser.group_id === 3 ? (
+                    <nav className="mt-2">
+                      <ul
+                        className="nav nav-pills nav-sidebar flex-column"
+                        data-widget="treeview"
+                        role="menu"
+                        data-accordion="false"
+                      >
+                        <li className="nav-item">
+                          <NavLink to="/home" className="nav-link">
+                            <i className="nav-icon fas fa-home" />
+                            <p>
+                              หน้าแรก
+                              {/* <span className="right badge badge-danger">
+           New
+         </span> */}
+                            </p>
+                          </NavLink>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            href="https://www.km-innovations.rmuti.ac.th/researcher/researcher/profile"
+                            className="nav-link"
+                          >
+                            <i className="nav-icon fas fa-users" />
+                            <p>
+                              ข้อมูลส่วนตัว
+                            </p>
+                          </a>
+                        </li>
+                        <li className="nav-item ">
+                          <a href="#" className="nav-link">
+                            <i className="nav-icon fas fa-file-pdf" />
+                            <p>
+                              เพิ่มข้อมูลแหล่งทุน
                               <i className="right fas fa-angle-left" />
-                            ) : (
-                              <i className="right fas fa-angle-down" />
-                            )}
-                          </p>
-                        </a>
-                        {/* start */}
-                        <ul
-                          className="nav nav-treeview nav_treeview_add "
-                          style={{ fontSize: "13px", paddingLeft: "0.5rem" }}
-                        >
-                          <li className="nav-item">
-                            <NavLink
-                              to="/addfunding/addfundingresearch"
-                              className="nav-link"
-                            >
-                              <i className="far fas fa-angle-right nav-icon" />
-                              <p>แหล่งทุนงานวิจัย</p>
-                            </NavLink>
-                          </li>
+                            </p>
+                          </a>
+                          <ul className="nav-treeview">
+                            <li className="nav-item">
+                              <NavLink
+                                to="/addfunding/addfundingresearch"
+                                className="nav-link"
+                              >
+                                <i className="far fa-file-pdf nav-icon" />
+                                <p>แหล่งทุนงานวิจัย</p>
+                              </NavLink>
+                            </li>
+                            <li className="nav-item">
+                              <NavLink
+                                to="/addfunding/aboutfunding"
+                                className="nav-link"
+                              >
+                                <i className="far fa-file nav-icon" />
+                                <p>ข้อมูลทั่วไปเกี่ยวกับทุน</p>
+                              </NavLink>
+                            </li>
+                          </ul>
+                        </li>
 
-                          <li className="nav-item">
-                            <NavLink
-                              to="/addfunding/aboutfunding"
-                              className="nav-link"
-                            >
-                              <i className="far fas fa-angle-right nav-icon" />
-                              <p>ข้อมูลทั่วไปเกี่ยวกับทุน</p>
-                            </NavLink>
-                          </li>
-                        </ul>
-                        {/* // end  */}
-                      </li>{" "}
-                      <li className="nav-item">
-                        <NavLink
-                          to="/conceptproposal"
-                          className="nav-link"
-                          // onClick={() => openMenu(false)}
-                        >
-                          <i className="nav-icon 	fas fa-file" />
-                          <p>ข้อเสนอโครงการ</p>
-                        </NavLink>
-                      </li>
-                      <li className="nav-item">
-                        <NavLink to="/allreport" className="nav-link">
-                          <i className="nav-icon 	fas fa-file-alt" />
-                          <p>
-                            AllReport
-                            {/* <i className="right fas fa-angle-left" /> */}
-                          </p>
-                        </NavLink>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className="nav-link"
-                          style={{ cursor: "pointer" }}
-                          onClick={logout}
-                        >
-                          <i className="nav-icon fas fa-sign-out-alt" />
-                          <p>
-                            ออกจากระบบ
-                            {/* <i className="fas fa-angle-left right" /> */}
-                          </p>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                  {/* /.sidebar-menu */}
+                        <li className="nav-item">
+                          <NavLink
+                            to="/conceptproposal"
+                            className="nav-link"
+                            // onClick={() => openMenu(false)}
+                          >
+                            <i className="nav-icon 	fas fa-file" />
+                            <p>ข้อเสนอโครงการ</p>
+                          </NavLink>
+                        </li>
+
+                        <li className="nav-item">
+                          <NavLink to="/allreport" className="nav-link">
+                            <i className="nav-icon 	fas fa-file-alt" />
+                            <p>
+                              AllReport
+                              {/* <i className="right fas fa-angle-left" /> */}
+                            </p>
+                          </NavLink>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            style={{ cursor: "pointer" }}
+                            onClick={logout}
+                          >
+                            <i className="nav-icon fas fa-sign-out-alt" />
+                            <p>
+                              ออกจากระบบ
+                              {/* <i className="fas fa-angle-left right" /> */}
+                            </p>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  ) : (
+                    <nav className="mt-2">
+                      <ul
+                        className="nav nav-pills nav-sidebar flex-column"
+                        data-widget="treeview"
+                        role="menu"
+                        data-accordion="false"
+                      >
+                        <li className="nav-item">
+                          <a
+                            href="<?php echo base_url('researcher/budget/Proposal'); ?>"
+                            className="nav-link"
+                          >
+                            <i className="nav-icon fas fa-hand-holding-usd" />
+                            <p>ทุนวิจัย</p>
+                          </a>
+                        </li>
+                        <li className="nav-item ">
+                          <a href="#" className="nav-link">
+                            <i className="nav-icon fas fa-users" />
+                            <p>
+                              ข้อมูลส่วนตัว
+                              <i className="right fas fa-angle-left" />
+                            </p>
+                          </a>
+                          <ul className="nav-treeview">
+                            <li className="nav-item">
+                              <a
+                                href="<?php echo base_url('researcher/profile'); ?>"
+                                className="nav-link"
+                              >
+                                <i className="far fa-user nav-icon" />
+                                <p>ข้อมูลส่วนตัว</p>
+                              </a>
+                            </li>
+                            <li className="nav-item">
+                              <a href="#" className="nav-link">
+                                <i className="far fa-id-card nav-icon" />
+                                <p>
+                                  ประวัติส่วนตัว
+                                  <i className="right fas fa-angle-left" />
+                                </p>
+                              </a>
+                              <ul className="nav-treeview">
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/education'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>ประวัติการศึกษา</p>
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/working'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>ประวัติการทำงาน</p>
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/expertise'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>ความเชี่ยวชาญ</p>
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/attention'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>ความสนใจ</p>
+                                  </a>
+                                </li>
+                              </ul>
+                            </li>
+                            <li className="nav-item">
+                              <a href="#" className="nav-link">
+                                <i className="fas fa-briefcase nav-icon" />
+                                <p>
+                                  งานวิจัย
+                                  <i className="right fas fa-angle-left" />
+                                </p>
+                              </a>
+                              <ul className="nav-treeview">
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/project'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>งานวิจัย</p>
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/publication'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>ผลงานตีพิมพ์</p>
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/researcher'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>ผู้ร้วมงานวิจัย</p>
+                                  </a>
+                                </li>
+                              </ul>
+                            </li>
+                            <li className="nav-item">
+                              <a href="#" className="nav-link">
+                                <i className="fas fa-award nav-icon" />
+                                <p>
+                                  ใบประกาศ / รางวัล
+                                  <i className="right fas fa-angle-left" />
+                                </p>
+                              </a>
+                              <ul className="nav-treeview">
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/certificate'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>ใบประกาศ / ใบรับรอง</p>
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/patent'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>สิทธิบัตร</p>
+                                  </a>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    href="<?php echo base_url('researcher/award'); ?>"
+                                    className="nav-link"
+                                  >
+                                    <i className="far fa-dot-circle nav-icon" />
+                                    <p>รางวัล</p>
+                                  </a>
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                        <li className="nav-item ">
+                          <a href="#" className="nav-link">
+                            <i className="nav-icon fas fa-file-pdf" />
+                            <p>
+                              รายงานความก้าวหน้า
+                              <i className="right fas fa-angle-left" />
+                            </p>
+                          </a>
+                          <ul className="nav-treeview">
+                            <li className="nav-item">
+                              <a
+                                href="<?php echo base_url('report/research'); ?>"
+                                className="nav-link"
+                              >
+                                <i className="far fa-file-pdf nav-icon" />
+                                <p>งานวิจัย</p>
+                              </a>
+                            </li>
+                            <li className="nav-item">
+                              <a
+                                href="<?php echo base_url('report/academic'); ?>"
+                                className="nav-link"
+                              >
+                                <i className="far fa-file nav-icon" />
+                                <p>งานบริการวิชาการ</p>
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                        <li className="nav-item has-treeview">
+                          <a href="#" className="nav-link">
+                            <i className="nav-icon fas fa-file" />
+                            <p>
+                              ข้อเสนอรอผลการพิจารณา
+                              <i className="right fas fa-angle-left" />
+                            </p>
+                          </a>
+                          <ul className="nav nav-treeview">
+                            <li className="nav-item">
+                              <a
+                                href="<?php echo base_url('report/research/waitresearch'); ?>"
+                                className="nav-link"
+                              >
+                                <i className="far fa-file-pdf nav-icon" />
+                                <p>งานวิจัย</p>
+                              </a>
+                            </li>
+                            <li className="nav-item">
+                              <a
+                                href="<?php echo base_url('report/academic/waitacademic'); ?>"
+                                className="nav-link"
+                              >
+                                <i className="far fa-file nav-icon" />
+                                <p>งานบริการวิชาการ</p>
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </nav>
+                  )}
                 </div>
               </div>
             </div>
@@ -386,7 +599,6 @@ const mapDispatchToProps = (dispatch) => ({
   closemenu: () => dispatch(closemenu()),
   opensidebar: () => dispatch(opensidebar()),
   closesidebar: () => dispatch(closesidebar()),
-  removeruserlogin,
 });
 
-export default connect(mapStateToProps, { getuserlogin })(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, withRouter, useParams } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 
 import { Row, Col, Button, Form } from "react-bootstrap";
 
@@ -34,7 +34,7 @@ function AddFundingResearch(props) {
   const [coordinator_project, setcoordinator_project] = useState(""); //ผู้ประสานงาน
   const [coordinater_funding_agency, setcoordinater_funding_agency] =
     useState(""); //หน่วยงานที่รับผิดชอบ
-  const [project_leader, setproject_leader] = useState(""); //นักวิจัยผู้รับผิดชอบ
+  const [selectproject_leader, setselectproject_leader] = useState(""); //นักวิจัยผู้รับผิดชอบ
   const [coordinater_funding_phone, setcoordinater_funding_phone] = useState(0); //เบอร์ติดต่อ
   // const coordinater_funding_ac_research_team = []; //เลือกทีมนักวิจัย
   const [
@@ -49,18 +49,8 @@ function AddFundingResearch(props) {
   const [coordinator_univercity_budget, setcoordinator_univercity_budget] =
     useState(""); //รายได้เข้ามหาลัย
 
-  // const [modalShowResearcher, setmodalShowResearcher] = React.useState(false);
-
-  // const [select_researchname, setselect_researchname] = useState("");
-  // const [validated, setValidated] = useState(false);
-
-  // const testid = props.location.stateid;
-  const { account } = useParams();
-  const testitle = props.location.title;
-  console.log("object", account);
 
   useEffect(() => {
-    // props.getonefunding(testid);
     props.getUser();
     props.getSource_funds();
     props.getprojecttype();
@@ -80,19 +70,9 @@ function AddFundingResearch(props) {
     });
   }
 
-  console.log("testfunding...", testitle);
-  console.log("testfunding...222", props.funding.length);
-  const CancleUpdate = () => {
-    props.clearfunding().then(() => {
-      props.history.push("/");
-    });
-  };
 
   const handleSubmit = () => {
-    // for (const data of project_leader) {
-    //   coordinater_funding_ac_research_team.push(data.value);
-    // }
-
+    const project_leader = selectproject_leader.value;
     const newdata = {
       project_type_id,
       coordinater_funding_project_name,
@@ -108,23 +88,11 @@ function AddFundingResearch(props) {
       coordinator_univercity_budget,
     };
 
-    // if (props.funding) {
-    //   console.log("testUpdate");
-    //   props
-    //     .updatefunding(props.funding.coordinater_funding_id, newdata)
-    //     .then(() => {
-    //       props.clearfunding();
-    //       props.history.push("/");
-    //     });
-    //   console.log("testUpdate2");
-    // } else {
-    console.log("testInsert");
     props.insertfunding(newdata).then(() => {
       alert("บันทึกข้อมูลสำเร็จ");
       props.clearfunding();
       props.history.push("/");
     });
-    // }
   };
 
   return (
@@ -137,12 +105,7 @@ function AddFundingResearch(props) {
       </div>
 
       <Form>
-        {testitle ? (
-          <h4 style={{ textAlign: "center" }}>{testitle}</h4>
-        ) : (
-          <h4 style={{ textAlign: "center" }}>เพิ่มข้อมูลแหล่งทุน งานวิจัย</h4>
-        )}
-
+        <h4 style={{ textAlign: "center" }}>เพิ่มข้อมูลแหล่งทุน งานวิจัย</h4>
         <div className="projcard-bar" style={{ margin: "1.5rem 5rem" }}></div>
         <div className="card-body card-body-pading">
           <Row>
@@ -157,13 +120,8 @@ function AddFundingResearch(props) {
                     setproject_type_id(event.target.value);
                   }}
                 >
-                  {props.funding.length === 0 ? (
-                    <option value="">เลือกประเภท</option>
-                  ) : (
-                    <option defaultValue={props.funding.project_type}>
-                      {props.funding.project_type_name}
-                    </option>
-                  )}
+                  <option value="">เลือกประเภท</option>
+
                   {props.project_type.length > 0 ? (
                     <>
                       {props.project_type.map((value, i) => {
@@ -185,7 +143,6 @@ function AddFundingResearch(props) {
                 <Form.Control
                   type="text"
                   className="form-control"
-                  defaultValue={props.funding.coordinater_funding_project_name}
                   onChange={(event) => {
                     setcoordinater_funding_project_name(event.target.value);
                   }}
@@ -199,7 +156,6 @@ function AddFundingResearch(props) {
                 <Form.Control
                   type="text"
                   className="form-control"
-                  defaultValue={props.funding.coordinator_project}
                   onChange={(event) => {
                     setcoordinator_project(event.target.value);
                   }}
@@ -213,7 +169,6 @@ function AddFundingResearch(props) {
                 <Form.Control
                   type="text"
                   className="form-control"
-                  defaultValue={props.funding.coordinater_funding_agency}
                   required
                   onChange={(event) => {
                     setcoordinater_funding_agency(event.target.value);
@@ -226,13 +181,11 @@ function AddFundingResearch(props) {
               <div className="form-group">
                 <Form.Label>นักวิจัยผู้รับผิดสอบ</Form.Label>
                 <Select
-                  // defaultValue={{ label: props.concept.leader_name }}
                   closeMenuOnSelect={true}
                   components={animatedComponents}
                   onChange={(selectedOptions) => {
-                    setproject_leader(selectedOptions);
+                    setselectproject_leader(selectedOptions);
                   }}
-                  // defaultValue={[colourOptions[4], colourOptions[5]]}
                   options={researcher}
                 ></Select>
               </div>
@@ -244,7 +197,6 @@ function AddFundingResearch(props) {
                 <Form.Control
                   type="phone"
                   className="form-control"
-                  defaultValue={props.funding.coordinater_funding_phone}
                   onChange={(event) => {
                     setcoordinater_funding_phone(event.target.value);
                   }}
@@ -265,9 +217,6 @@ function AddFundingResearch(props) {
                             style={{ marginLeft: "2rem" }}
                             inline
                             required
-                            defaultValue={
-                              props.coordinator_fundingagency_status_id
-                            }
                             label={data.coordinator_fundingagency_status_name}
                             name="coordinator_fundingagency_status_id"
                             value={data.coordinator_fundingagency_status_id}
@@ -298,16 +247,7 @@ function AddFundingResearch(props) {
                     setcoordinater_funding_year(event.target.value);
                   }}
                 >
-                  {props.funding.length === 0 ? (
-                    <option value="">เลือกปี</option>
-                  ) : (
-                    <option
-                      defaultValue={props.funding.coordinater_funding_year}
-                    >
-                      {props.funding.coordinater_funding_year}
-                    </option>
-                  )}
-
+                  <option value="">เลือกปี</option>
                   {props.year.map((value, i) => {
                     return (
                       <option key={i} value={value.value}>
@@ -325,7 +265,6 @@ function AddFundingResearch(props) {
                 <Form.Control
                   type="number"
                   className="form-control"
-                  defaultValue={props.funding.coordinater_funding_budget}
                   onChange={(event) => {
                     setcoordinater_funding_budget(event.target.value);
                   }}
@@ -342,14 +281,7 @@ function AddFundingResearch(props) {
                     setcoordinater_funding_name(event.target.value);
                   }}
                 >
-                  {props.funding.length === 0 ? (
-                    <option value="">เลือกแหล่งทุน</option>
-                  ) : (
-                    <option defaultValue={props.funding.coordinator_source_id}>
-                      {props.funding.source_funds_name}
-                    </option>
-                  )}
-
+                  <option value="">เลือกแหล่งทุน</option>
                   {props.source_funds.length > 0 ? (
                     <>
                       {props.source_funds.map((value, i) => {
@@ -371,9 +303,7 @@ function AddFundingResearch(props) {
                     <i
                       style={{ margin: "0.5rem", cursor: "pointer" }}
                       className="fas fa-plus-circle"
-                      // onClick={() => setModalShow(true)}
                     >
-                      {" "}
                       เพิ่มแหล่งทุน
                     </i>
                   </NavLink>
@@ -391,14 +321,7 @@ function AddFundingResearch(props) {
                     setbudget_id(event.target.value);
                   }}
                 >
-                  {props.funding.length === 0 ? (
-                    <option value="">เลือกประเภทงบประมาณ</option>
-                  ) : (
-                    <option defaultValue={props.funding.budget_id}>
-                      {props.funding.coordinator_Budget_type_name}
-                    </option>
-                  )}
-
+                  <option value="">เลือกประเภทงบประมาณ</option>
                   {props.budgettype.length > 0 ? (
                     <>
                       {props.budgettype.map((value, i) => {
@@ -423,7 +346,6 @@ function AddFundingResearch(props) {
                 <Form.Control
                   type="number"
                   className="form-control"
-                  defaultValue={props.funding.coordinator_univercity_budget}
                   required
                   onChange={(event) => {
                     setcoordinator_univercity_budget(event.target.value);
@@ -437,39 +359,18 @@ function AddFundingResearch(props) {
           className="card-footer"
           style={{ paddingTop: "1.5rem", paddingBottom: "1.5rem" }}
         >
-          {props.funding.length === 0 ? (
-            <Row>
-              <Col>
-                <div className="center">
-                  <Button
-                    onClick={handleSubmit}
-                    className="btn bg-gradient-primary btn-md"
-                  >
-                    บันทึก
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          ) : (
-            <Row style={{ padding: "0 5rem" }}>
-              <Col lg={6} style={{ float: "left" }}>
-                <Button
-                  onClick={CancleUpdate}
-                  className="btn bg-gradient-primary btn-md"
-                >
-                  ยกเลิก
-                </Button>
-              </Col>
-              <Col lg={6} style={{ textAlign: "right" }}>
+          <Row>
+            <Col>
+              <div className="center">
                 <Button
                   onClick={handleSubmit}
                   className="btn bg-gradient-primary btn-md"
                 >
                   บันทึก
                 </Button>
-              </Col>
-            </Row>
-          )}
+              </div>
+            </Col>
+          </Row>
         </div>
       </Form>
     </React.Fragment>

@@ -14,7 +14,7 @@ import {
   getyear,
 } from "../../../redux/conceptProposal/action";
 
-import Api from "../../../api/index";
+import ApiData from "../../../api/index";
 import {
   getresearch_faculty,
   getbudget_type,
@@ -27,7 +27,6 @@ import {
 
 function EditFundingResearch(props) {
   // const form = createRef();
-
   const [project_type_id, setproject_type_id] = useState(""); //ประเภท
   const [
     coordinater_funding_project_name,
@@ -36,9 +35,8 @@ function EditFundingResearch(props) {
   const [coordinator_project, setcoordinator_project] = useState(""); //ผู้ประสานงาน
   const [coordinater_funding_agency, setcoordinater_funding_agency] =
     useState(""); //หน่วยงานที่รับผิดชอบ
-  const [project_leader, setproject_leader] = useState(""); //นักวิจัยผู้รับผิดชอบ
+  const [selectproject_leader, setselectproject_leader] = useState(""); //นักวิจัยผู้รับผิดชอบ
   const [coordinater_funding_phone, setcoordinater_funding_phone] = useState(0); //เบอร์ติดต่อ
-  // const coordinater_funding_ac_research_team = []; //เลือกทีมนักวิจัย
   const [
     coordinator_fundingagency_status_id,
     setcoordinator_fundingagency_status_id,
@@ -50,16 +48,50 @@ function EditFundingResearch(props) {
   const [budget_id, setbudget_id] = useState(""); // ประเภทงบประมาณ
   const [coordinator_univercity_budget, setcoordinator_univercity_budget] =
     useState(""); //รายได้เข้ามหาลัย
-
   const [funding, setfunding] = useState([]);
-  const animatedComponents = makeAnimated();
-  const researcher = [];
+
+  async function getFunding(idfunding) {
+    try {
+      const res = await ApiData.getone_coordinator_funding(idfunding);
+      setfunding(res.data);
+      console.log("testInsertConcept ..........", res.data);
+      return Promise.resolve(res.data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async function insert(idfunding) {
+    await getFunding(idfunding);
+
+    setproject_type_id(funding.project_type_id);
+    setcoordinater_funding_project_name(
+      funding.coordinater_funding_project_name
+    );
+    setcoordinator_project(funding.coordinator_project);
+    setcoordinater_funding_agency(funding.coordinater_funding_agency);
+    setselectproject_leader(funding.project_leader);
+    setcoordinater_funding_phone(funding.coordinater_funding_phone);
+    setcoordinator_fundingagency_status_id(
+      funding.coordinator_fundingagency_status_id
+    );
+    setcoordinater_funding_year(funding.coordinater_funding_year);
+    setcoordinater_funding_budget(funding.coordinater_funding_budget);
+    setcoordinater_funding_name(funding.coordinater_funding_name);
+    setbudget_id(funding.budget_id);
+    setcoordinator_univercity_budget(funding.coordinator_univercity_budget);
+  }
 
   const { id } = useParams();
   console.log("object", id);
+  const animatedComponents = makeAnimated();
+  const researcher = [];
+
+  if (project_type_id === "") {
+    insert(id);
+  }
 
   useEffect(() => {
-    props.getonefunding(id);
     props.getUser();
     props.getSource_funds();
     props.getprojecttype();
@@ -82,12 +114,8 @@ function EditFundingResearch(props) {
     });
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setfunding({ ...funding, [name]: value });
-  };
-
   const handleSubmit = () => {
+    const project_leader = selectproject_leader.value;
     const newdata = {
       project_type_id,
       coordinater_funding_project_name,
@@ -104,8 +132,7 @@ function EditFundingResearch(props) {
     };
 
     props.updatefunding(id, newdata).then(() => {
-      props.clearfunding();
-      // props.history.push("/");
+      props.history.push("/");
     });
     console.log("testUpdate2");
   };
@@ -136,11 +163,11 @@ function EditFundingResearch(props) {
                     setproject_type_id(event.target.value);
                   }}
                 >
-                  {props.funding.length === 0 ? (
+                  {funding.length === 0 ? (
                     <option value="">เลือกประเภท</option>
                   ) : (
-                    <option defaultValue={props.funding.project_type}>
-                      {props.funding.project_type_name}
+                    <option defaultValue={funding.project_type}>
+                      {funding.project_type_name}
                     </option>
                   )}
                   {props.project_type.length > 0 ? (
@@ -165,8 +192,10 @@ function EditFundingResearch(props) {
                   type="text"
                   className="form-control"
                   name="coordinater_funding_project_name"
-                  value={props.funding.coordinater_funding_project_name}
-                  onChange={(e) => setcoordinater_funding_name(e.target.value)}
+                  defaultValue={coordinater_funding_project_name}
+                  onChange={(e) =>
+                    setcoordinater_funding_project_name(e.target.value)
+                  }
                 />
               </div>
             </Col>
@@ -177,7 +206,7 @@ function EditFundingResearch(props) {
                 <Form.Control
                   type="text"
                   className="form-control"
-                  defaultValue={props.funding.coordinator_project}
+                  defaultValue={coordinator_project}
                   onChange={(event) => {
                     setcoordinator_project(event.target.value);
                   }}
@@ -191,7 +220,7 @@ function EditFundingResearch(props) {
                 <Form.Control
                   type="text"
                   className="form-control"
-                  defaultValue={props.funding.coordinater_funding_agency}
+                  defaultValue={coordinater_funding_agency}
                   required
                   onChange={(event) => {
                     setcoordinater_funding_agency(event.target.value);
@@ -204,13 +233,12 @@ function EditFundingResearch(props) {
               <div className="form-group">
                 <Form.Label>นักวิจัยผู้รับผิดสอบ</Form.Label>
                 <Select
-                  // defaultValue={{ label: props.concept.leader_name }}
+                  placeholder={selectproject_leader}
                   closeMenuOnSelect={true}
                   components={animatedComponents}
                   onChange={(selectedOptions) => {
-                    setproject_leader(selectedOptions);
+                    setselectproject_leader(selectedOptions);
                   }}
-                  // defaultValue={[colourOptions[4], colourOptions[5]]}
                   options={researcher}
                 ></Select>
               </div>
@@ -222,7 +250,7 @@ function EditFundingResearch(props) {
                 <Form.Control
                   type="phone"
                   className="form-control"
-                  defaultValue={props.funding.coordinater_funding_phone}
+                  defaultValue={coordinater_funding_phone}
                   onChange={(event) => {
                     setcoordinater_funding_phone(event.target.value);
                   }}
@@ -234,32 +262,126 @@ function EditFundingResearch(props) {
               <div className="form-group">
                 <Form.Label>สถานะโครงการ :</Form.Label>
                 <div className="form-control" style={{ border: "none" }}>
-                  {props.fundingstatus.length > 0 ? (
-                    <>
-                      {props.fundingstatus.map(function (data, i) {
-                        return (
-                          <Form.Check
-                            key={i}
-                            style={{ marginLeft: "2rem" }}
-                            inline
-                            required
-                            defaultValue={
-                              props.coordinator_fundingagency_status_id
-                            }
-                            label={data.coordinator_fundingagency_status_name}
-                            name="coordinator_fundingagency_status_id"
-                            value={data.coordinator_fundingagency_status_id}
-                            type="radio"
-                            onChange={(event) => {
-                              setcoordinator_fundingagency_status_id(
-                                event.target.value
-                              );
-                            }}
-                          />
+                  {coordinator_fundingagency_status_id === 1 ? (
+                    <Form.Check
+                      style={{ marginLeft: "2rem" }}
+                      inline
+                      checked
+                      label="รอการตรวจสอบ"
+                      name="coordinator_fundingagency_status_id"
+                      value="1"
+                      type="radio"
+                      onChange={(event) => {
+                        setcoordinator_fundingagency_status_id(
+                          event.target.value
                         );
-                      })}
-                    </>
-                  ) : null}
+                      }}
+                    />
+                  ) : (
+                    <Form.Check
+                      style={{ marginLeft: "2rem" }}
+                      inline
+                      label="รอการตรวจสอบ"
+                      name="coordinator_fundingagency_status_id"
+                      value="1"
+                      type="radio"
+                      onChange={(event) => {
+                        setcoordinator_fundingagency_status_id(
+                          event.target.value
+                        );
+                      }}
+                    />
+                  )} 
+                  {coordinator_fundingagency_status_id === 2 ? (
+                    <Form.Check
+                      style={{ marginLeft: "2rem" }}
+                      inline
+                      checked
+                      label="อนุมัติ"
+                      name="coordinator_fundingagency_status_id"
+                      value="2"
+                      type="radio"
+                      onChange={(event) => {
+                        setcoordinator_fundingagency_status_id(
+                          event.target.value
+                        );
+                      }}
+                    />
+                  ) : (
+                    <Form.Check
+                      style={{ marginLeft: "2rem" }}
+                      inline
+                      label="อนุมัติ"
+                      name="coordinator_fundingagency_status_id"
+                      value="2"
+                      type="radio"
+                      onChange={(event) => {
+                        setcoordinator_fundingagency_status_id(
+                          event.target.value
+                        );
+                      }}
+                    />
+                  )} 
+                  {coordinator_fundingagency_status_id === 3 ? (
+                    <Form.Check
+                      style={{ marginLeft: "2rem" }}
+                      inline
+                      checked
+                      label="ไม่อนุมัติ"
+                      name="coordinator_fundingagency_status_id"
+                      value="3"
+                      type="radio"
+                      onChange={(event) => {
+                        setcoordinator_fundingagency_status_id(
+                          event.target.value
+                        );
+                      }}
+                    />
+                  ) : (
+                    <Form.Check
+                      style={{ marginLeft: "2rem" }}
+                      inline
+                      label="ไม่อนุมัติ"
+                      name="coordinator_fundingagency_status_id"
+                      value="3"
+                      type="radio"
+                      onChange={(event) => {
+                        setcoordinator_fundingagency_status_id(
+                          event.target.value
+                        );
+                      }}
+                    />
+                  )} 
+                  {coordinator_fundingagency_status_id === 4 ? (
+                    <Form.Check
+                      style={{ marginLeft: "2rem" }}
+                      inline
+                      checked
+                      label="รอการยื่นเสนอ"
+                      name="coordinator_fundingagency_status_id"
+                      value="4"
+                      type="radio"
+                      onChange={(event) => {
+                        setcoordinator_fundingagency_status_id(
+                          event.target.value
+                        );
+                      }}
+                    />
+                  ) : (
+                    <Form.Check
+                      style={{ marginLeft: "2rem" }}
+                      inline
+                      label="รอการยื่นเสนอ"
+                      name="coordinator_fundingagency_status_id"
+                      value="4"
+                      type="radio"
+                      onChange={(event) => {
+                        setcoordinator_fundingagency_status_id(
+                          event.target.value
+                        );
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </Col>
@@ -303,7 +425,7 @@ function EditFundingResearch(props) {
                 <Form.Control
                   type="number"
                   className="form-control"
-                  defaultValue={props.funding.coordinater_funding_budget}
+                  defaultValue={coordinater_funding_budget}
                   onChange={(event) => {
                     setcoordinater_funding_budget(event.target.value);
                   }}
@@ -401,7 +523,7 @@ function EditFundingResearch(props) {
                 <Form.Control
                   type="number"
                   className="form-control"
-                  defaultValue={props.funding.coordinator_univercity_budget}
+                  defaultValue={coordinator_univercity_budget}
                   required
                   onChange={(event) => {
                     setcoordinator_univercity_budget(event.target.value);
@@ -415,39 +537,21 @@ function EditFundingResearch(props) {
           className="card-footer"
           style={{ paddingTop: "1.5rem", paddingBottom: "1.5rem" }}
         >
-          {props.funding.length === 0 ? (
-            <Row>
-              <Col>
-                <div className="center">
-                  <Button
-                    onClick={handleSubmit}
-                    className="btn bg-gradient-primary btn-md"
-                  >
-                    บันทึก
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          ) : (
-            <Row style={{ padding: "0 5rem" }}>
-              <Col lg={6} style={{ float: "left" }}>
-                <Button
-                  onClick={CancleUpdate}
-                  className="btn bg-gradient-primary btn-md"
-                >
-                  ยกเลิก
-                </Button>
-              </Col>
-              <Col lg={6} style={{ textAlign: "right" }}>
-                <Button
-                  onClick={handleSubmit}
-                  className="btn bg-gradient-primary btn-md"
-                >
-                  บันทึก
-                </Button>
-              </Col>
-            </Row>
-          )}
+          <Row style={{ padding: "0 5rem" }}>
+            <Col lg={6} style={{ float: "left" }}>
+              <Button onClick={CancleUpdate} className="btn bg-danger btn-md">
+                ยกเลิก
+              </Button>
+            </Col>
+            <Col lg={6} style={{ textAlign: "right" }}>
+              <Button
+                onClick={handleSubmit}
+                className="btn bg-gradient-primary btn-md"
+              >
+                บันทึก
+              </Button>
+            </Col>
+          </Row>
         </div>
       </form>
     </React.Fragment>

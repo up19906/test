@@ -21,14 +21,14 @@ function Researcher() {
   const [researcher_year, setresearcher_year] = useState("");
   const [researcher, setresearcher] = useState([]);
 
-  useEffect(() => {
-    Axios.get(
-      "http://localhost:4000/api/get/coordinator_fundingagency_academic"
-    ).then((fundingagency) => {
-      setresearcher_data(fundingagency.data);
-      console.log("test_fundingagency", fundingagency);
-    });
-  }, []);
+  // useEffect(() => {
+  //   Axios.get(
+  //     "http://localhost:4000/api/get/coordinator_fundingagency_academic"
+  //   ).then((fundingagency) => {
+  //     setresearcher_data(fundingagency.data);
+  //     console.log("test_fundingagency", fundingagency);
+  //   });
+  // }, []);
 
   return (
     <div>
